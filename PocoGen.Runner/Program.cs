@@ -55,7 +55,7 @@ namespace PocoGen.Runner
 
             using (DirectoryCatalog catalog = new DirectoryCatalog(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
             {
-                var container = new CompositionContainer(catalog, CompositionOptions.DisableSilentRejection);
+                var container = new CompositionContainer(catalog, CompositionOptions.DisableSilentRejection | CompositionOptions.IsThreadSafe);
 
                 Program program = new Program();
                 container.ComposeParts(program);
@@ -65,15 +65,9 @@ namespace PocoGen.Runner
                     program.Run(definition, path);
                     Environment.Exit((int)ReturnCodes.Success);
                 }
-                catch (AggregateException ex)
-                {
-                    // AggregateException is thrown when an exception is thrown during await
-                    Console.Error.WriteLine("ERROR: Could not run POCO generation: " + ex.InnerException.Message);
-                    Environment.Exit((int)ReturnCodes.CouldNotRun);
-                }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine("ERROR: Could not run POCO generation: " + ex.Message);
+                    Console.Error.WriteLine("ERROR: Could not run POCO generation: " + ex.ToString());
                     Environment.Exit((int)ReturnCodes.CouldNotRun);
                 }
             }

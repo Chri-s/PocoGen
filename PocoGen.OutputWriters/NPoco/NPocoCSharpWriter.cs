@@ -56,6 +56,7 @@ namespace PocoGen.OutputWriters.NPoco
             NPocoCSharpWriter.WriteTableNameAttribute(writer, table, dbEscaper);
             NPocoCSharpWriter.WritePrimaryKeyAttribute(writer, table);
 
+            writer.WriteLine("[ExplicitColumns]");
             writer.Write((settings.ClassModifier == ClassModifier.Public) ? "public" : "internal");
             writer.Write(" partial class ");
             writer.WriteLine(CSharpTools.SafeClassName(table.ClassName));
