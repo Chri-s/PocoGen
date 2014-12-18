@@ -53,7 +53,7 @@ namespace PocoGen.OutputWriters.NPoco
 
         private static void WriteTable(CodeIndentationWriter writer, Table table, IDBEscaper dbEscaper, NPocoWriterSettings settings)
         {
-            NPocoCSharpWriter.WriteTableNameAttribute(writer, table, dbEscaper);
+            NPocoCSharpWriter.WriteTableNameAttribute(writer, table, dbEscaper, settings);
             NPocoCSharpWriter.WritePrimaryKeyAttribute(writer, table);
 
             writer.WriteLine("[ExplicitColumns]");
@@ -70,18 +70,26 @@ namespace PocoGen.OutputWriters.NPoco
             writer.WriteLine("}");
         }
 
-        private static void WriteTableNameAttribute(CodeIndentationWriter writer, Table table, IDBEscaper dbEscaper)
+        private static void WriteTableNameAttribute(CodeIndentationWriter writer, Table table, IDBEscaper dbEscaper, NPocoWriterSettings settings)
         {
             writer.Write("[TableName(\"");
 
-            if (table.Name.Contains("."))
+            if (settings.IncludeSchema)
             {
-                // NPoco assumes that table names which contain a dot are already escaped. So we need to escape them in this case.
-                writer.Write(CSharpTools.SafeString(dbEscaper.EscapeTableName(table.Name)));
+                string tableName = dbEscaper.EscapeSchemaName(table.Schema) + "." + dbEscaper.EscapeTableName(table.Name);
+                writer.Write(CSharpTools.SafeString(tableName));
             }
             else
             {
-                writer.Write(CSharpTools.SafeString(table.Name));
+                if (table.Name.Contains("."))
+                {
+                    // NPoco assumes that table names which contain a dot are already escaped. So we need to escape them in this case.
+                    writer.Write(CSharpTools.SafeString(dbEscaper.EscapeTableName(table.Name)));
+                }
+                else
+                {
+                    writer.Write(CSharpTools.SafeString(table.Name));
+                }
             }
 
             writer.WriteLine("\")]");

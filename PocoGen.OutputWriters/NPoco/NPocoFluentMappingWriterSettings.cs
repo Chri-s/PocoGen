@@ -15,11 +15,17 @@ namespace PocoGen.OutputWriters.NPoco
             this.ClassModifier = OutputWriters.ClassModifier.Public;
             this.ClassName = string.Empty;
             this.Language = OutputWriters.Language.CSharp;
+            this.IncludeSchema = false;
         }
 
         [Category("Code Generation")]
         [Description("The namespace for the generated classes.")]
         public string Namespace { get; set; }
+
+        [Category("Code Generation")]
+        [Description("Include the schema name in the TableNameAttibute.")]
+        [DisplayName("Include Schema")]
+        public bool IncludeSchema { get; set; }
 
         [Category("Code Generation")]
         [Description("The namespace of the POCOs.")]
@@ -59,6 +65,7 @@ namespace PocoGen.OutputWriters.NPoco
             repository.SetOption("ClassModifier", Enum.GetName(typeof(ClassModifier), this.ClassModifier));
             repository.SetOption("ClassName", this.ClassName);
             repository.SetOption("Language", Enum.GetName(typeof(Language), this.Language));
+            repository.SetOption("IncludeSchema", this.IncludeSchema);
             return repository;
         }
 
@@ -66,6 +73,7 @@ namespace PocoGen.OutputWriters.NPoco
         {
             string stringValue;
             int intValue;
+            bool boolValue;
 
             this.Namespace = repository.TryGetValue("Namespace", out stringValue) ? stringValue : string.Empty;
             this.PocoNamespace = repository.TryGetValue("PocoNamespace", out stringValue) ? stringValue : string.Empty;
@@ -74,6 +82,7 @@ namespace PocoGen.OutputWriters.NPoco
             this.ClassModifier = repository.TryGetValue("ClassModifier", out stringValue) ? (ClassModifier)Enum.Parse(typeof(ClassModifier), stringValue) : OutputWriters.ClassModifier.Public;
             this.ClassName = repository.TryGetValue("ClassName", out stringValue) ? stringValue : string.Empty;
             this.Language = repository.TryGetValue("Language", out stringValue) ? (Language)Enum.Parse(typeof(Language), stringValue) : Language.CSharp;
+            this.IncludeSchema = repository.TryGetValue("IncludeSchema", out boolValue) ? boolValue : false;
         }
     }
 }

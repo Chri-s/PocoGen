@@ -52,7 +52,7 @@ namespace PocoGen.OutputWriters.NPoco
 
         private static void WriteTable(CodeIndentationWriter writer, Table table, IDBEscaper dbEscaper, NPocoWriterSettings settings)
         {
-            NPocoVisualBasicWriter.WriteTableNameAttribute(writer, table, dbEscaper);
+            NPocoVisualBasicWriter.WriteTableNameAttribute(writer, table, dbEscaper, settings);
             NPocoVisualBasicWriter.WritePrimaryKeyAttribute(writer, table);
 
             writer.WriteLine("<ExplicitColumns>");
@@ -69,18 +69,26 @@ namespace PocoGen.OutputWriters.NPoco
             writer.WriteLine("End Class");
         }
 
-        private static void WriteTableNameAttribute(CodeIndentationWriter writer, Table table, IDBEscaper dbEscaper)
+        private static void WriteTableNameAttribute(CodeIndentationWriter writer, Table table, IDBEscaper dbEscaper, NPocoWriterSettings settings)
         {
             writer.Write("<TableName(");
 
-            if (table.Name.Contains("."))
+            if (settings.IncludeSchema)
             {
-                // NPoco assumes that table names which contain a dot are already escaped. So we need to escape them in this case.
-                writer.Write(VisualBasicTools.SafeString(dbEscaper.EscapeTableName(table.Name)));
+                string tableName = dbEscaper.EscapeSchemaName(table.Schema) + "." + dbEscaper.EscapeTableName(table.Name);
+                writer.Write(VisualBasicTools.SafeString(tableName));
             }
             else
             {
-                writer.Write(VisualBasicTools.SafeString(table.Name));
+                if (table.Name.Contains("."))
+                {
+                    // NPoco assumes that table names which contain a dot are already escaped. So we need to escape them in this case.
+                    writer.Write(VisualBasicTools.SafeString(dbEscaper.EscapeTableName(table.Name)));
+                }
+                else
+                {
+                    writer.Write(VisualBasicTools.SafeString(table.Name));
+                }
             }
 
             writer.WriteLine(")>");

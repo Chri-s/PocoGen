@@ -66,6 +66,8 @@ namespace PocoGen.OutputWriters
                 {
                     result += "[]";
                 }
+
+                return result;
             }
 
             ColumnType columnType = type as ColumnType;

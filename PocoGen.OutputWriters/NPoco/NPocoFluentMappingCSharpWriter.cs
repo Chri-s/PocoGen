@@ -77,30 +77,38 @@ namespace PocoGen.OutputWriters.NPoco
                 }
 
                 isFirstTable = false;
-                NPocoFluentMappingCSharpWriter.WriteTable(table, dbEscaper, writer);
+                NPocoFluentMappingCSharpWriter.WriteTable(table, dbEscaper, writer, settings);
             }
 
             writer.Outdent();
             writer.WriteLine("}");
         }
 
-        private static void WriteTable(Table table, IDBEscaper dbEscaper, CodeIndentationWriter writer)
+        private static void WriteTable(Table table, IDBEscaper dbEscaper, CodeIndentationWriter writer, NPocoFluentMappingWriterSettings settings)
         {
             writer.Write("this.For<");
             writer.Write(CSharpTools.SafeClassName(table.ClassName));
             writer.WriteLine(">()");
             writer.Indent();
 
-            writer.Write(".TableName(\"");
 
-            if (table.Name.Contains("."))
+            writer.Write(".TableName(\"");
+            if (settings.IncludeSchema)
             {
-                // NPoco assumes that table names which contain a dot are already escaped. So we need to escape them in this case.
-                writer.Write(CSharpTools.SafeString(dbEscaper.EscapeTableName(table.Name)));
+                string tableName = dbEscaper.EscapeSchemaName(table.Schema) + "." + dbEscaper.EscapeTableName(table.Name);
+                writer.Write(CSharpTools.SafeString(tableName));
             }
             else
             {
-                writer.Write(CSharpTools.SafeString(table.Name));
+                if (table.Name.Contains("."))
+                {
+                    // NPoco assumes that table names which contain a dot are already escaped. So we need to escape them in this case.
+                    writer.Write(CSharpTools.SafeString(dbEscaper.EscapeTableName(table.Name)));
+                }
+                else
+                {
+                    writer.Write(CSharpTools.SafeString(table.Name));
+                }
             }
 
             writer.WriteLine("\")");
