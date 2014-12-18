@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*" Name="PocoGen" Language="1033" Version="1.0.0.0" Manufacturer="NChris" UpgradeCode="10cfb799-b9c5-4f58-8089-cd80a414307a">
+        <Package InstallerVersion="300" Compressed="yes" InstallScope="perMachine" />
+
+        <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+        <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+        <Icon Id="SetupIcon.ico" SourceFile="$(var.PocoGen.Gui.ProjectDir)\Presentation\Resources\Images\Application.ico" />
+        <Property Id="ARPPRODUCTICON" Value="SetupIcon.ico" />
+        <Property Id="DISABLEADVTSHORTCUTS" Value="1" />
+        <Property Id="ARPURLINFOABOUT" Value="http://pocogen.codeplex.com/" />
+        <Property Id="ARPURLUPDATEINFO" Value="http://pocogen.codeplex.com/releases" />
+        <Property Id="ARPHELPLINK" Value="http://pocogen.codeplex.com/documentation" />
+        
+
+        <Property Id="INSTALLDIR">
+            <RegistrySearch Id="RegInstallDirSearch" Type="raw" Root="HKLM" Key="Software\[ProductName]" Name="InstallDir" />
+        </Property>
+
+        <Feature Id="MainTree" Title="PocoGen" ConfigurableDirectory="INSTALLDIR" Display="expand" Absent="disallow" AllowAdvertise="no">
+            
+            <!-- Add this to remove "run from network" option -->
+            <ComponentRef Id="Empty"/>
+            
+            <Feature Id="ProductFeature" Title="Common Files" Absent="disallow" Description="Shared files which are needed for the entire program" AllowAdvertise="no">
+                <ComponentGroupRef Id="CommonComponents" />
+
+                <Component Id="PocoGenRegInstallDir" Directory="TARGETDIR" Guid="{E4C2B012-8B49-43CE-8182-1ED77F5CE2DB}">
+                    <RegistryKey Root="HKLM" Key="Software\[ProductName]">
+                        <RegistryValue Type="string" Name="InstallDir" Value="[INSTALLDIR]" />
+                    </RegistryKey>
+                </Component>
+            </Feature>
+
+            <Feature Id="ConfigGui" Title="Configuration GUI" Level="1" AllowAdvertise="no" Description="A GUI to set the database type, connection string, table names etc.">
+                <ComponentGroupRef Id="MvvmHybridFramework"/>
+                <ComponentGroupRef Id="GUI"/>
+            </Feature>
+            
+            <Feature Id="Runner" Title="Generation Runner" Level="1" AllowAdvertise="no" Description="Command line tool to run the created configurations.">
+                <ComponentGroupRef Id="Runner"/>
+            </Feature>
+        </Feature>
+
+        <UIRef Id="WixUI_FeatureTree" />
+    </Product>
+
+    <Fragment>
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder">
+                <Directory Id="INSTALLDIR" Name="PocoGen">
+                    <Component Id="Empty" Guid="" KeyPath="yes" />                    
+                </Directory>
+            </Directory>
+
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ProgramMenuDir" Name="PocoGen">
+                    <Component Id="StartMenuShortcuts" Guid="{D7D2A2F7-D6F2-411C-99BA-3B2DC2E4F218}">
+                        <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+                        <RegistryValue Root="HKMU" Key="Software\[ProductName]" Type="string" Value="" KeyPath="yes" />
+                    </Component>
+                </Directory>
+            </Directory>
+
+            <Component Id="AppPathRunner" Guid="{15988014-1491-46F4-AF8B-478A180DFA92}">
+                <RegistryKey Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\PocoGen.Runner.exe">
+                    <RegistryValue KeyPath="yes" Type="string" Value="&quot;[#PocoGen.Runner.exe]&quot;" />
+                </RegistryKey>
+            </Component>
+        </Directory>
+    </Fragment>
+
+    <Fragment>
+        <ComponentGroup Id="CommonComponents">
+            <ComponentRef Id="Inflector.dll" />
+            <ComponentRef Id="Mono.Security.dll" />
+            <ComponentRef Id="MySql.Data.dll"/>
+            <ComponentRef Id="Npgsql.dll"/>
+            <ComponentRef Id="PocoGen.Common.dll"/>
+            <ComponentRef Id="PocoGen.NameGenerators.dll"/>
+            <ComponentRef Id="PocoGen.OutputWriters.dll"/>
+            <ComponentRef Id="PocoGen.SchemaReaders.dll"/>
+            <ComponentRef Id="System.Data.SQLite.dll"/>
+            <ComponentRef Id="Npgsql.resources.dll"/>
+            <ComponentRef Id="Npgsql.resources.dll_1"/>
+            <ComponentRef Id="Npgsql.resources.dll_2" />
+            <ComponentRef Id="Npgsql.resources.dll_3"/>
+            <ComponentRef Id="Npgsql.resources.dll_4"/>
+            <ComponentRef Id="Npgsql.resources.dll_5" />
+            <ComponentRef Id="SQLite.Interop.dll" />
+            <ComponentRef Id="SQLite.Interop.dll_1" />
+        </ComponentGroup>
+
+        <ComponentGroup Id="MvvmHybridFramework">
+            <ComponentRef Id="MvvmHybridFramework.dll" />
+            <ComponentRef Id="ReactiveUI.dll"/>
+            <ComponentRef Id="Splat.dll"/>
+            <ComponentRef Id="System.Reactive.Core.dll"/>
+            <ComponentRef Id="System.Reactive.Interfaces.dll"/>
+            <ComponentRef Id="System.Reactive.Linq.dll"/>
+            <ComponentRef Id="System.Reactive.PlatformServices.dll"/>
+            <ComponentRef Id="System.Reactive.Windows.Threading.dll"/>
+        </ComponentGroup>
+
+        <ComponentGroup Id="GUI">
+            <ComponentRef Id="ICSharpCode.AvalonEdit.dll"/>
+            <ComponentRef Id="Microsoft.WindowsAPICodePack.dll"/>
+            <ComponentRef Id="Microsoft.WindowsAPICodePack.Shell.dll"/>
+            <ComponentRef Id="PocoGen.Gui.exe"/>
+            <ComponentRef Id="PocoGen.Gui.exe.config"/>
+            <ComponentRef Id="Poco.ico"/>
+            <ComponentRef Id="Xceed.Wpf.Toolkit.dll"/>
+
+            <ComponentRef Id="StartMenuShortcuts"/>
+        </ComponentGroup>
+
+        <ComponentGroup Id="Runner">
+            <ComponentRef Id="PocoGen.Runner.exe"/>
+            <ComponentRef Id="PocoGen.Runner.exe.config"/>
+
+            <ComponentRef Id="AppPathRunner"/>
+        </ComponentGroup>
+    </Fragment>
+</Wix>

@@ -1,0 +1,8 @@
+*.suo
+/bin
+/packages/*[0-9]
+StyleCop.Cache
+/.nuget/NuGet.exe
+obj
+*.user
+/PocoGen.Setup/bin

@@ -1,0 +1,65 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:conv="clr-namespace:PocoGen.Gui.Presentation.Converters">
+
+    <BitmapImage x:Key="ApplicationIcon">Images/Application.ico</BitmapImage>
+    <BitmapImage x:Key="TableIcon">Images/table_16xLG.png</BitmapImage>
+    <BitmapImage x:Key="ViewIcon">Images/view_16xLG.png</BitmapImage>
+    <BitmapImage x:Key="PrimaryKeyIcon">Images/PrimaryKeyHS.png</BitmapImage>
+    <BitmapImage x:Key="SettingsIcon">Images/Settings.ico</BitmapImage>
+    <BitmapImage x:Key="AddIcon">Images/action_add_16xLG.png</BitmapImage>
+    <BitmapImage x:Key="DeleteIcon">Images/delete_16x.ico</BitmapImage>
+    <BitmapImage x:Key="UpArrowIcon">Images/arrow_Up_16xLG.png</BitmapImage>
+    <BitmapImage x:Key="DownArrowIcon">Images/arrow_Down_16xLG.png</BitmapImage>
+    <BitmapImage x:Key="OpenFileIcon">Images/Open_6529.png</BitmapImage>
+    <BitmapImage x:Key="SaveFileIcon">Images/save_16xLG.png</BitmapImage>
+    <BitmapImage x:Key="GenerateIcon">Images/GenerateAll.png</BitmapImage>
+    <BitmapImage x:Key="NewFileIcon">Images/NewFile_6276.png</BitmapImage>
+    
+    <conv:TableTypeConverter x:Key="TableImageConverter" TableImage="{StaticResource TableIcon}" ViewImage="{StaticResource ViewIcon}" />
+    <conv:IsPrimaryKeyConverter x:Key="IsPrimaryKeyConverter" />
+    <conv:HeightConverter x:Key="HeightConverter" />
+    
+    <Style TargetType="Border" x:Key="ContentBorder">
+        <Setter Property="BorderBrush" Value="#70C0E7" />
+        <Setter Property="Background" Value="#FFE5F3FB" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Padding" Value="2" />
+    </Style>
+
+    <Style TargetType="{x:Type ListBoxItem}" x:Key="ListBoxWithNoSelection">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="LayoutRoot" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        Background="{TemplateBinding Background}" 
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}" 
+                        VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="SelectionStates">
+                                <VisualState x:Name="Unselected" />
+                                <VisualState x:Name="Selected" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <ContentControl x:Name="ContentContainer"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                        Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" 
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                        Margin="{TemplateBinding Padding}" 
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

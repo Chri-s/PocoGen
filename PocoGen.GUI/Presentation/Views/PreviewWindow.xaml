@@ -1,0 +1,15 @@
+﻿<Window x:Class="PocoGen.Gui.Presentation.Views.PreviewWindow"
+        x:ClassModifier="internal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:avalon="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:behavior="clr-namespace:PocoGen.Gui.Presentation.Behaviors"
+        xmlns:converters="clr-namespace:PocoGen.Gui.Presentation.Converters"
+        Title="{Binding Title}" Height="450" Width="750" ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
+        behavior:WindowBehavior.CloseOnEscape="true">
+    <Window.Resources>
+        <converters:SyntaxHighlightConverter x:Key="syntaxHighlightConverter" />
+    </Window.Resources>
+    
+    <avalon:TextEditor behavior:AvalonEditBehavior.Text="{Binding Text}" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" SyntaxHighlighting="{Binding SyntaxHighlightingLanguage, Converter={StaticResource syntaxHighlightConverter}}" FontFamily="Courier New" />
+</Window>

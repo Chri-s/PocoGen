@@ -1,0 +1,1296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="10.0" Name="PocoGen">
+ <ProjectOptions>
+  <SharedProject>True</SharedProject>
+  <Stylesheet Apply="True">$(FxCopDir)\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded" NewOnly="False" />
+   <Report Status="Active" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>10</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>1</RuleExceptionsThreshold>
+  <Spelling Locale="en-US" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>True</IgnoreGeneratedCode>
+ </ProjectOptions>
+ <Targets>
+  <Target Name="$(ProjectDir)/bin/Debug/MVVMHybridFramework.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/bin/Debug/PocoGen.Common.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/bin/Debug/PocoGen.GUI.exe" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/bin/Debug/PocoGen.NameGenerators.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/bin/Debug/PocoGen.OutputWriters.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/bin/Debug/PocoGen.Runner.exe" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/bin/Debug/PocoGen.SchemaReaders.dll" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityTransparencyRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="True" />
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="10.0">
+  <Namespaces>
+   <Namespace Name="PocoGen.OutputWriters">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2014-12-18 17:55:01Z">
+      <Issue>
+       <Item>PocoGen.OutputWriters</Item>
+      </Issue>
+      <Notes>
+       <User Name="ChristianW">
+        <Note Id="6" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="PocoGen.OutputWriters.DapperExtensions">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2014-12-18 17:55:01Z">
+      <Issue>
+       <Item>PocoGen.OutputWriters.DapperExtensions</Item>
+      </Issue>
+      <Notes>
+       <User Name="ChristianW">
+        <Note Id="6" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="PocoGen.OutputWriters.NPoco">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2014-12-17 10:26:18Z">
+      <Issue>
+       <Item>PocoGen.OutputWriters.NPoco</Item>
+      </Issue>
+      <Notes>
+       <User Name="ChristianW">
+        <Note Id="17" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="PocoGen.OutputWriters.Poco">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2014-12-18 17:55:01Z">
+      <Issue>
+       <Item>PocoGen.OutputWriters.Poco</Item>
+      </Issue>
+      <Notes>
+       <User Name="ChristianW">
+        <Note Id="6" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="PocoGen.SchemaReaders">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Excluded" Created="2014-12-17 10:26:18Z">
+      <Issue>
+       <Item>PocoGen.SchemaReaders</Item>
+      </Issue>
+      <Notes>
+       <User Name="ChristianW">
+        <Note Id="18" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+  </Namespaces>
+  <Targets>
+   <Target Name="$(ProjectDir)/bin/Debug/MVVMHybridFramework.dll">
+    <Modules>
+     <Module Name="mvvmhybridframework.dll">
+      <Messages>
+       <Message TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210" Status="Excluded" Created="2014-12-17 10:26:18Z">
+        <Issue Name="NoStrongName">
+         <Item>'MVVMHybridFramework.dll'</Item>
+        </Issue>
+        <Notes>
+         <User Name="ChristianW">
+          <Note Id="8" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="MvvmHybridFramework">
+        <Types>
+         <Type Name="ReactiveValidatingViewModel`1">
+          <Members>
+           <Member Name="#.ctor(!0)">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2014-11-12 13:36:33Z">
+              <Issue>
+               <Item>'ReactiveValidatingViewModel&lt;TView&gt;.ReactiveValidatingViewModel(TView)'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;ReactiveValidatingViewModel&lt;TView&gt;..ctor(TView)&#xD;&#xA;ReactiveValidatingViewModel&lt;TView&gt;.Initialize():Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ValidateProperty(System.Object,System.String)">
+            <Messages>
+             <Message TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026" Status="Excluded" Created="2014-11-12 13:36:33Z">
+              <Issue>
+               <Item>'ReactiveValidatingViewModel&lt;TView&gt;.ValidateProperty(object, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/bin/Debug/PocoGen.Common.dll">
+    <Modules>
+     <Module Name="pocogen.common.dll">
+      <Messages>
+       <Message TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210" Status="Excluded" Created="2014-12-17 10:26:18Z">
+        <Issue Name="NoStrongName">
+         <Item>'PocoGen.Common.dll'</Item>
+        </Issue>
+        <Notes>
+         <User Name="ChristianW">
+          <Note Id="8" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="PocoGen.Common">
+        <Types>
+         <Type Name="ColumnType">
+          <Members>
+           <Member Name="#Type">
+            <Messages>
+             <Message TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721" Status="Excluded" Created="2014-12-17 10:26:18Z">
+              <Issue Name="BaseType">
+               <Item>'ColumnType.Type'</Item>
+               <Item>'object.GetType()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Engine">
+          <Members>
+           <Member Name="#AvailableColumnNameGenerators">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2014-12-17 10:26:18Z">
+              <Issue>
+               <Item>'Engine.AvailableColumnNameGenerators'</Item>
+               <Item>'IEnumerable&lt;Lazy&lt;IColumnNameGenerator, IColumnNameGeneratorMetadata&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="12" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AvailableOutputWriters">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2014-12-17 10:26:18Z">
+              <Issue>
+               <Item>'Engine.AvailableOutputWriters'</Item>
+               <Item>'IEnumerable&lt;Lazy&lt;IOutputWriter, IOutputWriterMetadata&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="12" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AvailableSchemaReaders">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2014-12-17 10:26:18Z">
+              <Issue>
+               <Item>'Engine.AvailableSchemaReaders'</Item>
+               <Item>'IEnumerable&lt;Lazy&lt;ISchemaReader, ISchemaReaderMetadata&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="12" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AvailableTableNameGenerators">
+            <Messages>
+             <Message TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006" Status="Excluded" Created="2014-12-17 10:26:18Z">
+              <Issue>
+               <Item>'Engine.AvailableTableNameGenerators'</Item>
+               <Item>'IEnumerable&lt;Lazy&lt;ITableNameGenerator, ITableNameGeneratorMetadata&gt;&gt;'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="12" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#GetDefinition()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2014-12-17 10:26:18Z">
+              <Issue Certainty="50">
+               <Item>'Engine.GetDefinition()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#SetFromDefinition(PocoGen.Common.FileFormat.Definition,System.Collections.Generic.List`1&lt;PocoGen.Common.UnrecognizedPlugIn&gt;&amp;)">
+            <Messages>
+             <Message Id="1#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2014-12-18 17:55:01Z">
+              <Issue>
+               <Item>'unrecognizedPlugIns'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="26" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IColumnNameGeneratorMetadata">
+          <Messages>
+           <Message TypeName="AvoidEmptyInterfaces" Category="Microsoft.Design" CheckId="CA1040" Status="Excluded" Created="2014-12-17 10:26:18Z">
+            <Issue>
+             <Item>'IColumnNameGeneratorMetadata'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="19" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="IOutputWriterMetadata">
+          <Messages>
+           <Message TypeName="AvoidEmptyInterfaces" Category="Microsoft.Design" CheckId="CA1040" Status="Excluded" Created="2014-12-17 10:26:18Z">
+            <Issue>
+             <Item>'IOutputWriterMetadata'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="19" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ISchemaReaderMetadata">
+          <Members>
+           <Member Name="#ConnectionStringDocumentationUrl">
+            <Messages>
+             <Message TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056" Status="Excluded" Created="2014-12-17 10:26:18Z">
+              <Issue>
+               <Item>'ISchemaReaderMetadata.ConnectionStringDocumentationUrl'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="13" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ITableNameGeneratorMetadata">
+          <Messages>
+           <Message TypeName="AvoidEmptyInterfaces" Category="Microsoft.Design" CheckId="CA1040" Status="Excluded" Created="2014-12-17 10:26:18Z">
+            <Issue>
+             <Item>'ITableNameGeneratorMetadata'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="19" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Table">
+          <Members>
+           <Member Name="#GetPrimaryKeyColumns()">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2014-12-18 17:55:01Z">
+              <Issue Certainty="50">
+               <Item>'Table.GetPrimaryKeyColumns()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="PocoGen.Common.FileFormat">
+        <Types>
+         <Type Name="XmlSerializationReaderDefinition">
+          <Members>
+           <Member Name="#Read4_Table(System.Boolean,System.Boolean)">
+            <Messages>
+             <Message Id="a_3" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2014-12-18 17:55:01Z">
+              <Issue>
+               <Item>'XmlSerializationReaderDefinition.Read4_Table(bool, bool)'</Item>
+               <Item>'a_3'</Item>
+               <Item>'ColumnCollection'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Read6_Definition(System.Boolean,System.Boolean)">
+            <Messages>
+             <Message Id="a_3" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2014-12-18 17:55:01Z">
+              <Issue>
+               <Item>'XmlSerializationReaderDefinition.Read6_Definition(bool, bool)'</Item>
+               <Item>'a_3'</Item>
+               <Item>'PlugInCollection'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="a_4" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2014-12-18 17:55:01Z">
+              <Issue>
+               <Item>'XmlSerializationReaderDefinition.Read6_Definition(bool, bool)'</Item>
+               <Item>'a_4'</Item>
+               <Item>'PlugInCollection'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="a_5" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2014-12-18 17:55:01Z">
+              <Issue>
+               <Item>'XmlSerializationReaderDefinition.Read6_Definition(bool, bool)'</Item>
+               <Item>'a_5'</Item>
+               <Item>'TableCollection'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="a_6" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2014-12-18 17:55:01Z">
+              <Issue>
+               <Item>'XmlSerializationReaderDefinition.Read6_Definition(bool, bool)'</Item>
+               <Item>'a_6'</Item>
+               <Item>'OutputWriterPlugInCollection'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/bin/Debug/PocoGen.GUI.exe">
+    <Modules>
+     <Module Name="pocogen.gui.exe">
+      <Messages>
+       <Message TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210" Status="Excluded" Created="2014-12-17 10:43:20Z">
+        <Issue Name="NoStrongName">
+         <Item>'PocoGen.GUI.exe'</Item>
+        </Issue>
+        <Notes>
+         <User Name="ChristianW">
+          <Note Id="8" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="PocoGen.Gui">
+        <Types>
+         <Type Name="App">
+          <Messages>
+           <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Status="Excluded" Created="2014-12-17 10:43:20Z" FixCategory="DependsOnFix">
+            <Issue Name="DependsOnFix">
+             <Item>'App'</Item>
+             <Item>'AggregateCatalog', 'CompositionContainer'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="15" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="PocoGen.Gui.Applications.Controllers">
+        <Types>
+         <Type Name="AboutController">
+          <Members>
+           <Member Name="#.ctor(System.ComponentModel.Composition.Hosting.CompositionContainer,PocoGen.Gui.Applications.ViewModels.ShellViewModel,PocoGen.Common.Engine)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2014-12-18 17:55:01Z">
+              <Issue>
+               <Item>'AboutController.AboutController(CompositionContainer, ShellViewModel, Engine)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="2" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ApplicationController">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-17 10:43:20Z">
+            <Issue>
+             <Item>'ApplicationController'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="10" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#Open(System.String)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2014-12-17 10:43:20Z">
+              <Issue>
+               <Item>'ApplicationController.Open(string)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="22" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Shutdown()">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2014-12-17 10:43:20Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'ApplicationController.Shutdown()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="16" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ColumnNameGeneratorController">
+          <Members>
+           <Member Name="#.ctor(PocoGen.Gui.Applications.ViewModels.ColumnNameGeneratorConfigurationViewModel,PocoGen.Common.Engine,PocoGen.Gui.Applications.ViewModels.ShellViewModel,System.ComponentModel.Composition.Hosting.CompositionContainer,ReactiveUI.IMessageBus)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2014-12-17 10:43:20Z">
+              <Issue>
+               <Item>'ColumnNameGeneratorController.ColumnNameGeneratorController(ColumnNameGeneratorConfigurationViewModel, Engine, ShellViewModel, CompositionContainer, IMessageBus)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ConnectionController">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-17 10:43:20Z">
+            <Issue>
+             <Item>'ConnectionController'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="10" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="OutputController">
+          <Members>
+           <Member Name="#.ctor(PocoGen.Gui.Applications.ViewModels.OutputWriterConfigurationViewModel,PocoGen.Gui.Applications.ViewModels.ShellViewModel,ReactiveUI.IMessageBus,System.ComponentModel.Composition.Hosting.CompositionContainer)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2014-12-17 10:43:20Z">
+              <Issue>
+               <Item>'OutputController.OutputController(OutputWriterConfigurationViewModel, ShellViewModel, IMessageBus, CompositionContainer)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Engine">
+            <Accessors>
+             <Accessor Name="#set_Engine(PocoGen.Common.Engine)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2014-12-17 10:43:20Z">
+                <Issue>
+                 <Item>'OutputController.Engine.set(Engine)'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="ChristianW">
+                  <Note Id="9" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="TableController">
+          <Members>
+           <Member Name="#.ctor(PocoGen.Gui.Applications.ViewModels.TableListViewModel,PocoGen.Gui.Applications.ViewModels.ShellViewModel,System.ComponentModel.Composition.Hosting.CompositionContainer,PocoGen.Common.Engine,ReactiveUI.IMessageBus)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2014-12-17 10:43:20Z">
+              <Issue>
+               <Item>'TableController.TableController(TableListViewModel, ShellViewModel, CompositionContainer, Engine, IMessageBus)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="TableNameGeneratorController">
+          <Members>
+           <Member Name="#.ctor(PocoGen.Gui.Applications.ViewModels.TableNameGeneratorConfiguationViewModel,System.ComponentModel.Composition.Hosting.CompositionContainer,PocoGen.Gui.Applications.ViewModels.ShellViewModel,ReactiveUI.IMessageBus)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2014-12-17 10:43:20Z">
+              <Issue>
+               <Item>'TableNameGeneratorController.TableNameGeneratorController(TableNameGeneratorConfiguationViewModel, CompositionContainer, ShellViewModel, IMessageBus)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Engine">
+            <Accessors>
+             <Accessor Name="#set_Engine(PocoGen.Common.Engine)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2014-12-17 10:43:20Z">
+                <Issue>
+                 <Item>'TableNameGeneratorController.Engine.set(Engine)'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="ChristianW">
+                  <Note Id="9" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="PocoGen.Gui.Applications.ViewModels">
+        <Types>
+         <Type Name="AboutViewModel">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-18 17:55:01Z">
+            <Issue>
+             <Item>'AboutViewModel'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="28" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ColumnNameGeneratorConfigurationViewModel">
+          <Members>
+           <Member Name="#Title">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2014-12-17 10:43:20Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'ColumnNameGeneratorConfigurationViewModel.Title'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="11" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ConnectionViewModel">
+          <Members>
+           <Member Name="#Title">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2014-12-17 10:43:20Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'ConnectionViewModel.Title'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="11" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="OutputWriterConfigurationViewModel">
+          <Members>
+           <Member Name="#Title">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2014-12-17 10:43:20Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'OutputWriterConfigurationViewModel.Title'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="11" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="PreviewViewModel">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-17 10:43:20Z">
+            <Issue>
+             <Item>'PreviewViewModel'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="10" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#Title">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2014-12-17 10:43:20Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'PreviewViewModel.Title'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="11" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SettingsViewModel">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-17 10:43:20Z">
+            <Issue>
+             <Item>'SettingsViewModel'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="10" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ShellViewModel">
+          <Members>
+           <Member Name="#Title">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2014-12-17 10:43:20Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'ShellViewModel.Title'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="11" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="TableListViewModel">
+          <Members>
+           <Member Name="#Title">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2014-12-17 10:43:20Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'TableListViewModel.Title'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="11" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="TableNameGeneratorConfiguationViewModel">
+          <Members>
+           <Member Name="#Title">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2014-12-17 10:43:20Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'TableNameGeneratorConfiguationViewModel.Title'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="11" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="PocoGen.Gui.Domain">
+        <Types>
+         <Type Name="ColumnNameGeneratorModel">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-17 10:43:20Z">
+            <Issue>
+             <Item>'ColumnNameGeneratorModel'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="10" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="TableNameGeneratorInstance">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-17 10:43:20Z">
+            <Issue>
+             <Item>'TableNameGeneratorInstance'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="10" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="PocoGen.Gui.Presentation.Controls">
+        <Types>
+         <Type Name="ObjectDbTextEdit">
+          <Members>
+           <Member Name="#.cctor()">
+            <Messages>
+             <Message TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810" Status="Excluded" Created="2014-12-17 10:43:20Z">
+              <Issue>
+               <Item>'ObjectDbTextEdit'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="7" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="PocoGen.Gui.Presentation.Converters">
+        <Types>
+         <Type Name="HeightConverter">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-18 17:55:01Z">
+            <Issue>
+             <Item>'HeightConverter'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="27" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="IsPrimaryKeyConverter">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-17 10:43:20Z">
+            <Issue>
+             <Item>'IsPrimaryKeyConverter'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="10" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SyntaxHighlightConverter">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-18 17:55:01Z">
+            <Issue>
+             <Item>'SyntaxHighlightConverter'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="27" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="PocoGen.Gui.Presentation.Views">
+        <Types>
+         <Type Name="ColumnNameGeneratorConfigurationView">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-18 17:55:01Z">
+            <Issue>
+             <Item>'ColumnNameGeneratorConfigurationView'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="28" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ColumnNameGeneratorView">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-18 17:55:01Z">
+            <Issue>
+             <Item>'ColumnNameGeneratorView'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="28" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ColumnView">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-18 17:55:01Z">
+            <Issue>
+             <Item>'ColumnView'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="28" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="OutputWriterConfigurationView">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-18 17:55:01Z">
+            <Issue>
+             <Item>'OutputWriterConfigurationView'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="28" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="TableListView">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-18 17:55:01Z">
+            <Issue>
+             <Item>'TableListView'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="28" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="TableNameGeneratorConfigurationView">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-18 17:55:01Z">
+            <Issue>
+             <Item>'TableNameGeneratorConfigurationView'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="28" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="TableNameGeneratorView">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-18 17:55:01Z">
+            <Issue>
+             <Item>'TableNameGeneratorView'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="28" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="TableView">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2014-12-18 17:55:01Z">
+            <Issue>
+             <Item>'TableView'</Item>
+            </Issue>
+            <Notes>
+             <User Name="ChristianW">
+              <Note Id="28" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/bin/Debug/PocoGen.NameGenerators.dll">
+    <Modules>
+     <Module Name="pocogen.namegenerators.dll">
+      <Messages>
+       <Message TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210" Status="Excluded" Created="2014-12-17 12:06:01Z">
+        <Issue Name="NoStrongName">
+         <Item>'PocoGen.NameGenerators.dll'</Item>
+        </Issue>
+        <Notes>
+         <User Name="ChristianW">
+          <Note Id="24" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/bin/Debug/PocoGen.OutputWriters.dll">
+    <Modules>
+     <Module Name="pocogen.outputwriters.dll">
+      <Messages>
+       <Message TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210" Status="Excluded" Created="2014-12-17 10:26:18Z">
+        <Issue Name="NoStrongName">
+         <Item>'PocoGen.OutputWriters.dll'</Item>
+        </Issue>
+        <Notes>
+         <User Name="ChristianW">
+          <Note Id="8" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/bin/Debug/PocoGen.Runner.exe">
+    <Modules>
+     <Module Name="pocogen.runner.exe">
+      <Messages>
+       <Message TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210" Status="Excluded" Created="2014-12-17 12:06:01Z">
+        <Issue Name="NoStrongName">
+         <Item>'PocoGen.Runner.exe'</Item>
+        </Issue>
+        <Notes>
+         <User Name="ChristianW">
+          <Note Id="24" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="PocoGen.Runner">
+        <Types>
+         <Type Name="Program">
+          <Members>
+           <Member Name="#Engine">
+            <Accessors>
+             <Accessor Name="#set_Engine(PocoGen.Common.Engine)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2014-12-17 12:06:01Z">
+                <Issue>
+                 <Item>'Program.Engine.set(Engine)'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="ChristianW">
+                  <Note Id="23" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/bin/Debug/PocoGen.SchemaReaders.dll">
+    <Modules>
+     <Module Name="pocogen.schemareaders.dll">
+      <Messages>
+       <Message TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210" Status="Excluded" Created="2014-12-17 10:43:20Z">
+        <Issue Name="NoStrongName">
+         <Item>'PocoGen.SchemaReaders.dll'</Item>
+        </Issue>
+        <Notes>
+         <User Name="ChristianW">
+          <Note Id="8" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="PocoGen.SchemaReaders">
+        <Types>
+         <Type Name="PostgreSqlSchemaReader">
+          <Members>
+           <Member Name="#NeedsEscaping(System.String)">
+            <Messages>
+             <Message TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308" Status="Excluded" Created="2014-12-18 17:55:01Z">
+              <Issue Name="ToUpperInvariant">
+               <Item>'PostgreSqlSchemaReader.NeedsEscaping(string)'</Item>
+               <Item>'string.ToLowerInvariant()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="ChristianW">
+                <Note Id="25" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Notes>
+   <User Name="ChristianW">
+    <Note Id="0" Modified="2014-11-12 13:49:50Z">The call to Initialize before in the constructor is by design so that child classes can initialize their members before the validation starts.</Note>
+    <Note Id="1" Modified="2014-11-12 13:50:35Z">Can't do that because this method has the CallerMemberAttribute.</Note>
+    <Note Id="2" Modified="2014-12-18 17:55:39Z">This is called by MEF.</Note>
+    <Note Id="3" Modified="2014-12-18 17:57:10Z">This is generated code.</Note>
+    <Note Id="4" Modified="2014-12-17 10:44:15Z">The operation is expensive.</Note>
+    <Note Id="5" Modified="2014-12-18 17:57:27Z">This operation is too expensive for a property.</Note>
+    <Note Id="6" Modified="2014-12-18 17:58:02Z">These are small assemblies.</Note>
+    <Note Id="7" Modified="2014-12-17 10:44:50Z">This is needed for WPF</Note>
+    <Note Id="8" Modified="2014-12-17 10:47:23Z">Some references aren't strong named.</Note>
+    <Note Id="9" Modified="2014-12-17 11:30:07Z">Called from MEF.</Note>
+    <Note Id="10" Modified="2014-12-17 11:30:46Z">Instantiated by MEF.</Note>
+    <Note Id="11" Modified="2014-12-17 11:31:31Z">Needed for WPF binding.</Note>
+    <Note Id="12" Modified="2014-12-17 11:47:05Z">Not possible because of MEF</Note>
+    <Note Id="13" Modified="2014-12-17 11:51:36Z">Not possible for attributes.</Note>
+    <Note Id="15" Modified="2014-12-17 11:53:03Z">App will run during the whole application lifetime, so it is not necessary to dispose it. The dispose would be called when the program exits.</Note>
+    <Note Id="16" Modified="2014-12-17 11:55:44Z">It is called by App.OnExit</Note>
+    <Note Id="17" Modified="2014-12-17 11:57:17Z">It has more than five types, some are internal.</Note>
+    <Note Id="18" Modified="2014-12-17 11:57:42Z">This is a single assembly.</Note>
+    <Note Id="19" Modified="2014-12-17 11:57:53Z">Perhaps more metadata will follow.</Note>
+    <Note Id="20" Modified="2014-12-17 11:58:51Z">"Type" is the most appropriate name.</Note>
+    <Note Id="22" Modified="2014-12-17 12:04:30Z">There would be a lot of exceptions to catch (IOException, FormatException, ...).</Note>
+    <Note Id="23" Modified="2014-12-17 12:06:18Z">Is set by MEF.</Note>
+    <Note Id="24" Modified="2014-12-17 12:07:26Z">Some references aren't strong named.</Note>
+    <Note Id="25" Modified="2014-12-18 18:01:31Z">For PostgreSQL it is important to see whether there are any uppercase letters. This is not possible with ToUpperInvariant().</Note>
+    <Note Id="26" Modified="2014-12-18 18:04:21Z">I don't see a better option. Making it a return value feels wrong.</Note>
+    <Note Id="27" Modified="2014-12-18 18:04:43Z">These are instantiated by XAML.</Note>
+    <Note Id="28" Modified="2014-12-18 18:04:56Z">These are instantiated by MEF.</Note>
+   </User>
+  </Notes>
+  <Rules>
+   <Rule TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210">
+    <Resolution Name="NoStrongName">Sign {0} with a strong name key.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidEmptyInterfaces" Category="Microsoft.Design" CheckId="CA1040">
+    <Resolution Name="Default">Define a custom attribute to replace {0}.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
+    <Resolution Name="Default">Consider merging the types defined in '{0}' with another namespace.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021">
+    <Resolution Name="Default">Consider a design that does not require that {0} be an out parameter.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
+    <Resolution Name="Default">{0} appears to have no upstream public or protected callers.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812">
+    <Resolution Name="Default">{0} is an internal class that is apparently never instantiated. If so, remove the code from the assembly. If this class is intended to contain only static methods, consider adding a private constructor to prevent the compiler from generating a default constructor.</Resolution>
+   </Rule>
+   <Rule TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026">
+    <Resolution Name="Default">Replace method {0} with an overload that supplies all default arguments.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214">
+    <Resolution Name="Default">{0} contains a call chain that results in a call to a virtual method defined by the class. Review the following call stack for unintended consequences: {1}</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031">
+    <Resolution Name="Default">Modify {0} to catch a more specific exception than {1} or rethrow the exception.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotNestGenericTypesInMemberSignatures" Category="Microsoft.Design" CheckId="CA1006">
+    <Resolution Name="Default">Consider a design where {0} doesn't nest generic type {1}.</Resolution>
+   </Rule>
+   <Rule TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810">
+    <Resolution Name="Default">Initialize all static fields in {0} when those fields are declared and remove the explicit static constructor.</Resolution>
+   </Rule>
+   <Rule TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822">
+    <Resolution Name="Default">The 'this' parameter (or 'Me' in Visual Basic) of {0} is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Resolution>
+   </Rule>
+   <Rule TypeName="NormalizeStringsToUppercase" Category="Microsoft.Globalization" CheckId="CA1308">
+    <Resolution Name="ToUpperInvariant">In method {0}, replace the call to {1} with String.ToUpperInvariant().</Resolution>
+   </Rule>
+   <Rule TypeName="PropertyNamesShouldNotMatchGetMethods" Category="Microsoft.Naming" CheckId="CA1721">
+    <Resolution Name="BaseType">The property name {0} is confusing given the existence of inherited method {1}. Rename or remove this property.</Resolution>
+   </Rule>
+   <Rule TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804">
+    <Resolution Name="Default">{0} declares a variable, {1}, of type {2}, which is never used or is only assigned to. Use this variable or remove it.</Resolution>
+   </Rule>
+   <Rule TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001">
+    <Resolution Name="DependsOnFix">Implement IDisposable on {0} because it creates members of the following IDisposable types: {1}. If {0} has previously shipped, adding new members that implement IDisposable to this type is considered a breaking change to existing consumers.</Resolution>
+   </Rule>
+   <Rule TypeName="UriPropertiesShouldNotBeStrings" Category="Microsoft.Design" CheckId="CA1056">
+    <Resolution Name="Default">Change the type of property {0} from string to System.Uri.</Resolution>
+   </Rule>
+   <Rule TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024">
+    <Resolution Name="Default">Change {0} to a property if appropriate.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>

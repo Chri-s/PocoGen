@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="PocoGen.Gui.Presentation.Views.TableListView"
+             x:ClassModifier="internal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+    <DockPanel>
+        <ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True" UseLayoutRounding="True">
+            <Button Command="{Binding SelectAll}">
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="True" IsEnabled="False" />
+                    <TextBlock Margin="3,0,0,0">Include All</TextBlock>
+                </StackPanel>
+            </Button>
+            
+            <Button Command="{Binding UnselectAll}">
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="False" IsEnabled="False" />
+                    <TextBlock Margin="3,0,0,0">Exclude All</TextBlock>
+                </StackPanel>
+            </Button>
+            
+            <Separator />
+            
+            <Label>Find:</Label>
+            <TextBox Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged}" Width="100" />
+            
+            <Separator />
+            
+            <ToggleButton IsChecked="{Binding ShowTables}" ToolTip="Show Tables">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource TableIcon}" Stretch="None" />
+                    <TextBlock VerticalAlignment="Center">Tables</TextBlock>
+                </StackPanel>
+            </ToggleButton>
+            
+            <ToggleButton IsChecked="{Binding ShowViews}" ToolTip="Show Views">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource ViewIcon}" Stretch="None" />
+                    <TextBlock VerticalAlignment="Center">Views</TextBlock>
+                </StackPanel>
+            </ToggleButton>
+        </ToolBar>
+
+        <ListBox ItemsSource="{Binding TableView}" ItemContainerStyle="{StaticResource ListBoxWithNoSelection}" VirtualizingPanel.VirtualizationMode="Recycling" />
+    </DockPanel>
+</UserControl>

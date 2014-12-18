@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:PocoGen.Gui.Presentation.Controls">
+    
+    <ControlTemplate x:Key="ClickToEditViewTemplate" TargetType="{x:Type controls:ObjectDbTextEdit}">
+        <TextBlock Name="PART_Display">
+            <TextBlock.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="PART_Edit" Header="Edit Code Element Name" FontWeight="Bold" />
+                    <Separator />
+                    <MenuItem Name="PART_CopyCodeElementName" Header="Copy Code Element Name" />
+                    <MenuItem Name="PART_CopyDbElementName" Header="Copy Database Object Name" />
+                </ContextMenu>
+            </TextBlock.ContextMenu>
+            <Run Cursor="Hand" FontWeight="Bold" Text="{TemplateBinding Property=CodeElementName}" /><Run xml:space="preserve"> (</Run><Run Text="{TemplateBinding DbElementName}" /><Run>)</Run>
+        </TextBlock>
+    </ControlTemplate>
+    <ControlTemplate x:Key="ClickToEditEditTemplate" TargetType="{x:Type controls:ObjectDbTextEdit}">
+        <TextBox Name="PART_Editor" Text="{Binding CodeElementName, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+    </ControlTemplate>
+    
+    <Style TargetType="{x:Type controls:ObjectDbTextEdit}">
+        <Style.Triggers>
+            <Trigger Property="IsInEditMode" Value="True">
+                <Setter Property="Template" Value="{StaticResource ClickToEditEditTemplate}" />
+            </Trigger>
+            <Trigger Property="IsInEditMode" Value="False">
+                <Setter Property="Template" Value="{StaticResource ClickToEditViewTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

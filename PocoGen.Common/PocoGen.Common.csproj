@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{80E2D0E9-2655-4495-A4F7-110809C4DFDC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PocoGen.Common</RootNamespace>
+    <AssemblyName>PocoGen.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\PocoGen.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnsiDbEscaper.cs" />
+    <Compile Include="ColumnNameGeneratorAttribute.cs" />
+    <Compile Include="ColumnChange.cs" />
+    <Compile Include="ColumnChangeCollection.cs" />
+    <Compile Include="ColumnBaseType.cs" />
+    <Compile Include="ColumnForeignType.cs" />
+    <Compile Include="ColumnCollection.cs" />
+    <Compile Include="ColumnNameGeneratorPlugIn.cs" />
+    <Compile Include="ColumnNameGeneratorPlugInCollection.cs" />
+    <Compile Include="ColumnType.cs" />
+    <Compile Include="FileFormat\ColumnCollection.cs" />
+    <Compile Include="FileFormat\Column.cs" />
+    <Compile Include="FileFormat\DefinitionSerializer.cs">
+      <SubType>Code</SubType>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="FileFormat\OutputWriterPlugIn.cs" />
+    <Compile Include="FileFormat\OutputWriterPlugInCollection.cs" />
+    <Compile Include="FileFormat\PlugIn.cs" />
+    <Compile Include="FileFormat\PlugInCollection.cs" />
+    <Compile Include="FileFormat\Table.cs" />
+    <Compile Include="FileFormat\TableCollection.cs" />
+    <Compile Include="IColumnNameGenerator.cs" />
+    <Compile Include="IColumnNameGeneratorMetadata.cs" />
+    <Compile Include="IDBEscaper.cs" />
+    <Compile Include="IOutputWriterMetadata.cs" />
+    <Compile Include="ISettings.cs" />
+    <Compile Include="IPlugInMetadata.cs" />
+    <Compile Include="ITableNameGenerator.cs" />
+    <Compile Include="ITableNameGeneratorMetadata.cs" />
+    <Compile Include="EnhancedKeyedCollection.cs" />
+    <Compile Include="OutputInformation.cs" />
+    <Compile Include="OutputWriterPlugInCollection.cs" />
+    <Compile Include="PlugInType.cs" />
+    <Compile Include="TableEventArgs.cs" />
+    <Compile Include="TableNameGeneratorPlugInCollection.cs" />
+    <Compile Include="SettingsRepository.cs" />
+    <Compile Include="SettingsType.cs" />
+    <Compile Include="OutputWriterAttribute.cs" />
+    <Compile Include="Engine.cs" />
+    <Compile Include="FileFormat\Definition.cs" />
+    <Compile Include="IOutputWriter.cs" />
+    <Compile Include="ISchemaReaderMetadata.cs" />
+    <Compile Include="OutputWriterPlugIn.cs" />
+    <Compile Include="PlugIn.cs" />
+    <Compile Include="SchemaReaderAttribute.cs" />
+    <Compile Include="ISchemaReader.cs" />
+    <Compile Include="SchemaReaderPlugIn.cs" />
+    <Compile Include="TableChange.cs" />
+    <Compile Include="TableChangeCollection.cs" />
+    <Compile Include="TableCollection.cs" />
+    <Compile Include="Table.cs" />
+    <Compile Include="Column.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TableNameGeneratorAttribute.cs" />
+    <Compile Include="TableNameGeneratorPlugIn.cs" />
+    <Compile Include="UnrecognizedPlugIn.cs" />
+    <Compile Include="Utilities.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

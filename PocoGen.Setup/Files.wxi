@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLDIR">
+            <Component Id="ICSharpCode.AvalonEdit.dll" Guid="{546568A8-0EFD-4D94-A20A-5A796ACC282E}">
+                <File Id="ICSharpCode.AvalonEdit.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\ICSharpCode.AvalonEdit.dll" Checksum="yes" />
+            </Component>
+            <Component Id="Inflector.dll" Guid="{CC6730D8-3DDC-474B-A78D-AB7BD9E5B5FC}">
+                <File Id="Inflector.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\Inflector.dll" Checksum="yes" />
+            </Component>
+            <Component Id="Microsoft.WindowsAPICodePack.dll" Guid="{0C488B3F-EA37-4BB4-9AD3-7D159305E8D7}">
+                <File Id="Microsoft.WindowsAPICodePack.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\Microsoft.WindowsAPICodePack.dll" Checksum="yes" />
+            </Component>
+            <Component Id="Microsoft.WindowsAPICodePack.Shell.dll" Guid="{FCBBBF47-E93C-4498-9301-C06CFF2A09F6}">
+                <File Id="Microsoft.WindowsAPICodePack.Shell.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\Microsoft.WindowsAPICodePack.Shell.dll" Checksum="yes" />
+            </Component>
+            <Component Id="Mono.Security.dll" Guid="{308E5C78-03E2-4423-9320-6E312A800CAB}">
+                <File Id="Mono.Security.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\Mono.Security.dll" Checksum="yes" />
+            </Component>
+            <Component Id="MvvmHybridFramework.dll" Guid="{09684AD0-9E9A-44AB-B271-BEDEC34CE242}">
+                <File Id="MvvmHybridFramework.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\MvvmHybridFramework.dll" Checksum="yes" />
+            </Component>
+            <Component Id="MySql.Data.dll" Guid="{45F03F5E-896F-4431-8AA6-C1B3A12FAB09}">
+                <File Id="MySql.Data.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\MySql.Data.dll" Checksum="yes" />
+            </Component>
+            <Component Id="Npgsql.dll" Guid="{8808E7B2-7C53-4D8F-B2E1-832163975B34}">
+                <File Id="Npgsql.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\Npgsql.dll" Checksum="yes" />
+            </Component>
+            <Component Id="PocoGen.Common.dll" Guid="{9D2C703D-D2BC-41F6-A188-335E2E167B1F}">
+                <File Id="PocoGen.Common.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\PocoGen.Common.dll" Checksum="yes" />
+            </Component>
+            <Component Id="PocoGen.Gui.exe" Guid="{2D174C55-434C-43B9-8DFD-760ADB197D61}">
+                <File Id="PocoGen.Gui.exe" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\PocoGen.Gui.exe" Checksum="yes" />
+                <ProgId Id="PocoGen.PocoDefinition" Description="POCO Definition" Icon="Poco.ico">
+                    <Extension Id="poco" ContentType="application/x-pocogen-definition">
+                        <Verb Id="open" TargetFile="PocoGen.Gui.exe" Argument="&quot;%1&quot;" />
+                    </Extension>
+                </ProgId>
+
+                <Shortcut Id="StartMenuShortcutPocoGenGui" Name="PocoGen" Icon="SetupIcon.ico" Directory="ProgramMenuDir" Advertise="yes" />
+            </Component>
+            <Component Id="PocoGen.Gui.exe.config" Guid="{24A6689F-DF28-4864-8464-FAD4DFC2F8A7}">
+                <File Id="PocoGen.Gui.exe.config" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\PocoGen.Gui.exe.config" />
+            </Component>
+            <Component Id="PocoGen.NameGenerators.dll" Guid="{8A66517E-B492-405A-916F-500B0F2C1AF0}">
+                <File Id="PocoGen.NameGenerators.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\PocoGen.NameGenerators.dll" Checksum="yes" />
+            </Component>
+            <Component Id="PocoGen.OutputWriters.dll" Guid="{CA07B4FE-D90B-410C-800F-40CC095A2E37}">
+                <File Id="PocoGen.OutputWriters.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\PocoGen.OutputWriters.dll" Checksum="yes" />
+            </Component>
+            <Component Id="PocoGen.Runner.exe" Guid="{D5A16730-A401-4C50-840E-A5065230D6FD}">
+                <File Id="PocoGen.Runner.exe" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\PocoGen.Runner.exe" Checksum="yes" />
+            </Component>
+            <Component Id="PocoGen.Runner.exe.config" Guid="{E4F63826-C383-497D-9418-915E2F140C4B}">
+                <File Id="PocoGen.Runner.exe.config" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\PocoGen.Runner.exe.config" />
+            </Component>
+            <Component Id="PocoGen.SchemaReaders.dll" Guid="{F58201B5-A7AD-473C-91BD-89D442029379}">
+                <File Id="PocoGen.SchemaReaders.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\PocoGen.SchemaReaders.dll" Checksum="yes" />
+            </Component>
+            <Component Id="Poco.ico" Guid="{DA375DDD-6A4C-4F03-8A49-9ED90BF27F16}">
+                <File Id="Poco.ico" KeyPath="yes" Source="$(var.PocoGen.Gui.ProjectDir)\Presentation\Resources\Images\Application.ico" />
+            </Component>
+            <Component Id="ReactiveUI.dll" Guid="{F4A8A409-7468-48E5-AE50-6A6F34DE25E0}">
+                <File Id="ReactiveUI.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\ReactiveUI.dll" Checksum="yes" />
+            </Component>
+            <Component Id="Splat.dll" Guid="{C300611C-77C9-4943-8712-725C481BB26A}">
+                <File Id="Splat.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\Splat.dll" Checksum="yes" />
+            </Component>
+            <Component Id="System.Data.SQLite.dll" Guid="{EBAF82DC-0805-4FDC-9B0D-44F3373E7C0B}">
+                <File Id="System.Data.SQLite.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\System.Data.SQLite.dll" Checksum="yes" />
+            </Component>
+            <Component Id="System.Reactive.Core.dll" Guid="{CAB25669-0109-4074-A77D-5FD655D8D400}">
+                <File Id="System.Reactive.Core.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\System.Reactive.Core.dll" Checksum="yes" />
+            </Component>
+            <Component Id="System.Reactive.Interfaces.dll" Guid="{52A804FA-1DD7-49FF-9990-88319A66FD6F}">
+                <File Id="System.Reactive.Interfaces.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\System.Reactive.Interfaces.dll" Checksum="yes" />
+            </Component>
+            <Component Id="System.Reactive.Linq.dll" Guid="{0C46A1AC-B174-42A8-9CCC-65AD346F5531}">
+                <File Id="System.Reactive.Linq.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\System.Reactive.Linq.dll" Checksum="yes" />
+            </Component>
+            <Component Id="System.Reactive.PlatformServices.dll" Guid="{BF15A6E2-732C-445D-8A18-38A5FD2F410E}">
+                <File Id="System.Reactive.PlatformServices.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\System.Reactive.PlatformServices.dll" Checksum="yes" />
+            </Component>
+            <Component Id="System.Reactive.Windows.Threading.dll" Guid="{FC3FCCBB-D907-4418-9D91-9427C5F1693A}">
+                <File Id="System.Reactive.Windows.Threading.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\System.Reactive.Windows.Threading.dll" Checksum="yes" />
+            </Component>
+            <Component Id="Xceed.Wpf.Toolkit.dll" Guid="{35AF38F6-A85D-406A-88A2-E93936B9F34A}">
+                <File Id="Xceed.Wpf.Toolkit.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\Xceed.Wpf.Toolkit.dll" Checksum="yes" />
+            </Component>
+            <Directory Id="de" Name="de">
+                <Component Id="Npgsql.resources.dll" Guid="{3A5B15B2-5D04-43C4-9061-1E20AE3E4D38}">
+                    <File Id="Npgsql.resources.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\de\Npgsql.resources.dll" Checksum="yes" />
+                </Component>
+            </Directory>
+            <Directory Id="es" Name="es">
+                <Component Id="Npgsql.resources.dll_1" Guid="{154B7C0F-5653-4097-B627-C7F718F00F4D}">
+                    <File Id="Npgsql.resources.dll_1" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\es\Npgsql.resources.dll" Checksum="yes" />
+                </Component>
+            </Directory>
+            <Directory Id="fi" Name="fi">
+                <Component Id="Npgsql.resources.dll_2" Guid="{8042E030-16E9-4B4F-8C27-11DA0D97CC65}">
+                    <File Id="Npgsql.resources.dll_2" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\fi\Npgsql.resources.dll" Checksum="yes" />
+                </Component>
+            </Directory>
+            <Directory Id="fr" Name="fr">
+                <Component Id="Npgsql.resources.dll_3" Guid="{22EEAA7B-C36A-47BF-AC7B-64D1EEB16F54}">
+                    <File Id="Npgsql.resources.dll_3" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\fr\Npgsql.resources.dll" Checksum="yes" />
+                </Component>
+            </Directory>
+            <Directory Id="ja" Name="ja">
+                <Component Id="Npgsql.resources.dll_4" Guid="{5E5EAAAA-1D67-491F-91E9-F3CE5FB8EC8C}">
+                    <File Id="Npgsql.resources.dll_4" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\ja\Npgsql.resources.dll" Checksum="yes" />
+                </Component>
+            </Directory>
+            <Directory Id="DIR_x64" Name="x64">
+                <Component Id="SQLite.Interop.dll" Guid="{8DE409D0-F446-462B-9B37-4C92B3E25424}">
+                    <File Id="SQLite.Interop.dll" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\x64\SQLite.Interop.dll" Checksum="yes" />
+                </Component>
+            </Directory>
+            <Directory Id="DIR_x86" Name="x86">
+                <Component Id="SQLite.Interop.dll_1" Guid="{93A46AD8-1B59-4E67-9374-9DCE43A17F8F}">
+                    <File Id="SQLite.Interop.dll_1" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\x86\SQLite.Interop.dll" Checksum="yes" />
+                </Component>
+            </Directory>
+            <Directory Id="zh_CN" Name="zh-CN">
+                <Component Id="Npgsql.resources.dll_5" Guid="{ED8D7AEA-BDB3-445C-B8B7-31BE47519328}">
+                    <File Id="Npgsql.resources.dll_5" KeyPath="yes" Source="$(var.PocoGen.Common.TargetDir)\zh-CN\Npgsql.resources.dll" Checksum="yes" />
+                </Component>
+            </Directory>
+        </DirectoryRef>
+    </Fragment>
+</Wix>

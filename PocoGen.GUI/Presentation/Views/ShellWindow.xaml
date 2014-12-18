@@ -1,0 +1,67 @@
+﻿<Window x:Class="PocoGen.Gui.Presentation.Views.ShellWindow"
+        x:ClassModifier="internal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xtk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="{Binding Title}" Icon="{StaticResource ApplicationIcon}" Width="600" Height="400" TextOptions.TextFormattingMode="Display">
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Control" Key="S" Command="{Binding SaveDefinition}" />
+        <KeyBinding Modifiers="Control" Key="O" Command="{Binding OpenDefinition}" />
+    </Window.InputBindings>
+    <xtk:BusyIndicator IsBusy="{Binding IsBusy}" BusyContent="{Binding BusyMessage}">
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_Project">
+                    <MenuItem Header="_New" Command="{Binding New}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource NewFileIcon}" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="_Save definition" Command="{Binding SaveDefinition}">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource SaveFileIcon}" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Save definition _as..." Command="{Binding SaveDefinitionAs}" InputGestureText="Ctrl+S" />
+                    <MenuItem Header="_Open definition..." Command="{Binding OpenDefinition}" InputGestureText="Ctrl+O">
+                        <MenuItem.Icon>
+                            <Image Source="{StaticResource OpenFileIcon}" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Header="E_xit" Command="{Binding ExitCommand}"/>
+                </MenuItem>
+                <MenuItem Header="_?">
+                    <MenuItem Header="_About" Command="{Binding About}" />
+                </MenuItem>
+            </Menu>
+            
+            <ToolBar DockPanel.Dock="Top" ToolBarTray.IsLocked="True">
+                <Button Command="{Binding OpenDefinition}" ToolTip="Open definition... (Ctrl+O)">
+                    <Image Source="{StaticResource OpenFileIcon}" Height="16" />
+                </Button>
+                
+                <Button Command="{Binding SaveDefinition}" ToolTip="Save definition (Ctrl+S)">
+                    <Image Source="{StaticResource SaveFileIcon}" Height="16" />
+                </Button>
+                
+                <Separator />
+                
+                <Button Command="{Binding Generate}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource GenerateIcon}" Height="16" />
+                        <TextBlock Margin="5,0,0,0" VerticalAlignment="Center">Generate Output</TextBlock>
+                    </StackPanel>
+                </Button>
+            </ToolBar>
+
+            <TabControl ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Title}" />
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+            </TabControl>
+        </DockPanel>
+    </xtk:BusyIndicator>
+</Window>

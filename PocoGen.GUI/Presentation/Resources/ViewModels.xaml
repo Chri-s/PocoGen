@@ -1,0 +1,45 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:PocoGen.Gui.Applications.ViewModels"
+                    xmlns:view="clr-namespace:PocoGen.Gui.Presentation.Views">
+    
+    <DataTemplate DataType="{x:Type vm:ConnectionViewModel}">
+        <ContentControl Content="{Binding View}"/>
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type vm:TableViewModel}">
+        <view:TableView />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type vm:TableListViewModel}">
+        <view:TableListView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:ColumnViewModel}">
+        <view:ColumnView />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type vm:OutputWriterViewModel}">
+        <ContentControl Content="{Binding View}" />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type vm:OutputWriterConfigurationViewModel}">
+        <view:OutputWriterConfigurationView />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type vm:TableNameGeneratorConfiguationViewModel}">
+        <view:TableNameGeneratorConfigurationView />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type vm:TableNameGeneratorViewModel}">
+        <view:TableNameGeneratorView />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type vm:ColumnNameGeneratorConfigurationViewModel}">
+        <view:ColumnNameGeneratorConfigurationView />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type vm:ColumnNameGeneratorViewModel}">
+        <view:ColumnNameGeneratorView />
+    </DataTemplate>
+</ResourceDictionary>

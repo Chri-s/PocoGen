@@ -1,0 +1,16 @@
+﻿<Window x:Class="PocoGen.Gui.Presentation.Views.SettingsView" 
+        x:ClassModifier="internal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:xcd="http://schemas.xceed.com/wpf/xaml/toolkit" 
+        xmlns:behavior="clr-namespace:PocoGen.Gui.Presentation.Behaviors"
+        Title="{Binding Title}" 
+        Height="300" 
+        Width="450" 
+        TextOptions.TextFormattingMode="Display"
+        Icon="{StaticResource SettingsIcon}"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        behavior:WindowBehavior.CloseOnEscape="true">
+    <xcd:PropertyGrid SelectedObject="{Binding SettingsObject}" ShowTitle="False" />
+</Window>
