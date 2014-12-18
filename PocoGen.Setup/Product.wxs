@@ -12,7 +12,7 @@
         <Property Id="ARPURLINFOABOUT" Value="http://pocogen.codeplex.com/" />
         <Property Id="ARPURLUPDATEINFO" Value="http://pocogen.codeplex.com/releases" />
         <Property Id="ARPHELPLINK" Value="http://pocogen.codeplex.com/documentation" />
-        
+        <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
 
         <Property Id="INSTALLDIR">
             <RegistrySearch Id="RegInstallDirSearch" Type="raw" Root="HKLM" Key="Software\[ProductName]" Name="InstallDir" />
