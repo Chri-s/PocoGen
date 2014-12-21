@@ -1,8 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace PocoGen.Common
 {
-    public abstract class PlugIn<TPlugIn, TPlugInMetadata>
+    public abstract class PlugIn<TPlugIn, TPlugInMetadata> : IChangeTracking
         where TPlugIn : class
         where TPlugInMetadata : class, IPlugInMetadata
     {
@@ -34,6 +35,11 @@ namespace PocoGen.Common
             get { return this.LazyInstance.Metadata.Name; }
         }
 
+        public bool IsChanged
+        {
+            get { return (this.Settings == null) ? false : this.Settings.IsChanged; }
+        }
+
         public ISettings Settings { get; private set; }
 
         protected TPlugIn Instance
@@ -44,6 +50,14 @@ namespace PocoGen.Common
         protected Lazy<TPlugIn, TPlugInMetadata> LazyInstance
         {
             get { return this.lazyInstance; }
+        }
+
+        public void AcceptChanges()
+        {
+            if (this.Settings != null)
+            {
+                this.Settings.AcceptChanges();
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PocoGen.Common
 {
-    public class TableChange
+    public class TableChange : ChangeTrackingBase
     {
         public TableChange(string name)
         {
@@ -16,6 +16,8 @@ namespace PocoGen.Common
         {
             this.ClassName = className;
             this.Ignore = ignore;
+
+            this.AcceptChanges();
         }
 
         public TableChange(string name, string className, bool ignore, IEnumerable<ColumnChange> columnChanges)
@@ -26,9 +28,19 @@ namespace PocoGen.Common
 
         public string Name { get; private set; }
 
-        public bool Ignore { get; set; }
+        private bool ignore;
+        public bool Ignore
+        {
+            get { return this.ignore; }
+            set { this.ChangeProperty(ref this.ignore, value); }
+        }
 
-        public string ClassName { get; set; }
+        private string className;
+        public string ClassName
+        {
+            get { return this.className; }
+            set { this.ChangeProperty(ref this.className, value); }
+        }
 
         public ColumnChangeCollection Columns { get; private set; }
 

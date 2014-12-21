@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace PocoGen.Common
 {
@@ -6,6 +7,14 @@ namespace PocoGen.Common
     {
         public TableChangeCollection()
         {
+        }
+
+        public override bool IsChanged
+        {
+            get
+            {
+                return base.IsChanged ? true : this.Any(c => c.IsChanged);
+            }
         }
 
         public TableChangeCollection(IEnumerable<TableChange> collection)
@@ -24,6 +33,16 @@ namespace PocoGen.Common
                 }
 
                 tableChange.ApplyChanges(table);
+            }
+        }
+
+        public override void AcceptChanges()
+        {
+            base.AcceptChanges();
+
+            foreach (TableChange item in this)
+            {
+                item.AcceptChanges();
             }
         }
 

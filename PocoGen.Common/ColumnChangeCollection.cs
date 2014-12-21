@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace PocoGen.Common
 {
@@ -6,6 +7,14 @@ namespace PocoGen.Common
     {
         public ColumnChangeCollection()
         {
+        }
+
+        public override bool IsChanged
+        {
+            get
+            {
+                return base.IsChanged ? true : this.Any(c => c.IsChanged);
+            }
         }
 
         public void ApplyChanges(IEnumerable<Column> columns)
@@ -19,6 +28,16 @@ namespace PocoGen.Common
                 }
 
                 columnChange.ApplyChanges(column);
+            }
+        }
+
+        public override void AcceptChanges()
+        {
+            base.AcceptChanges();
+
+            foreach (ColumnChange item in this)
+            {
+                item.AcceptChanges();
             }
         }
 

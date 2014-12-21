@@ -2,7 +2,7 @@
 
 namespace PocoGen.Common
 {
-    public class ColumnChange
+    public class ColumnChange : ChangeTrackingBase
     {
         public ColumnChange(string name)
         {
@@ -14,13 +14,25 @@ namespace PocoGen.Common
         {
             this.PropertyName = propertyName;
             this.Ignore = ignore;
+
+            this.AcceptChanges();
         }
 
         public string Name { get; private set; }
 
-        public bool Ignore { get; set; }
+        private bool ignore;
+        public bool Ignore
+        {
+            get { return this.ignore; }
+            set { this.ChangeProperty(ref this.ignore, value); }
+        }
 
-        public string PropertyName { get; set; }
+        private string propertyName;
+        public string PropertyName
+        {
+            get { return this.propertyName; }
+            set { this.ChangeProperty(ref this.propertyName, value); }
+        }
 
         public static bool NeedsColumnChange(Column column, bool ignore, string propertyName)
         {

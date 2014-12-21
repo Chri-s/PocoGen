@@ -3,19 +3,31 @@ using PocoGen.Common;
 
 namespace PocoGen.NameGenerators
 {
-    public class ReplaceSettings : ISettings
+    public class ReplaceSettings : ChangeTrackingBase, ISettings
     {
         public ReplaceSettings()
         {
             this.FindWhat = string.Empty;
             this.ReplaceWith = string.Empty;
+
+            this.AcceptChanges();
         }
 
+        private string findWhat;
         [DisplayName("Find What")]
-        public string FindWhat { get; set; }
+        public string FindWhat
+        {
+            get { return this.findWhat; }
+            set { this.ChangeProperty(ref this.findWhat, value); }
+        }
 
+        private string replaceWith;
         [DisplayName("Replace With")]
-        public string ReplaceWith { get; set; }
+        public string ReplaceWith
+        {
+            get { return this.replaceWith; }
+            set { this.ChangeProperty(ref this.replaceWith, value); }
+        }
 
         public SettingsRepository Serialize()
         {

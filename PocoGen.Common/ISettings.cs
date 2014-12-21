@@ -1,6 +1,8 @@
-﻿namespace PocoGen.Common
+﻿using System.ComponentModel;
+
+namespace PocoGen.Common
 {
-    public interface ISettings
+    public interface ISettings : IChangeTracking
     {
         SettingsRepository Serialize();
 

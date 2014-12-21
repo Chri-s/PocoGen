@@ -4,7 +4,7 @@ using PocoGen.Common;
 
 namespace PocoGen.OutputWriters.NPoco
 {
-    public class NPocoFluentMappingWriterSettings : ISettings
+    public class NPocoFluentMappingWriterSettings : ChangeTrackingBase, ISettings
     {
         public NPocoFluentMappingWriterSettings()
         {
@@ -16,44 +16,86 @@ namespace PocoGen.OutputWriters.NPoco
             this.ClassName = string.Empty;
             this.Language = OutputWriters.Language.CSharp;
             this.IncludeSchema = false;
+
+            this.AcceptChanges();
         }
 
+        private string @namespace;
         [Category("Code Generation")]
         [Description("The namespace for the generated classes.")]
-        public string Namespace { get; set; }
+        public string Namespace
+        {
+            get { return this.@namespace; }
+            set { this.ChangeProperty(ref this.@namespace, value); }
+        }
 
+        private bool includeSchema;
         [Category("Code Generation")]
         [Description("Include the schema name in the TableNameAttibute.")]
         [DisplayName("Include Schema")]
-        public bool IncludeSchema { get; set; }
+        public bool IncludeSchema
+        {
+            get { return this.includeSchema; }
+            set { this.ChangeProperty(ref this.includeSchema, value); }
+        }
 
+        private string pocoNamespace;
         [Category("Code Generation")]
         [Description("The namespace of the POCOs.")]
         [DisplayName("POCO Namespace")]
-        public string PocoNamespace { get; set; }
+        public string PocoNamespace
+        {
+            get { return this.pocoNamespace; }
+            set { this.ChangeProperty(ref this.pocoNamespace, value); }
+        }
 
+        private IndentationChar indentationChar;
         [Category("Formatting")]
         [Description("The character used to indented the code.")]
         [DisplayName("Indentation character")]
-        public IndentationChar IndentationChar { get; set; }
+        public IndentationChar IndentationChar
+        {
+            get { return this.indentationChar; }
+            set { this.ChangeProperty(ref this.indentationChar, value); }
+        }
 
+        private int indentationSize;
         [Category("Formatting")]
         [Description("The number of characters used for one indentation.")]
         [DisplayName("Indentation size")]
-        public int IndentationSize { get; set; }
+        public int IndentationSize
+        {
+            get { return this.indentationSize; }
+            set { this.ChangeProperty(ref this.indentationSize, value); }
+        }
 
+        private ClassModifier classModifier;
         [Category("Code Generation")]
         [DisplayName("Class modifier")]
-        public ClassModifier ClassModifier { get; set; }
+        public ClassModifier ClassModifier
+        {
+            get { return this.classModifier; }
+            set { this.ChangeProperty(ref this.classModifier, value); }
+        }
 
+        private string className;
         [Category("Code Generation")]
         [Description("The name of the mapping class")]
         [DisplayName("Class Name")]
-        public string ClassName { get; set; }
+        public string ClassName
+        {
+            get { return this.className; }
+            set { this.ChangeProperty(ref this.className, value); }
+        }
 
+        private Language language;
         [Category("Code Generation")]
         [Description("Sets the language of the generated code.")]
-        public Language Language { get; set; }
+        public Language Language
+        {
+            get { return this.language; }
+            set { this.ChangeProperty(ref this.language, value); }
+        }
 
         public SettingsRepository Serialize()
         {

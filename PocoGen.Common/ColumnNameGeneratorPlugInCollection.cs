@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace PocoGen.Common
 {
-    public class ColumnNameGeneratorPlugInCollection : Collection<ColumnNameGeneratorPlugIn>
+    public class ColumnNameGeneratorPlugInCollection : ChangeTrackingCollection<ColumnNameGeneratorPlugIn>
     {
         public ColumnNameGeneratorPlugInCollection()
         {

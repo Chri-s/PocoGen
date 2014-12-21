@@ -11,7 +11,7 @@ using PocoGen.Common.FileFormat;
 namespace PocoGen.Common
 {
     [Export]
-    public class Engine
+    public class Engine : ChangeTrackingBase
     {
         public event EventHandler<TableEventArgs> TableRenamed;
 
@@ -24,6 +24,8 @@ namespace PocoGen.Common
             this.TableChanges = new TableChangeCollection();
             this.Tables = new TableCollection();
             this.ColumnNameGenerators = new ColumnNameGeneratorPlugInCollection();
+
+            this.AcceptChanges();
         }
 
         [ImportMany(typeof(ISchemaReader))]
@@ -38,11 +40,26 @@ namespace PocoGen.Common
         [ImportMany(typeof(IOutputWriter))]
         public IEnumerable<Lazy<IOutputWriter, IOutputWriterMetadata>> AvailableOutputWriters { get; set; }
 
-        public SchemaReaderPlugIn SchemaReader { get; set; }
+        private SchemaReaderPlugIn schemaReader;
+        public SchemaReaderPlugIn SchemaReader
+        {
+            get { return this.schemaReader; }
+            set { this.ChangeProperty(ref this.schemaReader, value); }
+        }
 
-        public string ConnectionString { get; set; }
+        private string connectionString;
+        public string ConnectionString
+        {
+            get { return this.connectionString; }
+            set { this.ChangeProperty(ref this.connectionString, value); }
+        }
 
-        public bool UseAnsiQuoting { get; set; }
+        private bool useAnsiQuoting;
+        public bool UseAnsiQuoting
+        {
+            get { return this.useAnsiQuoting; }
+            set { this.ChangeProperty(ref this.useAnsiQuoting, value); }
+        }
 
         public TableNameGeneratorPlugInCollection TableNameGenerators { get; private set; }
 
@@ -53,6 +70,36 @@ namespace PocoGen.Common
         public TableChangeCollection TableChanges { get; private set; }
 
         public OutputWriterPlugInCollection OutputWriters { get; private set; }
+
+        public override bool IsChanged
+        {
+            get
+            {
+                bool isSchemaReaderChanged = (this.SchemaReader == null) ? false : this.SchemaReader.IsChanged;
+
+                return base.IsChanged ||
+                    this.ColumnNameGenerators.IsChanged ||
+                    this.OutputWriters.IsChanged ||
+                    this.TableChanges.IsChanged ||
+                    this.TableNameGenerators.IsChanged ||
+                    isSchemaReaderChanged;
+            }
+        }
+
+        public override void AcceptChanges()
+        {
+            base.AcceptChanges();
+
+            this.ColumnNameGenerators.AcceptChanges();
+            this.OutputWriters.AcceptChanges();
+            this.TableChanges.AcceptChanges();
+            this.TableNameGenerators.AcceptChanges();
+
+            if (this.schemaReader != null)
+            {
+                this.SchemaReader.AcceptChanges();
+            }
+        }
 
         public async Task<string> TestConnection()
         {
@@ -150,6 +197,8 @@ namespace PocoGen.Common
             this.Tables.Clear();
             this.TableChanges.Clear();
             this.OutputWriters.Clear();
+
+            this.AcceptChanges();
         }
 
         public async Task Generate(string basePath)
@@ -239,6 +288,8 @@ namespace PocoGen.Common
             this.TableChanges = new TableChangeCollection(definition.Tables.Select(t => t.ToTableChange()));
 
             this.LoadOutputWriters(definition, unrecognizedPlugIns);
+
+            this.AcceptChanges();
         }
 
         private void LoadSchemaReader(Definition definition, List<UnrecognizedPlugIn> unrecognizedPlugIns)

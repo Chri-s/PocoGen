@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace PocoGen.Common
 {
-    public class OutputWriterPlugInCollection : Collection<OutputWriterPlugIn>
+    public class OutputWriterPlugInCollection : ChangeTrackingCollection<OutputWriterPlugIn>
     {
         public OutputWriterPlugInCollection()
         {

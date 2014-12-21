@@ -3,18 +3,30 @@ using PocoGen.Common;
 
 namespace PocoGen.NameGenerators
 {
-    public class RemovePrefixSettings : ISettings
+    public class RemovePrefixSettings : ChangeTrackingBase, ISettings
     {
         public RemovePrefixSettings()
         {
             this.Prefix = string.Empty;
             this.CaseSensitive = false;
+
+            this.AcceptChanges();
         }
 
-        public string Prefix { get; set; }
+        private string prefix;
+        public string Prefix
+        {
+            get { return this.prefix; }
+            set { this.ChangeProperty(ref this.prefix, value); }
+        }
 
+        private bool caseSensitive;
         [DisplayName("Case sensitive")]
-        public bool CaseSensitive { get; set; }
+        public bool CaseSensitive
+        {
+            get { return this.caseSensitive; }
+            set { this.ChangeProperty(ref this.caseSensitive, value); }
+        }
 
         public SettingsRepository Serialize()
         {
