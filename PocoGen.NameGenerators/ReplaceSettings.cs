@@ -7,10 +7,7 @@ namespace PocoGen.NameGenerators
     {
         public ReplaceSettings()
         {
-            this.FindWhat = string.Empty;
-            this.ReplaceWith = string.Empty;
-
-            this.AcceptChanges();
+            this.ResetToDefaults();
         }
 
         private string findWhat;
@@ -45,6 +42,14 @@ namespace PocoGen.NameGenerators
 
             this.FindWhat = repository.TryGetValue("FindWhat", out stringValue) ? stringValue : string.Empty;
             this.ReplaceWith = repository.TryGetValue("ReplaceWith", out stringValue) ? stringValue : string.Empty;
+        }
+
+        public void ResetToDefaults()
+        {
+            this.FindWhat = string.Empty;
+            this.ReplaceWith = string.Empty;
+
+            this.AcceptChanges();
         }
     }
 }

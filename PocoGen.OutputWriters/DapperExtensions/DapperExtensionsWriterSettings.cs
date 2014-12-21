@@ -10,15 +10,7 @@ namespace PocoGen.OutputWriters.DapperExtensions
 
         public DapperExtensionsWriterSettings()
         {
-            this.Namespace = string.Empty;
-            this.PocoNamespace = string.Empty;
-            this.IndentationChar = IndentationChar.Space;
-            this.IndentationSize = 4;
-            this.ClassModifier = OutputWriters.ClassModifier.Public;
-            this.ClassNameFormat = DapperExtensionsWriterSettings.ClassNameFormatDefault;
-            this.Language = OutputWriters.Language.CSharp;
-
-            this.AcceptChanges();
+            this.ResetToDefaults();
         }
 
         private string @namespace;
@@ -113,6 +105,19 @@ namespace PocoGen.OutputWriters.DapperExtensions
             this.ClassModifier = repository.TryGetValue("ClassModifier", out stringValue) ? (ClassModifier)Enum.Parse(typeof(ClassModifier), stringValue) : OutputWriters.ClassModifier.Public;
             this.ClassNameFormat = repository.TryGetValue("ClassNameFormat", out stringValue) ? stringValue : DapperExtensionsWriterSettings.ClassNameFormatDefault;
             this.Language = repository.TryGetValue("Language", out stringValue) ? (Language)Enum.Parse(typeof(Language), stringValue) : Language.CSharp;
+        }
+
+        public void ResetToDefaults()
+        {
+            this.Namespace = string.Empty;
+            this.PocoNamespace = string.Empty;
+            this.IndentationChar = IndentationChar.Space;
+            this.IndentationSize = 4;
+            this.ClassModifier = OutputWriters.ClassModifier.Public;
+            this.ClassNameFormat = DapperExtensionsWriterSettings.ClassNameFormatDefault;
+            this.Language = OutputWriters.Language.CSharp;
+
+            this.AcceptChanges();
         }
     }
 }

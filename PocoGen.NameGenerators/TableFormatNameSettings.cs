@@ -9,10 +9,7 @@ namespace PocoGen.NameGenerators
 
         public TableFormatNameSettings()
         {
-            this.FormatString = TableFormatNameSettings.DefaultFormatString;
-            this.ExcludeSchema = string.Empty;
-
-            this.AcceptChanges();
+            this.ResetToDefaults();
         }
 
         private string formatString;
@@ -48,6 +45,14 @@ namespace PocoGen.NameGenerators
 
             this.FormatString = repository.TryGetValue("FormatString", out stringValue) ? stringValue : TableFormatNameSettings.DefaultFormatString;
             this.ExcludeSchema = repository.TryGetValue("ExcludeSchema", out stringValue) ? stringValue : string.Empty;
+        }
+
+        public void ResetToDefaults()
+        {
+            this.FormatString = TableFormatNameSettings.DefaultFormatString;
+            this.ExcludeSchema = string.Empty;
+
+            this.AcceptChanges();
         }
     }
 }

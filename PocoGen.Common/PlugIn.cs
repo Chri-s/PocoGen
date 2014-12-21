@@ -59,5 +59,13 @@ namespace PocoGen.Common
                 this.Settings.AcceptChanges();
             }
         }
+
+        public void ResetSettingsToDefaults()
+        {
+            if (this.Settings != null)
+            {
+                this.Settings.ResetToDefaults();
+            }
+        }
     }
 }

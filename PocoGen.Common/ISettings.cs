@@ -7,5 +7,7 @@ namespace PocoGen.Common
         SettingsRepository Serialize();
 
         void Deserialize(SettingsRepository repository);
+
+        void ResetToDefaults();
     }
 }

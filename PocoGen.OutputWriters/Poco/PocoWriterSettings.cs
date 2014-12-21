@@ -8,13 +8,7 @@ namespace PocoGen.OutputWriters.Poco
     {
         public PocoWriterSettings()
         {
-            this.Namespace = string.Empty;
-            this.IndentationChar = IndentationChar.Space;
-            this.IndentationSize = 4;
-            this.ClassModifier = OutputWriters.ClassModifier.Public;
-            this.Language = OutputWriters.Language.CSharp;
-
-            this.AcceptChanges();
+            this.ResetToDefaults();
         }
 
         private string @namespace;
@@ -85,6 +79,17 @@ namespace PocoGen.OutputWriters.Poco
             this.IndentationSize = repository.TryGetValue("IndentationSize", out intValue) ? intValue : 4;
             this.ClassModifier = repository.TryGetValue("ClassModifier", out stringValue) ? (ClassModifier)Enum.Parse(typeof(ClassModifier), stringValue) : OutputWriters.ClassModifier.Public;
             this.Language = repository.TryGetValue("Language", out stringValue) ? (Language)Enum.Parse(typeof(Language), stringValue) : Language.CSharp;
+        }
+
+        public void ResetToDefaults()
+        {
+            this.Namespace = string.Empty;
+            this.IndentationChar = IndentationChar.Space;
+            this.IndentationSize = 4;
+            this.ClassModifier = OutputWriters.ClassModifier.Public;
+            this.Language = OutputWriters.Language.CSharp;
+
+            this.AcceptChanges();
         }
     }
 }

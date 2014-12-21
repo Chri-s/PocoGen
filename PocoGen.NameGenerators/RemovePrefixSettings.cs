@@ -7,10 +7,7 @@ namespace PocoGen.NameGenerators
     {
         public RemovePrefixSettings()
         {
-            this.Prefix = string.Empty;
-            this.CaseSensitive = false;
-
-            this.AcceptChanges();
+            this.ResetToDefaults();
         }
 
         private string prefix;
@@ -44,6 +41,14 @@ namespace PocoGen.NameGenerators
 
             this.Prefix = repository.TryGetValue("Prefix", out stringValue) ? stringValue : string.Empty;
             this.CaseSensitive = repository.TryGetValue("CaseSensitive", out boolValue) ? boolValue : false;
+        }
+
+        public void ResetToDefaults()
+        {
+            this.Prefix = string.Empty;
+            this.CaseSensitive = false;
+
+            this.AcceptChanges();
         }
     }
 }

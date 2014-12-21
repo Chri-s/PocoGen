@@ -7,6 +7,7 @@ using System.Windows;
 using PocoGen.Common;
 using PocoGen.Gui.Applications.Messages;
 using PocoGen.Gui.Applications.ViewModels;
+using PocoGen.Gui.Domain;
 using ReactiveUI;
 
 namespace PocoGen.Gui.Applications.Controllers
@@ -36,7 +37,7 @@ namespace PocoGen.Gui.Applications.Controllers
         {
             foreach (Lazy<ISchemaReader, ISchemaReaderMetadata> schemaReader in this.Engine.AvailableSchemaReaders.OrderBy(sr => sr.Metadata.Name))
             {
-                this.connectionViewModel.SchemaReaders.Add(new Domain.SchemaReaderModel(schemaReader));
+                this.connectionViewModel.SchemaReaders.Add(new SchemaReaderModel(schemaReader));
             }
 
             this.connectionViewModel.WhenAnyValue(x => x.ConnectionString).Subscribe(cs => this.Engine.ConnectionString = cs);
@@ -55,13 +56,18 @@ namespace PocoGen.Gui.Applications.Controllers
             this.connectionViewModel.ConnectionString = this.Engine.ConnectionString;
             this.connectionViewModel.UseAnsiQuoting = this.Engine.UseAnsiQuoting;
 
+            foreach (SchemaReaderModel schemaReader in this.connectionViewModel.SchemaReaders)
+            {
+                schemaReader.SchemaReader.ResetSettingsToDefaults();
+            }
+
             if (this.Engine.SchemaReader == null)
             {
                 this.connectionViewModel.SelectedSchemaReader = null;
             }
             else
             {
-                Domain.SchemaReaderModel schemaReader = this.connectionViewModel.SchemaReaders.FirstOrDefault(sr => sr.Guid == this.Engine.SchemaReader.Guid);
+                SchemaReaderModel schemaReader = this.connectionViewModel.SchemaReaders.FirstOrDefault(sr => sr.Guid == this.Engine.SchemaReader.Guid);
                 schemaReader.SetInstance(this.Engine.SchemaReader);
                 this.connectionViewModel.SelectedSchemaReader = schemaReader;
             }

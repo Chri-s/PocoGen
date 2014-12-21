@@ -8,16 +8,7 @@ namespace PocoGen.OutputWriters.NPoco
     {
         public NPocoFluentMappingWriterSettings()
         {
-            this.Namespace = string.Empty;
-            this.PocoNamespace = string.Empty;
-            this.IndentationChar = IndentationChar.Space;
-            this.IndentationSize = 4;
-            this.ClassModifier = OutputWriters.ClassModifier.Public;
-            this.ClassName = string.Empty;
-            this.Language = OutputWriters.Language.CSharp;
-            this.IncludeSchema = false;
-
-            this.AcceptChanges();
+            this.ResetToDefaults();
         }
 
         private string @namespace;
@@ -125,6 +116,20 @@ namespace PocoGen.OutputWriters.NPoco
             this.ClassName = repository.TryGetValue("ClassName", out stringValue) ? stringValue : string.Empty;
             this.Language = repository.TryGetValue("Language", out stringValue) ? (Language)Enum.Parse(typeof(Language), stringValue) : Language.CSharp;
             this.IncludeSchema = repository.TryGetValue("IncludeSchema", out boolValue) ? boolValue : false;
+        }
+
+        public void ResetToDefaults()
+        {
+            this.Namespace = string.Empty;
+            this.PocoNamespace = string.Empty;
+            this.IndentationChar = IndentationChar.Space;
+            this.IndentationSize = 4;
+            this.ClassModifier = OutputWriters.ClassModifier.Public;
+            this.ClassName = string.Empty;
+            this.Language = OutputWriters.Language.CSharp;
+            this.IncludeSchema = false;
+
+            this.AcceptChanges();
         }
     }
 }
