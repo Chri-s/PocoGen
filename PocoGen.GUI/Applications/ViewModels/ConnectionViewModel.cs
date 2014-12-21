@@ -42,7 +42,7 @@ namespace PocoGen.Gui.Applications.ViewModels
             get { return "Connection"; }
         }
 
-        private string connectionString;
+        private string connectionString = string.Empty;
         [Required]
         public string ConnectionString
         {

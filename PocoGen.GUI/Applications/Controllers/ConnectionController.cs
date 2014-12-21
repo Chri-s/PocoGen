@@ -62,6 +62,7 @@ namespace PocoGen.Gui.Applications.Controllers
             else
             {
                 Domain.SchemaReaderModel schemaReader = this.connectionViewModel.SchemaReaders.FirstOrDefault(sr => sr.Guid == this.Engine.SchemaReader.Guid);
+                schemaReader.SetInstance(this.Engine.SchemaReader);
                 this.connectionViewModel.SelectedSchemaReader = schemaReader;
             }
         }

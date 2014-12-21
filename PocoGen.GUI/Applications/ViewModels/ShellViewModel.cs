@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Input;
@@ -11,6 +12,8 @@ namespace PocoGen.Gui.Applications.ViewModels
     [Export]
     internal class ShellViewModel : ReactiveViewModel<IShellView>
     {
+        public event CancelEventHandler Closing;
+
         private readonly ReactiveCommand<object> exitCommand;
 
         [ImportingConstructor]
@@ -38,6 +41,8 @@ namespace PocoGen.Gui.Applications.ViewModels
             this.WhenAnyValue(x => x.ColumnNameGeneratorConfigurationViewModel).Subscribe(vm => this.Tabs[2] = vm);
             this.WhenAnyValue(x => x.TableListViewModel).Subscribe(vm => this.Tabs[3] = vm);
             this.WhenAnyValue(x => x.OutputWriterConfigurationViewModel).Subscribe(vm => this.Tabs[4] = vm);
+
+            this.ViewCore.Closing += (sender, e) => this.OnClosing(e);
         }
 
         public string Title
@@ -143,6 +148,13 @@ namespace PocoGen.Gui.Applications.ViewModels
             {
                 return this.ViewCore as Window;
             }
+        }
+
+        private void OnClosing(CancelEventArgs e)
+        {
+            CancelEventHandler handler = this.Closing;
+            if (handler != null)
+                handler(this, e);
         }
     }
 }

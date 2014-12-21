@@ -6,7 +6,7 @@ namespace PocoGen.Gui.Domain
     internal class SchemaReaderModel
     {
         private readonly Lazy<ISchemaReader, ISchemaReaderMetadata> information;
-        private readonly Lazy<SchemaReaderPlugIn> plugIn;
+        private SchemaReaderPlugIn plugIn;
 
         public SchemaReaderModel(Lazy<ISchemaReader, ISchemaReaderMetadata> information)
         {
@@ -16,14 +16,19 @@ namespace PocoGen.Gui.Domain
             }
 
             this.information = information;
-            this.plugIn = new Lazy<SchemaReaderPlugIn>(this.CreatePlugIn);
+            this.plugIn = null;
         }
 
         public SchemaReaderPlugIn SchemaReader
         {
             get
             {
-                return this.plugIn.Value;
+                if (this.plugIn == null)
+                {
+                    this.plugIn = this.CreatePlugIn();
+                }
+
+                return this.plugIn;
             }
         }
 
@@ -57,6 +62,21 @@ namespace PocoGen.Gui.Domain
             {
                 return this.information.Metadata.SettingsType != null;
             }
+        }
+
+        public void SetInstance(SchemaReaderPlugIn instance)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance", "instance is null.");
+            }
+
+            if (instance.Guid != this.Guid)
+            {
+                throw new ArgumentException("The Guid doesn't match.", "instance");
+            }
+
+            this.plugIn = instance;
         }
 
         private SchemaReaderPlugIn CreatePlugIn()

@@ -134,10 +134,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Domain\ColumnNameGeneratorModel.cs" />
     <Compile Include="Domain\OutputWriterModel.cs" />
     <Compile Include="Domain\SchemaReaderModel.cs" />
-    <Compile Include="Domain\TableNameGeneratorInstance.cs" />
     <Compile Include="Presentation\Behaviors\AvalonEditBehavior.cs" />
     <Compile Include="Presentation\Behaviors\WindowBehavior.cs" />
     <Compile Include="Presentation\Controls\ObjectDbTextEdit.cs" />

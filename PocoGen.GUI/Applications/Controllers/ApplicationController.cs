@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Text;
 using System.Windows;
@@ -48,6 +49,8 @@ namespace PocoGen.Gui.Applications.Controllers
             this.aboutController = aboutController;
             this.engine = engine;
             this.messageBus = messageBus;
+
+            this.shellViewModel.Closing += this.ShellViewModel_Closing;
         }
 
         public void Initialize(string[] args)
@@ -80,7 +83,29 @@ namespace PocoGen.Gui.Applications.Controllers
         {
         }
 
-        private void SaveAs()
+        private void ShellViewModel_Closing(object sender, CancelEventArgs e)
+        {
+            if (!this.engine.IsChanged)
+            {
+                return;
+            }
+
+            MessageBoxResult result = MessageBox.Show(this.shellViewModel.Window, "Your project has unsaved changed. Do you want to save them?", "PocoGen", MessageBoxButton.YesNoCancel, MessageBoxImage.None, MessageBoxResult.Cancel);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                if (!this.Save())
+                {
+                    e.Cancel = true;
+                }
+            }
+            else if (result == MessageBoxResult.Cancel)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private bool SaveAs()
         {
             SaveFileDialog dialog = new SaveFileDialog()
             {
@@ -89,34 +114,56 @@ namespace PocoGen.Gui.Applications.Controllers
 
             if ((dialog.ShowDialog() ?? false) != true)
             {
-                return;
+                return false;
             }
 
             this.engine.GetDefinition().Save(dialog.FileName);
             this.shellViewModel.DefinitionFilePath = dialog.FileName;
+
+            this.engine.AcceptChanges();
+
+            return true;
         }
 
         private void New()
         {
+            if (this.engine.IsChanged)
+            {
+                if (MessageBox.Show(this.shellViewModel.Window, "Your project has unsaved changes. Do you really want to create a new project and lose those changes?", "PocoGen", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.No)
+                {
+                    return;
+                }
+            }
+
             this.engine.Reset();
             this.shellViewModel.DefinitionFilePath = null;
             this.messageBus.SendMessage(new DefinitionLoaded());
         }
 
-        private void Save()
+        private bool Save()
         {
             if (!string.IsNullOrWhiteSpace(this.shellViewModel.DefinitionFilePath))
             {
                 this.engine.GetDefinition().Save(this.shellViewModel.DefinitionFilePath);
+                this.engine.AcceptChanges();
+                return true;
             }
             else
             {
-                this.SaveAs();
+                return this.SaveAs();
             }
         }
 
         private void Open()
         {
+            if (this.engine.IsChanged)
+            {
+                if (MessageBox.Show(this.shellViewModel.Window, "Your project has unsaved changes. Do you really want to open a project and lose those changes?", "PocoGen", MessageBoxButton.YesNo, MessageBoxImage.None, MessageBoxResult.No) == MessageBoxResult.No)
+                {
+                    return;
+                }
+            }
+
             OpenFileDialog dialog = new OpenFileDialog()
             {
                 Filter = "POCO file definition (*.poco)|*.poco"
@@ -151,7 +198,7 @@ namespace PocoGen.Gui.Applications.Controllers
 
             if (unrecognizedPlugIns.Count > 0)
             {
-                StringBuilder message = new StringBuilder("The following plug ins are not found in your installation. If you save the current poco definition, you will remove these plug ins from the definition.\r\n\r\n");
+                StringBuilder message = new StringBuilder("The following plug ins are not found in your installation. If you save the current project, you will remove these plug ins from the project.\r\n\r\n");
 
                 foreach (UnrecognizedPlugIn unrecognizedPlugIn in unrecognizedPlugIns)
                 {
@@ -195,7 +242,7 @@ namespace PocoGen.Gui.Applications.Controllers
             {
                 using (CommonOpenFileDialog dialog = new CommonOpenFileDialog("Select base path"))
                 {
-                    dialog.Controls.Add(new CommonFileDialogLabel("Since your POCO definition is not saved, you must select the path where the output files will be generated:"));
+                    dialog.Controls.Add(new CommonFileDialogLabel("Since your project is not saved, you must select the path where the output files will be generated:"));
                     dialog.IsFolderPicker = true;
                     dialog.Multiselect = false;
                     if (dialog.ShowDialog(this.shellViewModel.Window) != CommonFileDialogResult.Ok)
@@ -219,7 +266,7 @@ namespace PocoGen.Gui.Applications.Controllers
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this.shellViewModel.Window, "An error occured while generating the files: " + ex.Message, "Poco Generator");
+                MessageBox.Show(this.shellViewModel.Window, "An error occured while generating the files: " + ex.Message, "PocoGen");
             }
 
             this.shellViewModel.IsBusy = false;
