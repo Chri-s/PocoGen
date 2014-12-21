@@ -94,10 +94,16 @@ namespace PocoGen.OutputWriters.NPoco
             this.IncludeSchema = repository.TryGetValue("IncludeSchema", out boolValue) ? boolValue : false;
         }
 
-
         public void ResetToDefaults()
         {
-            throw new NotImplementedException();
+            this.Namespace = string.Empty;
+            this.IndentationChar = IndentationChar.Space;
+            this.IndentationSize = 4;
+            this.ClassModifier = OutputWriters.ClassModifier.Public;
+            this.Language = OutputWriters.Language.CSharp;
+            this.IncludeSchema = false;
+
+            this.AcceptChanges();
         }
     }
 }
