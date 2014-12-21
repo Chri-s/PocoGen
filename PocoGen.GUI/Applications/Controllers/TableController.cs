@@ -111,11 +111,12 @@ namespace PocoGen.Gui.Applications.Controllers
 
                             foreach (Column column in table.Columns)
                             {
+                                ColumnChange columnChange = (tableChange == null) ? null : tableChange.Columns[column.Name];
                                 ColumnViewModel columnVm = this.container.GetExportedValue<ColumnViewModel>();
                                 columnVm.ColumnName = column.Name;
-                                columnVm.Included = true;
+                                columnVm.Included = (columnChange == null) ? true : !columnChange.Ignore;
                                 columnVm.IsPrimaryKey = column.IsPK;
-                                columnVm.PropertyName = column.PropertyName;
+                                columnVm.PropertyName = (columnChange == null || string.IsNullOrEmpty(columnChange.PropertyName)) ? column.PropertyName : columnChange.PropertyName;
                                 columnVm.TableName = table.Name;
                                 columnVm.WhenAny(vm => vm.TableName, vm => vm.ColumnName, vm => vm.PropertyName, vm => vm.Included, (tableName, columnName, propertyName, included) => new { TableName = tableName.GetValue(), ColumnName = columnName.GetValue(), PropertyName = propertyName.GetValue(), Included = included.GetValue() }).Subscribe(data => this.SyncColumnChange(data.TableName, data.ColumnName, data.PropertyName, !data.Included));
                                 tableVm.Columns.Add(columnVm);
