@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using PocoGen.Common;
 
@@ -62,6 +63,54 @@ namespace PocoGen.OutputWriters
             return safeName;
         }
 
+        public static string GetAttributeString(AttribteHelper attribute)
+        {
+            StringBuilder builder = new StringBuilder("<");
+            builder.Append(VisualBasicTools.SafeClassName(attribute.TypeName));
+
+            if (attribute.NamedProperties.Any() || attribute.PositionalProperties.Any())
+            {
+                builder.Append("(");
+
+                bool isFirst = true;
+                foreach (string positionalProperty in attribute.PositionalProperties)
+                {
+                    if (isFirst)
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        builder.Append(", ");
+                    }
+
+                    builder.Append(positionalProperty);
+                }
+
+                foreach (KeyValuePair<string, string> namedProperty in attribute.NamedProperties)
+                {
+                    if (isFirst)
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        builder.Append(", ");
+                    }
+
+                    builder.Append(VisualBasicTools.SafePropertyName(namedProperty.Key));
+                    builder.Append(":=");
+                    builder.Append(namedProperty.Value);
+                }
+
+                builder.Append(")");
+            }
+
+            builder.Append(">");
+
+            return builder.ToString();
+        }
+
         public static string SafeClassName(string className)
         {
             string safeName = CleanUpRegex.Value.Replace(className, "_");
@@ -78,7 +127,7 @@ namespace PocoGen.OutputWriters
             return safeName;
         }
 
-        public static string GetColumnType(PocoGen.Common.ColumnBaseType type)
+        public static string GetColumnType(ColumnBaseType type)
         {
             if (type == null)
             {
@@ -140,7 +189,7 @@ namespace PocoGen.OutputWriters
         private static Dictionary<Type, string> GetBaseTypeDictionary()
         {
             Dictionary<Type, string> baseTypeDictionary = new Dictionary<Type, string>();
-            baseTypeDictionary.Add(typeof(bool), "Boolena");
+            baseTypeDictionary.Add(typeof(bool), "Boolean");
             baseTypeDictionary.Add(typeof(byte), "Byte");
             baseTypeDictionary.Add(typeof(char), "Char");
             baseTypeDictionary.Add(typeof(decimal), "Decimal");
