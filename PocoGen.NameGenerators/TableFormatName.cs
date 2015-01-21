@@ -13,7 +13,7 @@ namespace PocoGen.NameGenerators
 
             string schemaName = (table.Schema == namingSettings.ExcludeSchema) ? string.Empty : table.Schema;
 
-            return namingSettings.FormatString.Replace("%SCHEMA%", schemaName).Replace("%TABLE%", table.Name);
+            return namingSettings.FormatString.Replace("%SCHEMA%", schemaName).Replace("%TABLE%", table.ClassName);
         }
     }
 }
