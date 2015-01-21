@@ -154,7 +154,9 @@ namespace PocoGen.Gui.Applications.ViewModels
         {
             CancelEventHandler handler = this.Closing;
             if (handler != null)
+            {
                 handler(this, e);
+            }
         }
     }
 }

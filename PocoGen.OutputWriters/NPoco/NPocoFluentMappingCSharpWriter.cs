@@ -91,7 +91,6 @@ namespace PocoGen.OutputWriters.NPoco
             writer.WriteLine(">()");
             writer.Indent();
 
-
             writer.Write(".TableName(\"");
             if (settings.IncludeSchema)
             {
