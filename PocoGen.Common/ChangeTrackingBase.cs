@@ -9,6 +9,7 @@ namespace PocoGen.Common
             this.IsChanged = false;
         }
 
+        [Browsable(false)]
         public virtual bool IsChanged { get; private set; }
 
         protected virtual void SetChanged()
