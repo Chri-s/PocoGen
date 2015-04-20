@@ -67,7 +67,6 @@
     <Compile Include="NPoco\NPocoVisualBasicWriter.cs" />
     <Compile Include="NPoco\NPocoWriter.cs" />
     <Compile Include="NPoco\NPocoWriterSettings.cs" />
-    <Compile Include="Poco\ChangeTracking.cs" />
     <Compile Include="Poco\PocoCSharpWriter.cs" />
     <Compile Include="Poco\PocoVisualBasicWriter.cs" />
     <Compile Include="Poco\PocoWriter.cs" />
