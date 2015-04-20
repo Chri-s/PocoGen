@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangeTrackingSetting.cs" />
     <Compile Include="ClassModifier.cs" />
     <Compile Include="CodeIndentationWriter.cs" />
     <Compile Include="CSharpTools.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="NPoco\NPocoVisualBasicWriter.cs" />
     <Compile Include="NPoco\NPocoWriter.cs" />
     <Compile Include="NPoco\NPocoWriterSettings.cs" />
+    <Compile Include="Poco\ChangeTracking.cs" />
     <Compile Include="Poco\PocoCSharpWriter.cs" />
     <Compile Include="Poco\PocoVisualBasicWriter.cs" />
     <Compile Include="Poco\PocoWriter.cs" />

@@ -58,6 +58,16 @@ namespace PocoGen.OutputWriters.Poco
             set { this.ChangeProperty(ref this.language, value); }
         }
 
+        private ChangeTrackingSetting addChangeTracking;
+        [Category("Code Generation")]
+        [Description("Determines whether System.ComponentModel.IChangeTracking will be implemented")]
+        [DisplayName("Add change tracking")]
+        public ChangeTrackingSetting AddChangeTracking
+        {
+            get { return this.addChangeTracking; }
+            set { this.ChangeProperty(ref this.addChangeTracking, value); }
+        }
+
         public SettingsRepository Serialize()
         {
             SettingsRepository repository = new SettingsRepository();
@@ -66,6 +76,7 @@ namespace PocoGen.OutputWriters.Poco
             repository.SetOption("IndentationSize", this.IndentationSize);
             repository.SetOption("ClassModifier", Enum.GetName(typeof(ClassModifier), this.ClassModifier));
             repository.SetOption("Language", Enum.GetName(typeof(Language), this.Language));
+            repository.SetOption("AddChangeTracking", Enum.GetName(typeof(ChangeTrackingSetting), this.AddChangeTracking));
             return repository;
         }
 
@@ -79,6 +90,7 @@ namespace PocoGen.OutputWriters.Poco
             this.IndentationSize = repository.TryGetValue("IndentationSize", out intValue) ? intValue : 4;
             this.ClassModifier = repository.TryGetValue("ClassModifier", out stringValue) ? (ClassModifier)Enum.Parse(typeof(ClassModifier), stringValue) : OutputWriters.ClassModifier.Public;
             this.Language = repository.TryGetValue("Language", out stringValue) ? (Language)Enum.Parse(typeof(Language), stringValue) : Language.CSharp;
+            this.AddChangeTracking = repository.TryGetValue("AddChangeTracking", out stringValue) ? (ChangeTrackingSetting)Enum.Parse(typeof(ChangeTrackingSetting), stringValue) : ChangeTrackingSetting.No;
         }
 
         public void ResetToDefaults()
@@ -88,6 +100,7 @@ namespace PocoGen.OutputWriters.Poco
             this.IndentationSize = 4;
             this.ClassModifier = OutputWriters.ClassModifier.Public;
             this.Language = OutputWriters.Language.CSharp;
+            this.AddChangeTracking = ChangeTrackingSetting.No;
 
             this.AcceptChanges();
         }
