@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using PocoGen.Common;
-using System;
+
 namespace PocoGen.OutputWriters.Poco
 {
     internal static class PocoCSharpWriter
@@ -59,6 +59,7 @@ namespace PocoGen.OutputWriters.Poco
             {
                 writer.Write(" : System.ComponentModel.IChangeTracking");
             }
+
             writer.WriteLine();
 
             writer.WriteLine("{");
@@ -144,6 +145,7 @@ namespace PocoGen.OutputWriters.Poco
                 writer.Write(variableName);
                 writer.WriteLine(";");
             }
+
             writer.Write("public ");
             writer.Write(CSharpTools.GetColumnType(column.PropertyType));
             writer.Write(" ");
@@ -151,54 +153,59 @@ namespace PocoGen.OutputWriters.Poco
 
             if (PropertiesNeedImplementation(settings))
             {
-                writer.WriteLine();
-                writer.WriteLine("{");
-                writer.Indent();
-
-                writer.WriteLine("get");
-                writer.WriteLine("{");
-                writer.Indent();
-                writer.Write("return this.");
-                writer.Write(variableName);
-                writer.WriteLine(";");
-                writer.Outdent();
-                writer.WriteLine("}");
-
-                writer.WriteLine("set");
-                writer.WriteLine("{");
-                writer.Indent();
-
-                writer.Write("if (this.");
-                writer.Write(variableName);
-                writer.WriteLine(" != value)");
-                writer.WriteLine("{");
-                writer.Indent();
-                writer.Write("this.");
-                writer.Write(variableName);
-                writer.WriteLine(" = value;");
-
-                if (settings.AddChangeTracking == ChangeTrackingSetting.ImplicitImplementation)
-                {
-                    writer.WriteLine("this.IsChanged = true;");
-                }
-                else
-                {
-                    writer.WriteLine("this._changeTrackingSetChanged();");
-                }
-
-                writer.Outdent();
-                writer.WriteLine("}");
-
-                writer.Outdent();
-                writer.WriteLine("}");
-
-                writer.Outdent();
-                writer.WriteLine("}");
+                WritePropertyImplementation(writer, settings, variableName);
             }
             else
             {
                 writer.WriteLine(" { get; set; }");
             }
+        }
+
+        private static void WritePropertyImplementation(CodeIndentationWriter writer, PocoWriterSettings settings, string variableName)
+        {
+            writer.WriteLine();
+            writer.WriteLine("{");
+            writer.Indent();
+
+            writer.WriteLine("get");
+            writer.WriteLine("{");
+            writer.Indent();
+            writer.Write("return this.");
+            writer.Write(variableName);
+            writer.WriteLine(";");
+            writer.Outdent();
+            writer.WriteLine("}");
+
+            writer.WriteLine("set");
+            writer.WriteLine("{");
+            writer.Indent();
+
+            writer.Write("if (this.");
+            writer.Write(variableName);
+            writer.WriteLine(" != value)");
+            writer.WriteLine("{");
+            writer.Indent();
+            writer.Write("this.");
+            writer.Write(variableName);
+            writer.WriteLine(" = value;");
+
+            if (settings.AddChangeTracking == ChangeTrackingSetting.ImplicitImplementation)
+            {
+                writer.WriteLine("this.IsChanged = true;");
+            }
+            else
+            {
+                writer.WriteLine("this._changeTrackingSetChanged();");
+            }
+
+            writer.Outdent();
+            writer.WriteLine("}");
+
+            writer.Outdent();
+            writer.WriteLine("}");
+
+            writer.Outdent();
+            writer.WriteLine("}");
         }
 
         private static bool PropertiesNeedImplementation(PocoWriterSettings settings)
