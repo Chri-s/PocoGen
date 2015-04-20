@@ -136,8 +136,9 @@ namespace PocoGen.OutputWriters.Poco
             string variableName = null;
             if (PropertiesNeedImplementation(settings))
             {
-                variableName = CSharpTools.SafePropertyName(column.PropertyName);
+                variableName = column.PropertyName;
                 variableName = "_" + char.ToLowerInvariant(variableName[0]) + variableName.Substring(1);
+                variableName = CSharpTools.SafePropertyName(variableName);
 
                 writer.Write("private ");
                 writer.Write(CSharpTools.GetColumnType(column.PropertyType));
