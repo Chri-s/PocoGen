@@ -169,6 +169,26 @@ namespace PocoGen.OutputWriters
             }
         }
 
+        public static string GetUnequalComparison(ColumnBaseType type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException("type", "type is null.");
+            }
+
+            if (type is ColumnForeignType)
+            {
+                return "IsNot";
+            }
+
+            ColumnType baseType = (ColumnType)type;
+            if (baseType.Type.IsValueType || baseType.Type.Equals(typeof(string)))
+            {
+                return "<>";
+            }
+            else return "IsNot";
+        }
+
         private static string GetBaseTypeName(Type type)
         {
             if (VisualBasicTools.BaseTypeNames.Value.ContainsKey(type))
