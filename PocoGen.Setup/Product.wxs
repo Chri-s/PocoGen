@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="*" Name="PocoGen" Language="1033" Version="1.0.2.0" Manufacturer="NChris" UpgradeCode="10cfb799-b9c5-4f58-8089-cd80a414307a">
+    <Product Id="*" Name="PocoGen" Language="1033" Version="1.0.3.0" Manufacturer="NChris" UpgradeCode="10cfb799-b9c5-4f58-8089-cd80a414307a">
         <Package InstallerVersion="300" Compressed="yes" InstallScope="perMachine" />
 
         <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -19,10 +19,10 @@
         </Property>
 
         <Feature Id="MainTree" Title="PocoGen" ConfigurableDirectory="INSTALLDIR" Display="expand" Absent="disallow" AllowAdvertise="no">
-            
+
             <!-- Add this to remove "run from network" option -->
             <ComponentRef Id="Empty"/>
-            
+
             <Feature Id="ProductFeature" Title="Common Files" Absent="disallow" Description="Shared files which are needed for the entire program" AllowAdvertise="no">
                 <ComponentGroupRef Id="CommonComponents" />
 
@@ -37,7 +37,7 @@
                 <ComponentGroupRef Id="MvvmHybridFramework"/>
                 <ComponentGroupRef Id="GUI"/>
             </Feature>
-            
+
             <Feature Id="Runner" Title="Generation Runner" Level="1" AllowAdvertise="no" Description="Command line tool to run the created configurations.">
                 <ComponentGroupRef Id="Runner"/>
             </Feature>
@@ -50,7 +50,7 @@
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder">
                 <Directory Id="INSTALLDIR" Name="PocoGen">
-                    <Component Id="Empty" Guid="" KeyPath="yes" />                    
+                    <Component Id="Empty" Guid="" KeyPath="yes" />
                 </Directory>
             </Directory>
 
