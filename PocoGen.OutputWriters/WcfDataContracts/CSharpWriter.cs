@@ -71,7 +71,15 @@ namespace PocoGen.OutputWriters.WcfDataContracts
         {
             writer.Write((settings.ClassModifier == ClassModifier.Public) ? "public" : "internal");
             writer.Write(" partial class ");
-            writer.WriteLine(CSharpTools.SafeClassName(table.ClassName));
+            writer.Write(CSharpTools.SafeClassName(table.ClassName));
+
+            if (!string.IsNullOrWhiteSpace(settings.BaseClass))
+            {
+                writer.Write(" : ");
+                writer.Write(CSharpTools.SafeClassAndNamespaceName(settings.BaseClass));
+            }
+
+            writer.WriteLine();
 
             writer.WriteLine("{");
             writer.Indent();

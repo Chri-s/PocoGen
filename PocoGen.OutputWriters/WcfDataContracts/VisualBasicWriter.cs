@@ -75,6 +75,14 @@ namespace PocoGen.OutputWriters.WcfDataContracts
 
             writer.Indent();
 
+            if (!string.IsNullOrWhiteSpace(settings.BaseClass))
+            {
+                writer.Write("Inherits ");
+                writer.WriteLine(VisualBasicTools.SafeClassAndNamespaceName(settings.BaseClass));
+            }
+
+            writer.WriteLine();
+
             VisualBasicWriter.WriteColumns(writer, table, settings);
 
             writer.Outdent();

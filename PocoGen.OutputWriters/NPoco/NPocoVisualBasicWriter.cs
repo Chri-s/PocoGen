@@ -63,6 +63,13 @@ namespace PocoGen.OutputWriters.NPoco
 
             writer.Indent();
 
+            if (!string.IsNullOrWhiteSpace(settings.BaseClass))
+            {
+                writer.Write("Inherits ");
+                writer.WriteLine(VisualBasicTools.SafeClassAndNamespaceName(settings.BaseClass));
+                writer.WriteLine();
+            }
+
             NPocoVisualBasicWriter.WriteColumns(writer, table);
 
             writer.Outdent();

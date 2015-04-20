@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using PocoGen.Common;
 
@@ -55,9 +56,21 @@ namespace PocoGen.OutputWriters.Poco
             writer.Write(" partial class ");
             writer.Write(CSharpTools.SafeClassName(table.ClassName));
 
+            List<string> baseClassAndInterfaces = new List<string>();
+            if (!string.IsNullOrWhiteSpace(settings.BaseClass))
+            {
+                baseClassAndInterfaces.Add(CSharpTools.SafeClassAndNamespaceName(settings.BaseClass));
+            }
+
             if (settings.AddChangeTracking != ChangeTrackingSetting.No)
             {
-                writer.Write(" : System.ComponentModel.IChangeTracking");
+                baseClassAndInterfaces.Add("System.ComponentModel.IChangeTracking");
+            }
+
+            if (baseClassAndInterfaces.Count > 0)
+            {
+                writer.Write(" : ");
+                writer.Write(string.Join(", ", baseClassAndInterfaces));
             }
 
             writer.WriteLine();

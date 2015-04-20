@@ -83,6 +83,12 @@ namespace PocoGen.OutputWriters
             return builder.ToString();
         }
 
+        public static string SafeClassAndNamespaceName(string fullName)
+        {
+            return string.Join(".", from s in fullName.Split('.')
+                                    select CSharpTools.SafeClassName(s));
+        }
+
         public static string SafeClassName(string className)
         {
             string safeName = CleanUpRegex.Value.Replace(className, "_");

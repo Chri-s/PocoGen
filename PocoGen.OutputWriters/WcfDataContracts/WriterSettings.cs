@@ -82,6 +82,16 @@ namespace PocoGen.OutputWriters.WcfDataContracts
             set { this.ChangeProperty(ref this.language, value); }
         }
 
+        private string baseClass;
+        [Category("Code Generation")]
+        [Description("Sets the base class from which the generated data contracts should inherit.")]
+        [DisplayName("Base Class")]
+        public string BaseClass
+        {
+            get { return this.baseClass; }
+            set { this.ChangeProperty(ref this.baseClass, value); }
+        }
+
         public SettingsRepository Serialize()
         {
             SettingsRepository repository = new SettingsRepository();
@@ -92,6 +102,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
             repository.SetOption("IndentationSize", this.IndentationSize);
             repository.SetOption("ClassModifier", Enum.GetName(typeof(ClassModifier), this.ClassModifier));
             repository.SetOption("Language", Enum.GetName(typeof(Language), this.Language));
+            repository.SetOption("BaseClass", this.BaseClass);
             return repository;
         }
 
@@ -108,6 +119,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
             this.IndentationSize = repository.TryGetValue("IndentationSize", out intValue) ? intValue : 4;
             this.ClassModifier = repository.TryGetValue("ClassModifier", out stringValue) ? (ClassModifier)Enum.Parse(typeof(ClassModifier), stringValue) : OutputWriters.ClassModifier.Public;
             this.Language = repository.TryGetValue("Language", out stringValue) ? (Language)Enum.Parse(typeof(Language), stringValue) : Language.CSharp;
+            this.BaseClass = repository.TryGetValue("BaseClass", out stringValue) ? stringValue : string.Empty;
         }
 
         public void ResetToDefaults()
@@ -119,6 +131,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
             this.IndentationSize = 4;
             this.ClassModifier = OutputWriters.ClassModifier.Public;
             this.Language = OutputWriters.Language.CSharp;
+            this.BaseClass = string.Empty;
 
             this.AcceptChanges();
         }

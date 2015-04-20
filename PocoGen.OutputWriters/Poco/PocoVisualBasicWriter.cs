@@ -57,6 +57,18 @@ namespace PocoGen.OutputWriters.Poco
 
             writer.Indent();
 
+            if (!string.IsNullOrWhiteSpace(settings.BaseClass))
+            {
+                writer.Write("Inherits ");
+                writer.WriteLine(VisualBasicTools.SafeClassAndNamespaceName(settings.BaseClass));
+
+                // Add an empty line if no interfaces follow
+                if (settings.AddChangeTracking == ChangeTrackingSetting.No)
+                {
+                    writer.WriteLine();
+                }
+            }
+
             if (settings.AddChangeTracking != ChangeTrackingSetting.No)
             {
                 writer.WriteLine("Implements System.ComponentModel.IChangeTracking");
