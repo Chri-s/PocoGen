@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Data.Common;
 using System.Data.SQLite;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PocoGen.Common;
@@ -19,6 +20,8 @@ WHERE type IN ('table', 'view') AND NOT name LIKE 'sqlite_%'
 ORDER BY name;";
 
         private const string GetColumnSql = "PRAGMA table_info({0});";
+
+        private const string GetForeignKeysSql = "PRAGMA foreign_key_list({0});";
 
         private static string[] keywords;
 
@@ -61,6 +64,8 @@ ORDER BY name;";
                 {
                     table.Columns.AddRange(this.GetColumns(table, connection, hasRowIds[table]));
                 }
+
+                this.LoadForeignKeys(tables, connection);
 
                 return tables;
             }
@@ -115,6 +120,50 @@ ORDER BY name;";
                 SqliteSchemaReader.Keywords.Any(k => k.Equals(identifier, StringComparison.OrdinalIgnoreCase));
         }
 
+        private void LoadForeignKeys(TableCollection tables, DbConnection connection)
+        {
+            using (DbCommand cmd = connection.CreateCommand())
+            {
+                foreach (Table table in tables)
+                {
+                    cmd.CommandText = string.Format(CultureInfo.InvariantCulture, GetForeignKeysSql, this.EscapeTableName(table.Name));
+
+                    // SQLite returns the rows for all foreign keys for this table. One row for one column.
+                    // This means that a foreign key using more than one column (because the referenced tables has a primary key consisting
+                    // of more than one column) returns more than one row for one foreign key.
+                    // Because we can't specify an order by-clause and the documentation doesn't specify whether
+                    // the rows for a foreign key are returned successively, we cache them and group them afterwards by referenced table.
+                    // Tuple = (referenced table, column, referenced column)
+                    List<Tuple<string, string, string>> foreignKeys = new List<Tuple<string, string, string>>();
+
+                    using (DbDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            foreignKeys.Add(new Tuple<string, string, string>(reader.GetString(2), reader.GetString(3), reader.GetString(4)));
+                        }
+                    }
+
+                    var groupedByTables = from t in foreignKeys
+                                          group t by t.Item1 into g
+                                          select g;
+
+                    foreach (var group in groupedByTables)
+                    {
+                        ForeignKey foreignKey = new ForeignKey(null, table.Name, group.Key);
+
+                        foreach (var column in group)
+                        {
+                            foreignKey.Columns.Add(new ForeignKeyColumn(column.Item3, column.Item2));
+                        }
+
+                        tables[foreignKey.ParentTableName].ParentForeignKeys.Add(foreignKey);
+                        tables[foreignKey.ChildTableName].ChildForeignKeys.Add(foreignKey);
+                    }
+                }
+            }
+        }
+
         private static ColumnBaseType GetPropertyType(string columnType, bool isNullable)
         {
             Type sysType = null;
@@ -161,7 +210,7 @@ ORDER BY name;";
 
             using (DbCommand cmd = connection.CreateCommand())
             {
-                cmd.CommandText = string.Format(System.Globalization.CultureInfo.InvariantCulture, GetColumnSql, this.EscapeTableName(table.Name));
+                cmd.CommandText = string.Format(CultureInfo.InvariantCulture, GetColumnSql, this.EscapeTableName(table.Name));
 
                 using (DbDataReader reader = cmd.ExecuteReader())
                 {
