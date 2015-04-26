@@ -21,6 +21,13 @@ namespace PocoGen.SchemaReaders
 FROM information_schema.columns
 WHERE TABLE_SCHEMA = @schema AND TABLE_NAME = @table;";
 
+        private const string GetForeignKeysSql = @"SELECT C.CONSTRAINT_NAME, PK.TABLE_NAME AS PK_TABLE_NAME, PK.COLUMN_NAME AS PK_COLUMN_NAME, FK.TABLE_NAME AS FK_TABLE_NAME, FK.COLUMN_NAME AS FK_COLUMN_NAME
+FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS C
+INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE FK ON C.CONSTRAINT_CATALOG = FK.CONSTRAINT_CATALOG AND C.CONSTRAINT_SCHEMA = FK.CONSTRAINT_SCHEMA AND C.TABLE_NAME = FK.TABLE_NAME AND C.CONSTRAINT_NAME = FK.CONSTRAINT_NAME
+INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE PK ON C.UNIQUE_CONSTRAINT_CATALOG = PK.CONSTRAINT_CATALOG AND C.UNIQUE_CONSTRAINT_SCHEMA = PK.CONSTRAINT_SCHEMA AND C.REFERENCED_TABLE_NAME = PK.TABLE_NAME AND C.UNIQUE_CONSTRAINT_NAME = PK.CONSTRAINT_NAME AND FK.ORDINAL_POSITION = PK.ORDINAL_POSITION
+WHERE C.CONSTRAINT_SCHEMA = @schema
+ORDER BY C.CONSTRAINT_NAME, FK.ORDINAL_POSITION";
+
         private static string[] keywords;
 
         public void TestConnectionString(string connectionString, ISettings settings)
@@ -62,6 +69,8 @@ WHERE TABLE_SCHEMA = @schema AND TABLE_NAME = @table;";
                 {
                     table.Columns.AddRange(MySqlSchemaReader.GetColumns(connection, table));
                 }
+
+                MySqlSchemaReader.LoadForeignKeys(tables, connection);
 
                 return tables;
             }
@@ -154,6 +163,44 @@ WHERE TABLE_SCHEMA = @schema AND TABLE_NAME = @table;";
                         column.IsPK = string.Compare(reader.GetString(4), "PRI", StringComparison.OrdinalIgnoreCase) == 0;
 
                         yield return column;
+                    }
+                }
+            }
+        }
+
+        private static void LoadForeignKeys(TableCollection tables, DbConnection connection)
+        {
+            using (DbCommand cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = GetForeignKeysSql;
+                DbParameter schemasParameter = cmd.CreateParameter();
+                schemasParameter.ParameterName = "@schema";
+                schemasParameter.Value = connection.Database;
+                cmd.Parameters.Add(schemasParameter);
+
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    ForeignKey foreignKey = null;
+
+                    string lastForeignKeyName = null;
+
+                    while (reader.Read())
+                    {
+                        string constraintName = reader.GetString(0);
+                        string pkTableName = reader.GetString(1);
+                        string pkColumnName = reader.GetString(2);
+                        string fkTableName = reader.GetString(3);
+                        string fkColumnName = reader.GetString(4);
+
+                        if (lastForeignKeyName != constraintName)
+                        {
+                            foreignKey = new ForeignKey(constraintName, fkTableName, pkTableName);
+                            tables[pkTableName].ParentForeignKeys.Add(foreignKey);
+                            tables[fkTableName].ChildForeignKeys.Add(foreignKey);
+                        }
+
+                        foreignKey.Columns.Add(new ForeignKeyColumn(pkColumnName, fkColumnName));
+                        lastForeignKeyName = constraintName;
                     }
                 }
             }

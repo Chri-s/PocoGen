@@ -33,6 +33,12 @@ namespace PocoGen.SchemaReaders
                 LEFT OUTER JOIN sys.columns AS c ON ic.object_id = c.object_id AND c.column_id = ic.column_id
                 WHERE (i.type = 1) AND (o.name = @tableName)";
 
+        private const string GetForeignKeysSql = @"SELECT  C.CONSTRAINT_SCHEMA, C.CONSTRAINT_NAME, PK.TABLE_SCHEMA AS PK_TABLE_SCHEMA, PK.TABLE_NAME AS PK_TABLE_NAME, PK.COLUMN_NAME AS PK_COLUMN_NAME, FK.TABLE_SCHEMA AS FK_TABLE_SCHEMA, FK.TABLE_NAME AS FK_TABLE_NAME, FK.COLUMN_NAME AS FK_COLUMN_NAME
+FROM    INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS C
+INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE FK ON FK.CONSTRAINT_CATALOG = c.CONSTRAINT_CATALOG AND FK.CONSTRAINT_SCHEMA = C.CONSTRAINT_SCHEMA AND FK.CONSTRAINT_NAME = C.CONSTRAINT_NAME
+INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE PK ON PK.CONSTRAINT_CATALOG = C.UNIQUE_CONSTRAINT_CATALOG AND PK.CONSTRAINT_SCHEMA = C.UNIQUE_CONSTRAINT_SCHEMA AND PK.CONSTRAINT_NAME = C.UNIQUE_CONSTRAINT_NAME AND PK.ORDINAL_POSITION = FK.ORDINAL_POSITION
+ORDER BY C.CONSTRAINT_SCHEMA, C.CONSTRAINT_NAME, FK.ORDINAL_POSITION";
+
         private static string[] keywords;
 
         public void TestConnectionString(string connectionString, ISettings settings)
@@ -70,6 +76,8 @@ namespace PocoGen.SchemaReaders
                 {
                     table.Columns.AddRange(SqlServerSchemaReader.LoadColumns(table, connection));
                 }
+
+                SqlServerSchemaReader.LoadForeignKeys(tables, connection);
 
                 return tables;
             }
@@ -202,6 +210,45 @@ namespace PocoGen.SchemaReaders
                 }
 
                 return columns;
+            }
+        }
+
+        private static void LoadForeignKeys(TableCollection tables, DbConnection connection)
+        {
+            using (DbCommand cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = GetForeignKeysSql;
+
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    ForeignKey foreignKey = null;
+
+                    string lastSchema = null;
+                    string lastForeignKeyName = null;
+
+                    while (reader.Read())
+                    {
+                        string constraintSchema = reader.GetString(0);
+                        string constraintName = reader.GetString(1);
+                        string pkTableSchema = reader.GetString(2);
+                        string pkTableName = reader.GetString(3);
+                        string pkColumnName = reader.GetString(4);
+                        string fkTableSchema = reader.GetString(5);
+                        string fkTableName = reader.GetString(6);
+                        string fkColumnName = reader.GetString(7);
+
+                        if (lastSchema != constraintSchema || lastForeignKeyName != constraintName)
+                        {
+                            foreignKey = new ForeignKey(constraintSchema, constraintName, fkTableSchema, fkTableName, pkTableSchema, pkTableName);
+                            tables[pkTableName].ParentForeignKeys.Add(foreignKey);
+                            tables[fkTableName].ChildForeignKeys.Add(foreignKey);
+                        }
+
+                        foreignKey.Columns.Add(new ForeignKeyColumn(pkColumnName, fkColumnName));
+                        lastSchema = constraintSchema;
+                        lastForeignKeyName = constraintName;
+                    }
+                }
             }
         }
 

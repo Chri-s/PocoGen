@@ -68,6 +68,10 @@
     <Compile Include="FileFormat\PlugInCollection.cs" />
     <Compile Include="FileFormat\Table.cs" />
     <Compile Include="FileFormat\TableCollection.cs" />
+    <Compile Include="ForeignKey.cs" />
+    <Compile Include="ForeignKeyCollection.cs" />
+    <Compile Include="ForeignKeyColumn.cs" />
+    <Compile Include="ForeignKeyColumnCollection.cs" />
     <Compile Include="IColumnNameGenerator.cs" />
     <Compile Include="IColumnNameGeneratorMetadata.cs" />
     <Compile Include="IDBEscaper.cs" />

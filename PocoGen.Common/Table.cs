@@ -7,6 +7,16 @@ namespace PocoGen.Common
     {
         public ColumnCollection Columns { get; private set; }
 
+        /// <summary>
+        /// Gets the list of foreign keys which are referenced by this table.
+        /// </summary>
+        public ForeignKeyCollection ParentForeignKeys { get; private set; }
+
+        /// <summary>
+        /// Gets the list of foreign keys which reference this table.
+        /// </summary>
+        public ForeignKeyCollection ChildForeignKeys { get; private set; }
+
         public string Name { get; private set; }
 
         public string Schema { get; set; }
@@ -22,6 +32,8 @@ namespace PocoGen.Common
         public Table(string name)
         {
             this.Columns = new ColumnCollection();
+            this.ParentForeignKeys = new ForeignKeyCollection();
+            this.ChildForeignKeys = new ForeignKeyCollection();
             this.ClassName = string.Empty;
             this.Ignore = false;
             this.Name = name;
@@ -58,6 +70,16 @@ namespace PocoGen.Common
 
             clone.Columns.AddRange(from c in this.Columns
                                    select c.Clone());
+
+            foreach (ForeignKey parentForeignKey in clone.ParentForeignKeys)
+            {
+                clone.ParentForeignKeys.Add(parentForeignKey.Clone());
+            }
+
+            foreach (ForeignKey childForeignKey in clone.ChildForeignKeys)
+            {
+                clone.ChildForeignKeys.Add(childForeignKey.Clone());
+            }
 
             return clone;
         }
