@@ -15,7 +15,7 @@ namespace PocoGen.SchemaReaders
     {
         private const string GetTableSql = @"SELECT TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE
             FROM information_schema.tables
-            WHERE (table_type='BASE TABLE' OR table_type='VIEW');";
+            WHERE (table_type='BASE TABLE' OR table_type='VIEW') AND table_schema = @schema;";
 
         private const string GetColumnSql = @"SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE, COLUMN_TYPE, COLUMN_KEY, extra
 FROM information_schema.columns
@@ -42,6 +42,10 @@ WHERE TABLE_SCHEMA = @schema AND TABLE_NAME = @table;";
                 using (DbCommand cmd = connection.CreateCommand())
                 {
                     cmd.CommandText = GetTableSql;
+                    DbParameter schemaParameter = cmd.CreateParameter();
+                    schemaParameter.ParameterName = "@schema";
+                    schemaParameter.Value = connection.Database;
+                    cmd.Parameters.Add(schemaParameter);
 
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
