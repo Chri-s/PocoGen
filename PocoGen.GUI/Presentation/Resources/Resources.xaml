@@ -15,11 +15,12 @@
     <BitmapImage x:Key="SaveFileIcon">Images/save_16xLG.png</BitmapImage>
     <BitmapImage x:Key="GenerateIcon">Images/GenerateAll.png</BitmapImage>
     <BitmapImage x:Key="NewFileIcon">Images/NewFile_6276.png</BitmapImage>
-    
+
     <conv:TableTypeConverter x:Key="TableImageConverter" TableImage="{StaticResource TableIcon}" ViewImage="{StaticResource ViewIcon}" />
     <conv:IsPrimaryKeyConverter x:Key="IsPrimaryKeyConverter" />
     <conv:HeightConverter x:Key="HeightConverter" />
-    
+    <conv:FontBoldConverter x:Key="FontBoldConverter" />
+
     <Style TargetType="Border" x:Key="ContentBorder">
         <Setter Property="BorderBrush" Value="#70C0E7" />
         <Setter Property="Background" Value="#FFE5F3FB" />

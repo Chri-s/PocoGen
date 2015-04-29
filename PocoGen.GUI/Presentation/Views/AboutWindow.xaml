@@ -13,6 +13,7 @@
                 <TextBlock FontSize="30" TextOptions.TextFormattingMode="Ideal" >PocoGen</TextBlock>
                 <TextBlock >Version: <Run Text="{Binding Version}" /></TextBlock>
                 <TextBlock><Hyperlink NavigateUri="http://pocogen.codeplex.com" Click="Hyperlink_Click">http://pocogen.codeplex.com</Hyperlink></TextBlock>
+                <TextBlock FontWeight="{Binding IsUpdateAvailable, Converter={StaticResource FontBoldConverter}}" Text="{Binding UpdateStatusText}" Margin="0,5,0,0" />
             </StackPanel>
         </StackPanel>
 

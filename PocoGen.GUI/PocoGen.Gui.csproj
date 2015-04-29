@@ -87,6 +87,7 @@
     <Reference Include="System.Reactive.Windows.Threading">
       <HintPath>..\packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.XML" />
     <Reference Include="WindowsBase" />
@@ -160,6 +161,7 @@
     <Compile Include="Presentation\Behaviors\AvalonEditBehavior.cs" />
     <Compile Include="Presentation\Behaviors\WindowBehavior.cs" />
     <Compile Include="Presentation\Controls\ObjectDbTextEdit.cs" />
+    <Compile Include="Presentation\Converters\FontBoldConverter.cs" />
     <Compile Include="Presentation\Converters\HeightConverter.cs" />
     <Compile Include="Presentation\Converters\IsPrimaryKeyConverter.cs" />
     <Compile Include="Presentation\Converters\SyntaxHighlightConverter.cs" />

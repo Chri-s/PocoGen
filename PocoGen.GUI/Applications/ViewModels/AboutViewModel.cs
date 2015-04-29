@@ -33,6 +33,20 @@ namespace PocoGen.Gui.Applications.ViewModels
             set { this.RaiseAndSetIfChanged(ref this.version, value); }
         }
 
+        private bool isUpdateAvailable;
+        public bool IsUpdateAvailable
+        {
+            get { return this.isUpdateAvailable; }
+            set { this.RaiseAndSetIfChanged(ref this.isUpdateAvailable, value); }
+        }
+
+        private string updateStatusText;
+        public string UpdateStatusText
+        {
+            get { return this.updateStatusText; }
+            set { this.RaiseAndSetIfChanged(ref this.updateStatusText, value); }
+        }
+
         public ReactiveList<AssemblyName> Modules
         {
             get;
