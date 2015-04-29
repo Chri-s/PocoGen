@@ -38,7 +38,7 @@
                 <ComponentGroupRef Id="GUI"/>
             </Feature>
 
-            <Feature Id="Runner" Title="Generation Runner" Level="1" AllowAdvertise="no" Description="Command line tool to run the created configurations.">
+            <Feature Id="Runner" Title="Command Line Generator" Level="1" AllowAdvertise="no" Description="Command line tool to execute the created configurations.">
                 <ComponentGroupRef Id="Runner"/>
             </Feature>
         </Feature>
