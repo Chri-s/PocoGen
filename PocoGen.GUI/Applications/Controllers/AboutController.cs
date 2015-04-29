@@ -93,7 +93,6 @@ namespace PocoGen.Gui.Applications.Controllers
         private void StartUpdateCheck(AboutViewModel viewModel)
         {
             Version myVersion = this.GetType().Assembly.GetName().Version;
-            myVersion = new Version("1.0.0.0");
             Task<Version> newestVersionTask = this.GetLatestVersionTask();
             viewModel.UpdateStatusText = "Checking for updates...";
 
