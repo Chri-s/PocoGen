@@ -163,6 +163,7 @@
     <Compile Include="Presentation\Behaviors\AvalonEditBehavior.cs" />
     <Compile Include="Presentation\Behaviors\WindowBehavior.cs" />
     <Compile Include="Presentation\Controls\ObjectDbTextEdit.cs" />
+    <Compile Include="Presentation\Converters\StaticResourceConverter.cs" />
     <Compile Include="Presentation\Converters\FontBoldConverter.cs" />
     <Compile Include="Presentation\Converters\HeightConverter.cs" />
     <Compile Include="Presentation\Converters\IsPrimaryKeyConverter.cs" />
@@ -345,6 +346,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Presentation\Resources\Images\NewFile_6276.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Presentation\Resources\Images\ClassIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Presentation\Resources\Images\Property_501.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Presentation\Resources\Images\Relation_8467_16X.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

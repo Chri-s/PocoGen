@@ -31,7 +31,7 @@
 
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
-            <Label DockPanel.Dock="Left" VerticalAlignment="Center">Available Column name generators:</Label>
+            <Label DockPanel.Dock="Left" VerticalAlignment="Center">Available Property name generators:</Label>
             <Button DockPanel.Dock="Right" Command="{Binding Add}" UseLayoutRounding="True" ToolTip="Add" VerticalAlignment="Center" Padding="2">
                 <Image Source="{StaticResource AddIcon}" Stretch="None" Height="16" />
             </Button>

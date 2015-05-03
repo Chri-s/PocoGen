@@ -18,7 +18,15 @@ namespace PocoGen.Gui.Applications.ViewModels
 
         public string Title
         {
-            get { return "Table Naming"; }
+            get { return "Class Naming"; }
+        }
+
+        public string Image
+        {
+            get
+            {
+                return "ClassIcon";
+            }
         }
 
         public ReactiveList<TableNameGeneratorPlugIn> AvailableTableNameGenerators { get; private set; }

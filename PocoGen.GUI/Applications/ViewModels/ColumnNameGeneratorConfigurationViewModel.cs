@@ -18,7 +18,15 @@ namespace PocoGen.Gui.Applications.ViewModels
 
         public string Title
         {
-            get { return "Column Naming"; }
+            get { return "Property Naming"; }
+        }
+
+        public string Image
+        {
+            get
+            {
+                return "PropertyIcon";
+            }
         }
 
         public ReactiveList<ColumnNameGeneratorPlugIn> AvailableColumnNameGenerators { get; private set; }

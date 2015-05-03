@@ -8,7 +8,10 @@
     <TabControl ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}" TabStripPlacement="Left">
         <TabControl.ItemTemplate>
             <DataTemplate>
-                <TextBlock Text="{Binding Title}" />
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Image Source="{Binding Image, Converter={StaticResource StaticResourceConverter}}" Stretch="None" />
+                    <TextBlock Text="{Binding Title}" Margin="5,0,0,0" VerticalAlignment="Center" />
+                </StackPanel>
             </DataTemplate>
         </TabControl.ItemTemplate>
     </TabControl>
