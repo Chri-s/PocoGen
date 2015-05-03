@@ -125,6 +125,7 @@
     </ApplicationDefinition>
     <Compile Include="Applications\Controllers\AboutController.cs" />
     <Compile Include="Applications\Controllers\ApplicationController.cs" />
+    <Compile Include="Applications\Controllers\NameGeneratorConfigurationsController.cs" />
     <Compile Include="Applications\Controllers\ColumnNameGeneratorController.cs" />
     <Compile Include="Applications\Controllers\ConnectionController.cs" />
     <Compile Include="Applications\Controllers\OutputController.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Applications\ViewModels\ColumnNameGeneratorViewModel.cs" />
     <Compile Include="Applications\ViewModels\ColumnViewModel.cs" />
     <Compile Include="Applications\ViewModels\ConnectionViewModel.cs" />
+    <Compile Include="Applications\ViewModels\NameGeneratorConfigurationsViewModel.cs" />
     <Compile Include="Applications\ViewModels\OutputWriterConfigurationViewModel.cs" />
     <Compile Include="Applications\ViewModels\OutputWriterViewModel.cs" />
     <Compile Include="Applications\ViewModels\PreviewViewModel.cs" />
@@ -177,6 +179,9 @@
     </Compile>
     <Compile Include="Presentation\Views\ColumnView.xaml.cs">
       <DependentUpon>ColumnView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Presentation\Views\NameGeneratorConfigurationsView.xaml.cs">
+      <DependentUpon>NameGeneratorConfigurationsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Presentation\Views\OutputWriterConfigurationView.xaml.cs">
       <DependentUpon>OutputWriterConfigurationView.xaml</DependentUpon>
@@ -227,6 +232,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Presentation\Views\ConnectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Presentation\Views\NameGeneratorConfigurationsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

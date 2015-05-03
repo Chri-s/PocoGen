@@ -34,7 +34,7 @@ namespace PocoGen.Gui.Applications.Controllers
 
         public void Initialize()
         {
-            this.shellViewModel.TableNameGeneratorConfiguationViewModel = this.configurationViewModel;
+            this.shellViewModel.NameGeneratorConfigurationsViewModel.TableNameGenerator = this.configurationViewModel;
 
             IEnumerable<TableNameGeneratorPlugIn> availableTableNameGenerators = from generator in this.Engine.AvailableTableNameGenerators
                                                                                  select new TableNameGeneratorPlugIn(generator);

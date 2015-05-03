@@ -22,6 +22,7 @@ namespace PocoGen.Gui.Applications.Controllers
         private readonly ShellViewModel shellViewModel;
         private readonly ConnectionController connectionController;
         private readonly TableController tableController;
+        private readonly NameGeneratorConfigurationsController nameGeneratorController;
         private readonly TableNameGeneratorController tableNameGeneratorController;
         private readonly OutputController outputController;
         private readonly AboutController aboutController;
@@ -33,6 +34,7 @@ namespace PocoGen.Gui.Applications.Controllers
             ShellViewModel shellViewModel,
             ConnectionController connectionController,
             TableController tableController,
+            NameGeneratorConfigurationsController nameGeneratorController,
             TableNameGeneratorController tableNameGeneratorController,
             ColumnNameGeneratorController columnNameGeneratorController,
             OutputController outputController,
@@ -43,6 +45,7 @@ namespace PocoGen.Gui.Applications.Controllers
             this.shellViewModel = shellViewModel;
             this.connectionController = connectionController;
             this.tableController = tableController;
+            this.nameGeneratorController = nameGeneratorController;
             this.tableNameGeneratorController = tableNameGeneratorController;
             this.columnNameGeneratorController = columnNameGeneratorController;
             this.outputController = outputController;
@@ -57,6 +60,7 @@ namespace PocoGen.Gui.Applications.Controllers
         {
             this.connectionController.Initialize();
             this.tableController.Initialize();
+            this.nameGeneratorController.Initialize();
             this.tableNameGeneratorController.Initialize();
             this.columnNameGeneratorController.Initialize();
             this.outputController.Initialize();

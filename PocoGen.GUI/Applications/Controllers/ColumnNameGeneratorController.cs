@@ -40,7 +40,7 @@ namespace PocoGen.Gui.Applications.Controllers
 
         public void Initialize()
         {
-            this.shellViewModel.ColumnNameGeneratorConfigurationViewModel = this.columnNameConfigurationViewModel;
+            this.shellViewModel.NameGeneratorConfigurationsViewModel.ColumnNameGenerator = this.columnNameConfigurationViewModel;
 
             IEnumerable<ColumnNameGeneratorPlugIn> availableColumnNameGenerators = from generator in this.engine.AvailableColumnNameGenerators
                                                                                    select new ColumnNameGeneratorPlugIn(generator);

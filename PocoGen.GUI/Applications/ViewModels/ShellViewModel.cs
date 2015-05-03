@@ -23,7 +23,7 @@ namespace PocoGen.Gui.Applications.ViewModels
             this.exitCommand = ReactiveCommand.Create();
             this.exitCommand.Subscribe(_ => this.Close());
 
-            this.Tabs = new ReactiveList<object>() { null, null, null, null, null };
+            this.Tabs = new ReactiveList<object>() { null, null, null, null };
 
             this.New = ReactiveCommand.Create();
             this.SaveDefinition = ReactiveCommand.Create();
@@ -37,10 +37,9 @@ namespace PocoGen.Gui.Applications.ViewModels
                 this.Tabs[0] = vm;
                 this.SelectedTab = vm;
             });
-            this.WhenAnyValue(x => x.TableNameGeneratorConfiguationViewModel).Subscribe(vm => this.Tabs[1] = vm);
-            this.WhenAnyValue(x => x.ColumnNameGeneratorConfigurationViewModel).Subscribe(vm => this.Tabs[2] = vm);
-            this.WhenAnyValue(x => x.TableListViewModel).Subscribe(vm => this.Tabs[3] = vm);
-            this.WhenAnyValue(x => x.OutputWriterConfigurationViewModel).Subscribe(vm => this.Tabs[4] = vm);
+            this.WhenAnyValue(x => x.NameGeneratorConfigurationsViewModel).Subscribe(vm => this.Tabs[1] = vm);
+            this.WhenAnyValue(x => x.TableListViewModel).Subscribe(vm => this.Tabs[2] = vm);
+            this.WhenAnyValue(x => x.OutputWriterConfigurationViewModel).Subscribe(vm => this.Tabs[3] = vm);
 
             this.ViewCore.Closing += (sender, e) => this.OnClosing(e);
         }
@@ -76,18 +75,11 @@ namespace PocoGen.Gui.Applications.ViewModels
             set { this.RaiseAndSetIfChanged(ref this.connectionViewModel, value); }
         }
 
-        private TableNameGeneratorConfiguationViewModel tableNameGeneratorConfiguationViewModel;
-        public TableNameGeneratorConfiguationViewModel TableNameGeneratorConfiguationViewModel
+        private NameGeneratorConfigurationsViewModel nameGeneratorConfigurationsViewModel;
+        public NameGeneratorConfigurationsViewModel NameGeneratorConfigurationsViewModel
         {
-            get { return this.tableNameGeneratorConfiguationViewModel; }
-            set { this.RaiseAndSetIfChanged(ref this.tableNameGeneratorConfiguationViewModel, value); }
-        }
-
-        private ColumnNameGeneratorConfigurationViewModel columnNameGeneratorConfigurationViewModel;
-        public ColumnNameGeneratorConfigurationViewModel ColumnNameGeneratorConfigurationViewModel
-        {
-            get { return this.columnNameGeneratorConfigurationViewModel; }
-            set { this.RaiseAndSetIfChanged(ref this.columnNameGeneratorConfigurationViewModel, value); }
+            get { return this.nameGeneratorConfigurationsViewModel; }
+            set { this.RaiseAndSetIfChanged(ref this.nameGeneratorConfigurationsViewModel, value); }
         }
 
         private TableListViewModel tableListViewModel;
