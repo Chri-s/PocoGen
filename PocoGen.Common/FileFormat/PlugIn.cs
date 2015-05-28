@@ -2,7 +2,7 @@
 
 namespace PocoGen.Common.FileFormat
 {
-    public class PlugIn
+    internal class PlugIn
     {
         public PlugIn()
         {

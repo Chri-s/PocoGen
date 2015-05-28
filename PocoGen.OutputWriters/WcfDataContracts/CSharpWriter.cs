@@ -37,7 +37,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
         private static void WriteTables(TableCollection tables, WriterSettings settings, CodeIndentationWriter writer)
         {
             bool isFirstTable = true;
-            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.ClassName))
+            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.GeneratedClassName))
             {
                 if (!isFirstTable)
                 {
@@ -61,7 +61,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
 
             if (settings.WriteName)
             {
-                dataContractAttribute.NamedProperties.Add("Name", "\"" + CSharpTools.SafeString(table.ClassName) + "\"");
+                dataContractAttribute.NamedProperties.Add("Name", "\"" + CSharpTools.SafeString(table.GeneratedClassName) + "\"");
             }
 
             writer.WriteLine(CSharpTools.GetAttributeString(dataContractAttribute));
@@ -71,7 +71,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
         {
             writer.Write((settings.ClassModifier == ClassModifier.Public) ? "public" : "internal");
             writer.Write(" partial class ");
-            writer.Write(CSharpTools.SafeClassName(table.ClassName));
+            writer.Write(CSharpTools.SafeClassName(table.GeneratedClassName));
 
             if (!string.IsNullOrWhiteSpace(settings.BaseClass))
             {
@@ -112,7 +112,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
             AttribteHelper dataMemberAttribute = new AttribteHelper("DataMember");
             if (settings.WriteName)
             {
-                dataMemberAttribute.NamedProperties.Add("Name", "\"" + CSharpTools.SafeString(column.PropertyName) + "\"");
+                dataMemberAttribute.NamedProperties.Add("Name", "\"" + CSharpTools.SafeString(column.EffectivePropertyName) + "\"");
             }
 
             writer.WriteLine(CSharpTools.GetAttributeString(dataMemberAttribute));
@@ -123,7 +123,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
             writer.Write("public ");
             writer.Write(CSharpTools.GetColumnType(column.PropertyType));
             writer.Write(" ");
-            writer.Write(CSharpTools.SafePropertyName(column.PropertyName));
+            writer.Write(CSharpTools.SafePropertyName(column.EffectivePropertyName));
             writer.WriteLine(" { get; set; }");
         }
     }

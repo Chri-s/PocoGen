@@ -53,7 +53,7 @@ namespace PocoGen.OutputWriters.DapperExtensions
 
         private static void WriteClass(DapperExtensionsWriterSettings settings, Table table, IDBEscaper dbEscaper, CodeIndentationWriter writer)
         {
-            string className = string.Format(CultureInfo.InvariantCulture, settings.ClassNameFormat, table.ClassName);
+            string className = string.Format(CultureInfo.InvariantCulture, settings.ClassNameFormat, table.GeneratedClassName);
 
             writer.Write((settings.ClassModifier == ClassModifier.Public) ? "Public" : "Friend");
             writer.Write(" Class ");
@@ -62,7 +62,7 @@ namespace PocoGen.OutputWriters.DapperExtensions
             writer.Indent();
 
             writer.Write("Inherits ClassMapper(Of ");
-            writer.Write(VisualBasicTools.SafeClassName(table.ClassName));
+            writer.Write(VisualBasicTools.SafeClassName(table.GeneratedClassName));
             writer.WriteLine(")");
             writer.WriteLine();
 
@@ -80,7 +80,7 @@ namespace PocoGen.OutputWriters.DapperExtensions
             foreach (Column column in table.Columns.Where(c => !c.Ignore))
             {
                 writer.Write("Me.Map(Function(x) x.");
-                writer.Write(VisualBasicTools.SafePropertyName(column.PropertyName));
+                writer.Write(VisualBasicTools.SafePropertyName(column.EffectivePropertyName));
                 writer.Write(").Column(");
                 writer.Write(VisualBasicTools.SafeString(dbEscaper.EscapeColumnName(column.Name)));
                 writer.Write(")");

@@ -76,14 +76,14 @@ namespace PocoGen.Runner
         [Import]
         public Engine Engine { get; set; }
 
-        private static void CheckForUnrecognizedPlugIns(List<UnrecognizedPlugIn> unrecognizedPlugIns)
+        private static void CheckForUnrecognizedPlugIns(List<UnknownPlugIn> unrecognizedPlugIns)
         {
             if (unrecognizedPlugIns.Count > 0)
             {
                 Console.Error.WriteLine("ERROR: The POCO definition file contains the following plug ins which were not found:");
                 Console.Error.WriteLine();
 
-                foreach (UnrecognizedPlugIn unrecognizedPlugIn in unrecognizedPlugIns)
+                foreach (UnknownPlugIn unrecognizedPlugIn in unrecognizedPlugIns)
                 {
                     switch (unrecognizedPlugIn.PlugInType)
                     {
@@ -117,7 +117,7 @@ namespace PocoGen.Runner
 
         private void Run(Definition definition, string path)
         {
-            List<UnrecognizedPlugIn> unrecognizedPlugIns;
+            List<UnknownPlugIn> unrecognizedPlugIns;
             this.Engine.SetFromDefinition(definition, out unrecognizedPlugIns);
 
             CheckForUnrecognizedPlugIns(unrecognizedPlugIns);

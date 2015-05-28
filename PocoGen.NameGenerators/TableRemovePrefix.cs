@@ -12,7 +12,7 @@ namespace PocoGen.NameGenerators
         {
             RemovePrefixSettings namingSettings = (RemovePrefixSettings)settings;
 
-            string name = table.ClassName;
+            string name = table.GeneratedClassName;
             StringComparison comparisonMode = namingSettings.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
             if (name.StartsWith(namingSettings.Prefix, comparisonMode))

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace PocoGen.Common.FileFormat
 {
-    public class PlugInCollection : Collection<PlugIn>
+    internal class PlugInCollection : Collection<PlugIn>
     {
         public PlugInCollection()
         {

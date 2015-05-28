@@ -13,10 +13,10 @@ namespace PocoGen.NameGenerators
 
             if (string.IsNullOrEmpty(generatorSettings.FindWhat))
             {
-                return table.ClassName;
+                return table.GeneratedClassName;
             }
 
-            return table.ClassName.Replace(generatorSettings.FindWhat, generatorSettings.ReplaceWith);
+            return table.GeneratedClassName.Replace(generatorSettings.FindWhat, generatorSettings.ReplaceWith);
         }
     }
 }

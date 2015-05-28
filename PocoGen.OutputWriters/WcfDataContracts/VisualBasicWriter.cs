@@ -36,7 +36,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
         private static void WriteTables(TableCollection tables, WriterSettings settings, CodeIndentationWriter writer)
         {
             bool isFirstTable = true;
-            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.ClassName))
+            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.GeneratedClassName))
             {
                 if (!isFirstTable)
                 {
@@ -60,7 +60,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
 
             if (settings.WriteName)
             {
-                dataContractAttribute.NamedProperties.Add("Name", VisualBasicTools.SafeString(table.ClassName));
+                dataContractAttribute.NamedProperties.Add("Name", VisualBasicTools.SafeString(table.GeneratedClassName));
             }
 
             writer.WriteLine(VisualBasicTools.GetAttributeString(dataContractAttribute));
@@ -71,7 +71,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
             writer.Write("Partial ");
             writer.Write((settings.ClassModifier == ClassModifier.Public) ? "Public" : "Friend");
             writer.Write(" Class ");
-            writer.WriteLine(VisualBasicTools.SafeClassName(table.ClassName));
+            writer.WriteLine(VisualBasicTools.SafeClassName(table.GeneratedClassName));
 
             writer.Indent();
 
@@ -111,7 +111,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
             AttribteHelper dataMemberAttribute = new AttribteHelper("DataMember");
             if (settings.WriteName)
             {
-                dataMemberAttribute.NamedProperties.Add("Name", VisualBasicTools.SafeString(column.PropertyName));
+                dataMemberAttribute.NamedProperties.Add("Name", VisualBasicTools.SafeString(column.EffectivePropertyName));
             }
 
             writer.WriteLine(VisualBasicTools.GetAttributeString(dataMemberAttribute));
@@ -120,7 +120,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
         private static void WriteColumn(CodeIndentationWriter writer, Column column)
         {
             writer.Write("Public Property ");
-            writer.Write(VisualBasicTools.SafePropertyName(column.PropertyName));
+            writer.Write(VisualBasicTools.SafePropertyName(column.EffectivePropertyName));
             writer.Write(" As ");
             writer.WriteLine(VisualBasicTools.GetColumnType(column.PropertyType));
         }

@@ -1,27 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PocoGen.Common
 {
-    public class TableCollection : EnhancedKeyedCollection<string, Table>, ICloneable
+    public class TableCollection : EnhancedKeyedCollection<string, Table>
     {
         public TableCollection()
         {
         }
 
-        public TableCollection Clone()
+        internal List<FileFormat.Table> GetFileFormatTables()
         {
-            TableCollection clone = new TableCollection();
-
-            clone.AddRange(from t in this
-                           select t.Clone());
-
-            return clone;
-        }
-
-        object ICloneable.Clone()
-        {
-            return this.Clone();
+            return this.Select(t => t.GetFileFormatTable()).Where(fft => fft != null).ToList();
         }
 
         protected override string GetKeyForItem(Table item)

@@ -69,7 +69,7 @@ namespace PocoGen.OutputWriters.NPoco
             writer.Indent();
 
             bool isFirstTable = true;
-            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.ClassName))
+            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.GeneratedClassName))
             {
                 if (!isFirstTable)
                 {
@@ -87,7 +87,7 @@ namespace PocoGen.OutputWriters.NPoco
         private static void WriteTable(Table table, IDBEscaper dbEscaper, CodeIndentationWriter writer, NPocoFluentMappingWriterSettings settings)
         {
             writer.Write("this.For<");
-            writer.Write(CSharpTools.SafeClassName(table.ClassName));
+            writer.Write(CSharpTools.SafeClassName(table.GeneratedClassName));
             writer.WriteLine(">()");
             writer.Indent();
 
@@ -123,7 +123,7 @@ namespace PocoGen.OutputWriters.NPoco
             foreach (Column column in table.Columns.Where(c => !c.Ignore))
             {
                 writer.Write("t.Column(x => x.");
-                writer.Write(CSharpTools.SafePropertyName(column.PropertyName));
+                writer.Write(CSharpTools.SafePropertyName(column.EffectivePropertyName));
                 writer.Write(").WithName(\"");
                 writer.Write(CSharpTools.SafeString(column.Name));
                 writer.WriteLine("\");");
@@ -146,7 +146,7 @@ namespace PocoGen.OutputWriters.NPoco
             if (primaryKeyColumns.Count == 1)
             {
                 writer.Write(".PrimaryKey(t => t.");
-                writer.Write(CSharpTools.SafeString(primaryKeyColumns[0].PropertyName));
+                writer.Write(CSharpTools.SafeString(primaryKeyColumns[0].EffectivePropertyName));
                 writer.Write(", ");
                 writer.Write(primaryKeyColumns[0].IsAutoIncrement ? "true" : "false");
                 writer.WriteLine(")");
@@ -166,7 +166,7 @@ namespace PocoGen.OutputWriters.NPoco
                     isFirstColumn = false;
 
                     writer.Write("t => t.");
-                    writer.Write(CSharpTools.SafeString(primaryKeyColumn.PropertyName));
+                    writer.Write(CSharpTools.SafeString(primaryKeyColumn.EffectivePropertyName));
                 }
 
                 writer.WriteLine(")");

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace PocoGen.Common
 {
@@ -9,6 +10,8 @@ namespace PocoGen.Common
             this.IsChanged = false;
         }
 
+        // Some classes in FileFormat inherit from this class, so set XmlIgnore
+        [XmlIgnore]
         [Browsable(false)]
         public virtual bool IsChanged { get; private set; }
 

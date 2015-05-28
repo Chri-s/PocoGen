@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 namespace PocoGen.Common.FileFormat
 {
     [XmlRoot("PocoGenDefinition")]
-    public class Definition
+    internal class Definition
     {
         public Definition()
         {

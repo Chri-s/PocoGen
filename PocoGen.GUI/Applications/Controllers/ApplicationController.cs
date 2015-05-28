@@ -195,7 +195,7 @@ namespace PocoGen.Gui.Applications.Controllers
                 return;
             }
 
-            List<UnrecognizedPlugIn> unrecognizedPlugIns;
+            List<UnknownPlugIn> unrecognizedPlugIns;
 
             this.engine.SetFromDefinition(definition, out unrecognizedPlugIns);
             this.shellViewModel.DefinitionFilePath = path;
@@ -204,7 +204,7 @@ namespace PocoGen.Gui.Applications.Controllers
             {
                 StringBuilder message = new StringBuilder("The following plug ins are not found in your installation. If you save the current project, you will remove these plug ins from the project.\r\n\r\n");
 
-                foreach (UnrecognizedPlugIn unrecognizedPlugIn in unrecognizedPlugIns)
+                foreach (UnknownPlugIn unrecognizedPlugIn in unrecognizedPlugIns)
                 {
                     switch (unrecognizedPlugIn.PlugInType)
                     {

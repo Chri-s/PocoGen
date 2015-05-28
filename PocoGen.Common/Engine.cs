@@ -24,6 +24,7 @@ namespace PocoGen.Common
             this.TableChanges = new TableChangeCollection();
             this.Tables = new TableCollection();
             this.ColumnNameGenerators = new ColumnNameGeneratorPlugInCollection();
+            this.UnknownPlugIns = new UnknownPlugInCollection(new List<UnknownPlugIn>());
 
             this.AcceptChanges();
         }
@@ -67,9 +68,9 @@ namespace PocoGen.Common
 
         public TableCollection Tables { get; private set; }
 
-        public TableChangeCollection TableChanges { get; private set; }
-
         public OutputWriterPlugInCollection OutputWriters { get; private set; }
+
+        public UnknownPlugInCollection UnknownPlugIns { get; private set; }
 
         public override bool IsChanged
         {
@@ -160,10 +161,10 @@ namespace PocoGen.Common
 
         public void ApplyNamingGenerators(Table table)
         {
-            table.ClassName = table.Name;
+            table.GeneratedClassName = table.Name;
             foreach (TableNameGeneratorPlugIn tableNameGenerator in this.TableNameGenerators)
             {
-                table.ClassName = tableNameGenerator.GetClassName(table);
+                table.GeneratedClassName = tableNameGenerator.GetClassName(table);
             }
 
             this.ApplyColumnNamingGenerators(table);
@@ -268,14 +269,14 @@ namespace PocoGen.Common
             return definition;
         }
 
-        public void SetFromDefinition(Definition definition, out List<UnrecognizedPlugIn> unrecognizedPlugIns)
+        public void SetFromDefinition(Definition definition, out List<UnknownPlugIn> unrecognizedPlugIns)
         {
             if (definition == null)
             {
                 throw new ArgumentNullException("definition", "definition is null.");
             }
 
-            unrecognizedPlugIns = new List<UnrecognizedPlugIn>();
+            unrecognizedPlugIns = new List<UnknownPlugIn>();
 
             this.ConnectionString = definition.ConnectionString;
             this.UseAnsiQuoting = definition.UseAnsiQuoting;
@@ -292,7 +293,7 @@ namespace PocoGen.Common
             this.AcceptChanges();
         }
 
-        private void LoadSchemaReader(Definition definition, List<UnrecognizedPlugIn> unrecognizedPlugIns)
+        private void LoadSchemaReader(Definition definition, List<UnknownPlugIn> unrecognizedPlugIns)
         {
             this.SchemaReader = null;
 
@@ -304,7 +305,7 @@ namespace PocoGen.Common
 
                 if (schemaReader == null)
                 {
-                    unrecognizedPlugIns.Add(new UnrecognizedPlugIn(PlugInType.SchemaReader, definition.SchemaReader));
+                    unrecognizedPlugIns.Add(new UnknownPlugIn(PlugInType.SchemaReader, definition.SchemaReader));
                 }
 
                 if (schemaReader != null && schemaReader.Settings != null && definition.SchemaReader.Configuration != null)
@@ -316,7 +317,7 @@ namespace PocoGen.Common
             }
         }
 
-        private void LoadTableNameGenerators(Definition definition, List<UnrecognizedPlugIn> unrecognizedPlugIns)
+        private void LoadTableNameGenerators(Definition definition, List<UnknownPlugIn> unrecognizedPlugIns)
         {
             this.TableNameGenerators.Clear();
             foreach (var definitionTableNameGenerator in definition.TableNameGenerators)
@@ -327,7 +328,7 @@ namespace PocoGen.Common
 
                 if (tableNameGenerator == null)
                 {
-                    unrecognizedPlugIns.Add(new UnrecognizedPlugIn(PlugInType.TableNameGenerator, definitionTableNameGenerator));
+                    unrecognizedPlugIns.Add(new UnknownPlugIn(PlugInType.TableNameGenerator, definitionTableNameGenerator));
                 }
 
                 if (tableNameGenerator != null && tableNameGenerator.Settings != null && definitionTableNameGenerator.Configuration != null)
@@ -339,7 +340,7 @@ namespace PocoGen.Common
             }
         }
 
-        private void LoadColumnNameGenerators(Definition definition, List<UnrecognizedPlugIn> unrecognizedPlugIns)
+        private void LoadColumnNameGenerators(Definition definition, List<UnknownPlugIn> unrecognizedPlugIns)
         {
             this.ColumnNameGenerators.Clear();
             foreach (var definitionColumnNameGenerator in definition.ColumnNameGenerators)
@@ -350,7 +351,7 @@ namespace PocoGen.Common
 
                 if (columnNameGenerator == null)
                 {
-                    unrecognizedPlugIns.Add(new UnrecognizedPlugIn(PlugInType.ColumnNameGenerator, definitionColumnNameGenerator));
+                    unrecognizedPlugIns.Add(new UnknownPlugIn(PlugInType.ColumnNameGenerator, definitionColumnNameGenerator));
                 }
 
                 if (columnNameGenerator != null && columnNameGenerator.Settings != null && definitionColumnNameGenerator.Configuration != null)
@@ -362,7 +363,7 @@ namespace PocoGen.Common
             }
         }
 
-        private void LoadOutputWriters(Definition definition, List<UnrecognizedPlugIn> unrecognizedPlugIns)
+        private void LoadOutputWriters(Definition definition, List<UnknownPlugIn> unrecognizedPlugIns)
         {
             this.OutputWriters.Clear();
 
@@ -374,7 +375,7 @@ namespace PocoGen.Common
 
                 if (outputWriter == null)
                 {
-                    unrecognizedPlugIns.Add(new UnrecognizedPlugIn(PlugInType.OutputWriter, definitionOutputWriter));
+                    unrecognizedPlugIns.Add(new UnknownPlugIn(PlugInType.OutputWriter, definitionOutputWriter));
                 }
                 else
                 {
@@ -423,11 +424,11 @@ namespace PocoGen.Common
         {
             foreach (Column column in table.Columns)
             {
-                column.PropertyName = column.Name;
+                column.GeneratedPropertyName = column.Name;
 
                 foreach (ColumnNameGeneratorPlugIn columnNameGenerator in this.ColumnNameGenerators)
                 {
-                    column.PropertyName = columnNameGenerator.GetPropertyName(table, column);
+                    column.GeneratedPropertyName = columnNameGenerator.GetPropertyName(table, column);
                 }
             }
         }

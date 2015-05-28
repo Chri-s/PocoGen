@@ -153,7 +153,7 @@ namespace PocoGen.Common.FileFormat
             if (needType) WriteXsiType(@"Table", @"");
             WriteElementString(@"Name", @"", ((global::System.String)o.@Name));
             WriteElementStringRaw(@"Ignore", @"", System.Xml.XmlConvert.ToString((global::System.Boolean)((global::System.Boolean)o.@Ignore)));
-            WriteElementString(@"PropertyName", @"", ((global::System.String)o.@PropertyName));
+            WriteElementString(@"PropertyName", @"", ((global::System.String)o.ClassName));
             {
                 global::PocoGen.Common.FileFormat.ColumnCollection a = (global::PocoGen.Common.FileFormat.ColumnCollection)((global::PocoGen.Common.FileFormat.ColumnCollection)o.@Columns);
                 if (a != null)
@@ -632,7 +632,7 @@ namespace PocoGen.Common.FileFormat
                     else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id22_PropertyName && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
-                            o.@PropertyName = Reader.ReadElementString();
+                            o.ClassName = Reader.ReadElementString();
                         }
                         paramsRead[2] = true;
                     }

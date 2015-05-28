@@ -2,7 +2,7 @@
 
 namespace PocoGen.Common.FileFormat
 {
-    public class Column
+    internal class Column : ChangeTrackingBase
     {
         public Column()
         {
@@ -19,10 +19,32 @@ namespace PocoGen.Common.FileFormat
         [XmlElement("Name")]
         public string Name { get; internal set; }
 
+        private bool ignore;
         [XmlElement("Ignore")]
-        public bool Ignore { get; set; }
+        public bool Ignore
+        {
+            get
+            {
+                return this.ignore;
+            }
+            set
+            {
+                this.ChangeProperty(ref this.ignore, value);
+            }
+        }
 
+        private string propertyName;
         [XmlElement("PropertyName")]
-        public string PropertyName { get; set; }
+        public string PropertyName
+        {
+            get
+            {
+                return this.propertyName;
+            }
+            set
+            {
+                this.ChangeProperty(ref this.propertyName, value);
+            }
+        }
     }
 }

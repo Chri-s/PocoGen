@@ -9,7 +9,7 @@ namespace PocoGen.NameGenerators
     {
         public string GetClassName(Table table, ISettings settings)
         {
-            return Utilities.ToPascalCase(table.ClassName);
+            return Utilities.ToPascalCase(table.GeneratedClassName);
         }
     }
 }

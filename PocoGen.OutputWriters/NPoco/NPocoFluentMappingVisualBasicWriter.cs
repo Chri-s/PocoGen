@@ -54,7 +54,7 @@ namespace PocoGen.OutputWriters.NPoco
 
             writer.WriteLine();
 
-            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.ClassName))
+            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.GeneratedClassName))
             {
                 writer.WriteLine();
                 NPocoFluentMappingVisualBasicWriter.WriteColumnMapping(table, writer);
@@ -70,7 +70,7 @@ namespace PocoGen.OutputWriters.NPoco
             writer.Indent();
 
             bool isFirstTable = true;
-            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.ClassName))
+            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.GeneratedClassName))
             {
                 if (!isFirstTable)
                 {
@@ -88,7 +88,7 @@ namespace PocoGen.OutputWriters.NPoco
         private static void WriteTable(NPocoFluentMappingWriterSettings settings, Table table, IDBEscaper dbEscaper, CodeIndentationWriter writer)
         {
             writer.Write("Me.For(Of ");
-            writer.Write(VisualBasicTools.SafeClassName(table.ClassName));
+            writer.Write(VisualBasicTools.SafeClassName(table.GeneratedClassName));
             writer.WriteLine(")() _");
             writer.Indent();
 
@@ -119,7 +119,7 @@ namespace PocoGen.OutputWriters.NPoco
             writer.Write(".Columns(AddressOf ");
             writer.Write(settings.ClassName);
             writer.Write(".");
-            writer.Write(VisualBasicTools.SafeClassName(table.ClassName + "Columns"));
+            writer.Write(VisualBasicTools.SafeClassName(table.GeneratedClassName + "Columns"));
             writer.Write(", True)");
             writer.Outdent();
             writer.WriteLine();
@@ -134,7 +134,7 @@ namespace PocoGen.OutputWriters.NPoco
             if (primaryKeyColumns.Count == 1)
             {
                 writer.Write(".PrimaryKey(Function(t) t.");
-                writer.Write(CSharpTools.SafeString(primaryKeyColumns[0].PropertyName));
+                writer.Write(CSharpTools.SafeString(primaryKeyColumns[0].EffectivePropertyName));
                 writer.Write(", ");
                 writer.Write(primaryKeyColumns[0].IsAutoIncrement ? "True" : "False");
                 writer.WriteLine(") _");
@@ -154,7 +154,7 @@ namespace PocoGen.OutputWriters.NPoco
                     isFirstColumn = false;
 
                     writer.Write("Function(t) t.");
-                    writer.Write(CSharpTools.SafeString(primaryKeyColumn.PropertyName));
+                    writer.Write(CSharpTools.SafeString(primaryKeyColumn.EffectivePropertyName));
                 }
 
                 writer.WriteLine(") _");
@@ -164,16 +164,16 @@ namespace PocoGen.OutputWriters.NPoco
         private static void WriteColumnMapping(Table table, CodeIndentationWriter writer)
         {
             writer.Write("Private Shared Sub ");
-            writer.Write(VisualBasicTools.SafeClassName(table.ClassName + "Columns"));
+            writer.Write(VisualBasicTools.SafeClassName(table.GeneratedClassName + "Columns"));
             writer.Write("(t As ColumnConfigurationBuilder(Of ");
-            writer.Write(VisualBasicTools.SafeClassName(table.ClassName));
+            writer.Write(VisualBasicTools.SafeClassName(table.GeneratedClassName));
             writer.WriteLine("))");
             writer.Indent();
 
             foreach (Column column in table.Columns.Where(c => !c.Ignore))
             {
                 writer.Write("t.Column(Function(x) x.");
-                writer.Write(VisualBasicTools.SafePropertyName(column.PropertyName));
+                writer.Write(VisualBasicTools.SafePropertyName(column.EffectivePropertyName));
                 writer.Write(").WithName(");
                 writer.Write(VisualBasicTools.SafeString(column.Name));
                 writer.WriteLine(")");

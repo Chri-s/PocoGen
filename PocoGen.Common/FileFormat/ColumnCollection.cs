@@ -1,6 +1,6 @@
 ﻿namespace PocoGen.Common.FileFormat
 {
-    public class ColumnCollection : EnhancedKeyedCollection<string, Column>
+    internal class ColumnCollection : EnhancedKeyedCollection<string, Column>
     {
         public ColumnCollection()
         {

@@ -54,13 +54,13 @@ namespace PocoGen.OutputWriters.DapperExtensions
 
         private static void WriteClass(DapperExtensionsWriterSettings settings, Table table, IDBEscaper dbEscaper, CodeIndentationWriter writer)
         {
-            string className = string.Format(CultureInfo.InvariantCulture, settings.ClassNameFormat, table.ClassName);
+            string className = string.Format(CultureInfo.InvariantCulture, settings.ClassNameFormat, table.GeneratedClassName);
 
             writer.Write((settings.ClassModifier == ClassModifier.Public) ? "public" : "internal");
             writer.Write(" class ");
             writer.Write(CSharpTools.SafeClassName(className));
             writer.Write(" : ClassMapper<");
-            writer.Write(CSharpTools.SafeClassName(table.ClassName));
+            writer.Write(CSharpTools.SafeClassName(table.GeneratedClassName));
             writer.WriteLine(">");
 
             writer.WriteLine("{");
@@ -84,7 +84,7 @@ namespace PocoGen.OutputWriters.DapperExtensions
             foreach (Column column in table.Columns.Where(c => !c.Ignore))
             {
                 writer.Write("this.Map(x => x.");
-                writer.Write(CSharpTools.SafePropertyName(column.PropertyName));
+                writer.Write(CSharpTools.SafePropertyName(column.EffectivePropertyName));
                 writer.Write(").Column(\"");
                 writer.Write(CSharpTools.SafeString(dbEscaper.EscapeColumnName(column.Name)));
                 writer.Write("\")");

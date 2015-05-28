@@ -2,7 +2,7 @@
 
 namespace PocoGen.Common.FileFormat
 {
-    public class OutputWriterPlugIn : PlugIn
+    internal class OutputWriterPlugIn : PlugIn
     {
         public OutputWriterPlugIn()
             : base()

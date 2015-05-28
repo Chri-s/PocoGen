@@ -9,7 +9,7 @@ namespace PocoGen.NameGenerators
     {
         public string GetPropertyName(Table table, Column column, ISettings settings)
         {
-            return Utilities.ToPascalCase(column.PropertyName);
+            return Utilities.ToPascalCase(column.GeneratedPropertyName);
         }
     }
 }

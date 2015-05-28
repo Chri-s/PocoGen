@@ -37,7 +37,7 @@ namespace PocoGen.OutputWriters.Poco
         private static void WriteTables(TableCollection tables, PocoWriterSettings settings, CodeIndentationWriter writer)
         {
             bool isFirstTable = true;
-            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.ClassName))
+            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.GeneratedClassName))
             {
                 if (!isFirstTable)
                 {
@@ -54,7 +54,7 @@ namespace PocoGen.OutputWriters.Poco
         {
             writer.Write((settings.ClassModifier == ClassModifier.Public) ? "public" : "internal");
             writer.Write(" partial class ");
-            writer.Write(CSharpTools.SafeClassName(table.ClassName));
+            writer.Write(CSharpTools.SafeClassName(table.GeneratedClassName));
 
             List<string> baseClassAndInterfaces = new List<string>();
             if (!string.IsNullOrWhiteSpace(settings.BaseClass))
@@ -149,7 +149,7 @@ namespace PocoGen.OutputWriters.Poco
             string variableName = null;
             if (PropertiesNeedImplementation(settings))
             {
-                variableName = column.PropertyName;
+                variableName = column.EffectivePropertyName;
                 variableName = "_" + char.ToLowerInvariant(variableName[0]) + variableName.Substring(1);
                 variableName = CSharpTools.SafePropertyName(variableName);
 
@@ -163,7 +163,7 @@ namespace PocoGen.OutputWriters.Poco
             writer.Write("public ");
             writer.Write(CSharpTools.GetColumnType(column.PropertyType));
             writer.Write(" ");
-            writer.Write(CSharpTools.SafePropertyName(column.PropertyName));
+            writer.Write(CSharpTools.SafePropertyName(column.EffectivePropertyName));
 
             if (PropertiesNeedImplementation(settings))
             {

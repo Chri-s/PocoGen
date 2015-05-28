@@ -53,14 +53,14 @@ namespace PocoGen.Gui.Applications.Controllers
             }
 
             TableChange tableChange = this.engine.TableChanges[e.Table.Name];
-            tableVm.ClassName = (tableChange == null || string.IsNullOrEmpty(tableChange.ClassName)) ? e.Table.ClassName : tableChange.ClassName;
+            tableVm.ClassName = (tableChange == null || string.IsNullOrEmpty(tableChange.ClassName)) ? e.Table.GeneratedClassName : tableChange.ClassName;
 
             foreach (ColumnViewModel columnVm in tableVm.Columns)
             {
                 Column column = e.Table.Columns[columnVm.ColumnName];
                 PocoGen.Common.ColumnChange columnChange = tableChange == null ? null : tableChange.Columns[columnVm.ColumnName];
 
-                columnVm.PropertyName = (columnChange == null || string.IsNullOrEmpty(columnChange.PropertyName)) ? column.PropertyName : columnChange.PropertyName;
+                columnVm.PropertyName = (columnChange == null || string.IsNullOrEmpty(columnChange.PropertyName)) ? column.GeneratedPropertyName : columnChange.PropertyName;
             }
         }
 
@@ -99,7 +99,7 @@ namespace PocoGen.Gui.Applications.Controllers
                             TableChange tableChange = this.engine.TableChanges[table.Name];
                             TableViewModel tableVm = this.container.GetExportedValue<TableViewModel>();
                             tableVm.TableName = table.Name;
-                            tableVm.ClassName = (tableChange == null || string.IsNullOrEmpty(tableChange.ClassName)) ? table.ClassName : tableChange.ClassName;
+                            tableVm.ClassName = (tableChange == null || string.IsNullOrEmpty(tableChange.ClassName)) ? table.GeneratedClassName : tableChange.ClassName;
                             tableVm.Include = (tableChange == null) ? true : !tableChange.Ignore;
                             tableVm.IsView = table.IsView;
                             tableVm.WhenAny(
@@ -116,7 +116,7 @@ namespace PocoGen.Gui.Applications.Controllers
                                 columnVm.ColumnName = column.Name;
                                 columnVm.Included = (columnChange == null) ? true : !columnChange.Ignore;
                                 columnVm.IsPrimaryKey = column.IsPK;
-                                columnVm.PropertyName = (columnChange == null || string.IsNullOrEmpty(columnChange.PropertyName)) ? column.PropertyName : columnChange.PropertyName;
+                                columnVm.PropertyName = (columnChange == null || string.IsNullOrEmpty(columnChange.PropertyName)) ? column.GeneratedPropertyName : columnChange.PropertyName;
                                 columnVm.TableName = table.Name;
                                 columnVm.WhenAny(vm => vm.TableName, vm => vm.ColumnName, vm => vm.PropertyName, vm => vm.Included, (tableName, columnName, propertyName, included) => new { TableName = tableName.GetValue(), ColumnName = columnName.GetValue(), PropertyName = propertyName.GetValue(), Included = included.GetValue() }).Subscribe(data => this.SyncColumnChange(data.TableName, data.ColumnName, data.PropertyName, !data.Included));
                                 tableVm.Columns.Add(columnVm);
@@ -154,7 +154,7 @@ namespace PocoGen.Gui.Applications.Controllers
             }
             else
             {
-                tableChange.ClassName = (table.ClassName == className) ? string.Empty : className;
+                tableChange.ClassName = (table.GeneratedClassName == className) ? string.Empty : className;
                 tableChange.Ignore = ignore;
 
                 if (!tableChange.HasChangesTo(table))
@@ -187,7 +187,7 @@ namespace PocoGen.Gui.Applications.Controllers
             }
             else
             {
-                columnChange.PropertyName = (column.PropertyName == propertyName) ? string.Empty : propertyName;
+                columnChange.PropertyName = (column.GeneratedPropertyName == propertyName) ? string.Empty : propertyName;
                 columnChange.Ignore = ignore;
 
                 if (!columnChange.HasChangesTo(column))

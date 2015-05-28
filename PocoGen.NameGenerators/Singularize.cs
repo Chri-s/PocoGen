@@ -14,9 +14,9 @@ namespace PocoGen.NameGenerators
     {
         public string GetClassName(Table table, ISettings settings)
         {
-            string singularized = Inflector.Inflector.Singularize(table.ClassName);
+            string singularized = Inflector.Inflector.Singularize(table.GeneratedClassName);
 
-            return string.IsNullOrEmpty(singularized) ? table.ClassName : singularized;
+            return string.IsNullOrEmpty(singularized) ? table.GeneratedClassName : singularized;
         }
     }
 }
