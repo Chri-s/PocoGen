@@ -46,5 +46,19 @@ namespace PocoGen.Common.FileFormat
                 this.ChangeProperty(ref this.propertyName, value);
             }
         }
+
+        [XmlIgnore]
+        public bool HasDefaultValues
+        {
+            get
+            {
+                return Column.AreDefaultValues(this.Ignore, this.PropertyName);
+            }
+        }
+
+        public static bool AreDefaultValues(bool ignore, string propertyName)
+        {
+            return !ignore && string.IsNullOrEmpty(propertyName);
+        }
     }
 }

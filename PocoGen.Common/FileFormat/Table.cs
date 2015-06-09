@@ -10,6 +10,14 @@ namespace PocoGen.Common.FileFormat
             this.Columns = new ColumnCollection();
         }
 
+        public Table(string name, string className, bool ignore)
+            : this()
+        {
+            this.Name = name;
+            this.className = className;
+            this.ignore = ignore;
+        }
+
         // Set modifier is internal so that the DefinitionSerializer can still set this property.
         [XmlElement("Name")]
         public string Name { get; internal set; }
@@ -42,6 +50,23 @@ namespace PocoGen.Common.FileFormat
             {
                 this.ChangeProperty(ref this.className, value);
             }
+        }
+
+        /// <summary>
+        /// Gets whether this table has the default values and contains no changed columns.
+        /// </summary>
+        [XmlIgnore]
+        public bool HasDefaultValues
+        {
+            get
+            {
+                return Table.AreDefaultValues(this.Ignore, this.ClassName) && this.Columns.Count == 0;
+            }
+        }
+
+        public static bool AreDefaultValues(bool ignore, string className)
+        {
+            return !ignore && string.IsNullOrEmpty(className);
         }
 
         [XmlArray("Columns")]

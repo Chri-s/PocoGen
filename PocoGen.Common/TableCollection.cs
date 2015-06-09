@@ -10,11 +10,6 @@ namespace PocoGen.Common
         {
         }
 
-        internal List<FileFormat.Table> GetFileFormatTables()
-        {
-            return this.Select(t => t.GetFileFormatTable()).Where(fft => fft != null).ToList();
-        }
-
         protected override string GetKeyForItem(Table item)
         {
             return item.Name;

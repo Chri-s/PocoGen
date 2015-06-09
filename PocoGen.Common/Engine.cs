@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using PocoGen.Common.FileFormat;
 
 namespace PocoGen.Common
@@ -15,13 +17,15 @@ namespace PocoGen.Common
     {
         public event EventHandler<TableEventArgs> TableRenamed;
 
+        private FileFormat.TableCollection savedTables;
+
         public Engine()
         {
             this.UseAnsiQuoting = false;
             this.ConnectionString = string.Empty;
             this.TableNameGenerators = new TableNameGeneratorPlugInCollection();
             this.OutputWriters = new OutputWriterPlugInCollection();
-            this.TableChanges = new TableChangeCollection();
+            this.savedTables = new FileFormat.TableCollection();
             this.Tables = new TableCollection();
             this.ColumnNameGenerators = new ColumnNameGeneratorPlugInCollection();
             this.UnknownPlugIns = new UnknownPlugInCollection(new List<UnknownPlugIn>());
@@ -81,7 +85,7 @@ namespace PocoGen.Common
                 return base.IsChanged ||
                     this.ColumnNameGenerators.IsChanged ||
                     this.OutputWriters.IsChanged ||
-                    this.TableChanges.IsChanged ||
+                    this.savedTables.IsChanged ||
                     this.TableNameGenerators.IsChanged ||
                     isSchemaReaderChanged;
             }
@@ -93,7 +97,7 @@ namespace PocoGen.Common
 
             this.ColumnNameGenerators.AcceptChanges();
             this.OutputWriters.AcceptChanges();
-            this.TableChanges.AcceptChanges();
+            this.savedTables.AcceptChanges();
             this.TableNameGenerators.AcceptChanges();
 
             if (this.schemaReader != null)
@@ -155,8 +159,22 @@ namespace PocoGen.Common
             }
 
             this.Tables = await Task.Run(() => this.SchemaReader.ReadSchema(this.ConnectionString));
+            this.SubscribePropertyChangedEvents();
 
             this.ApplyNamingGenerators();
+        }
+
+        private void SubscribePropertyChangedEvents()
+        {
+            foreach (Table table in this.Tables)
+            {
+                table.PropertyChanged += TablePropertyChanged;
+
+                foreach (Column column in table.Columns)
+                {
+                    column.PropertyChanged += ColumnPropertyChanged;
+                }
+            }
         }
 
         public void ApplyNamingGenerators(Table table)
@@ -185,7 +203,7 @@ namespace PocoGen.Common
             }
 
             IDBEscaper dbEscaper = this.UseAnsiQuoting ? new AnsiDbEscaper() : this.SchemaReader.DBEscaper;
-            await Task.Run(() => outputWriter.Write(stream, this.GetTablesWithChanges(), dbEscaper, outputInformation));
+            await Task.Run(() => outputWriter.Write(stream, this.Tables, dbEscaper, outputInformation));
         }
 
         public void Reset()
@@ -196,7 +214,7 @@ namespace PocoGen.Common
             this.TableNameGenerators.Clear();
             this.ColumnNameGenerators.Clear();
             this.Tables.Clear();
-            this.TableChanges.Clear();
+            this.savedTables.Clear();
             this.OutputWriters.Clear();
 
             this.AcceptChanges();
@@ -220,8 +238,6 @@ namespace PocoGen.Common
 
             this.ApplyNamingGenerators();
 
-            TableCollection tablesWithChanges = this.GetTablesWithChanges();
-
             IDBEscaper dbEscaper = this.UseAnsiQuoting ? new AnsiDbEscaper() : this.SchemaReader.DBEscaper;
             foreach (OutputWriterPlugIn outputWriter in this.OutputWriters)
             {
@@ -229,66 +245,111 @@ namespace PocoGen.Common
                 using (FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
                 using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
                 {
-                    outputWriter.Write(writer, tablesWithChanges, dbEscaper, null);
+                    outputWriter.Write(writer, this.Tables, dbEscaper, null);
                 }
             }
         }
 
-        public Definition GetDefinition()
+        public void Save(string path)
         {
-            Definition definition = new Definition();
-            definition.ConnectionString = this.ConnectionString;
-            definition.UseAnsiQuoting = this.UseAnsiQuoting;
+            Definition document = new Definition();
+            this.SaveTo(document);
+            document.Save(path);
+
+            this.AcceptChanges();
+        }
+
+        public void Save(Stream stream)
+        {
+            Definition document = new Definition();
+            this.SaveTo(document);
+            document.Save(stream);
+
+            this.AcceptChanges();
+        }
+
+        public void Save(XmlWriter writer)
+        {
+            Definition document = new Definition();
+            this.SaveTo(document);
+            document.Save(writer);
+
+            this.AcceptChanges();
+        }
+
+        public void Load(string path, out List<UnknownPlugIn> unknownPlugIns)
+        {
+            Definition definition = Definition.Load(path);
+
+            this.Load(definition, out unknownPlugIns);
+        }
+
+        public void Load(Stream stream, out List<UnknownPlugIn> unknownPlugIns)
+        {
+            Definition definition = Definition.Load(stream);
+
+            this.Load(definition, out unknownPlugIns);
+        }
+
+        public void Load(XmlReader reader, out List<UnknownPlugIn> unknownPlugIns)
+        {
+            Definition definition = Definition.Load(reader);
+
+            this.Load(definition, out unknownPlugIns);
+        }
+
+        private void SaveTo(Definition document)
+        {
+            document.ConnectionString = this.ConnectionString;
+            document.UseAnsiQuoting = this.UseAnsiQuoting;
 
             if (this.SchemaReader != null)
             {
                 SettingsRepository settings = (this.SchemaReader.Settings != null) ? this.SchemaReader.Settings.Serialize() : null;
-                definition.SchemaReader = new PlugIn(this.SchemaReader.Metadata.Guid, this.SchemaReader.Metadata.Name, settings);
+                document.SchemaReader = new PlugIn(this.SchemaReader.Metadata.Guid, this.SchemaReader.Metadata.Name, settings);
             }
 
             foreach (TableNameGeneratorPlugIn tableNameGenerator in this.TableNameGenerators)
             {
                 SettingsRepository settings = (tableNameGenerator.Settings != null) ? tableNameGenerator.Settings.Serialize() : null;
-                definition.TableNameGenerators.Add(new PlugIn(tableNameGenerator.Guid, tableNameGenerator.Name, settings));
+                document.TableNameGenerators.Add(new PlugIn(tableNameGenerator.Guid, tableNameGenerator.Name, settings));
             }
 
             foreach (ColumnNameGeneratorPlugIn columnNameGenerator in this.ColumnNameGenerators)
             {
                 SettingsRepository settings = (columnNameGenerator.Settings != null) ? columnNameGenerator.Settings.Serialize() : null;
-                definition.ColumnNameGenerators.Add(new PlugIn(columnNameGenerator.Guid, columnNameGenerator.Name, settings));
+                document.ColumnNameGenerators.Add(new PlugIn(columnNameGenerator.Guid, columnNameGenerator.Name, settings));
             }
 
-            definition.Tables.AddRange(this.TableChanges.Select(t => t.ToTable()));
+            document.Tables.AddRange(this.savedTables);
 
             foreach (OutputWriterPlugIn outputWriter in this.OutputWriters)
             {
                 SettingsRepository settings = (outputWriter.Settings != null) ? outputWriter.Settings.Serialize() : null;
-                definition.OutputWriters.Add(new FileFormat.OutputWriterPlugIn(outputWriter.Guid, outputWriter.Name, outputWriter.FileName, settings));
+                document.OutputWriters.Add(new FileFormat.OutputWriterPlugIn(outputWriter.Guid, outputWriter.Name, outputWriter.FileName, settings));
             }
-
-            return definition;
         }
 
-        public void SetFromDefinition(Definition definition, out List<UnknownPlugIn> unrecognizedPlugIns)
+        private void Load(Definition definition, out List<UnknownPlugIn> unknownPlugIns)
         {
             if (definition == null)
             {
                 throw new ArgumentNullException("definition", "definition is null.");
             }
 
-            unrecognizedPlugIns = new List<UnknownPlugIn>();
+            unknownPlugIns = new List<UnknownPlugIn>();
 
             this.ConnectionString = definition.ConnectionString;
             this.UseAnsiQuoting = definition.UseAnsiQuoting;
 
-            this.LoadSchemaReader(definition, unrecognizedPlugIns);
-            this.LoadTableNameGenerators(definition, unrecognizedPlugIns);
-            this.LoadColumnNameGenerators(definition, unrecognizedPlugIns);
+            this.LoadSchemaReader(definition, unknownPlugIns);
+            this.LoadTableNameGenerators(definition, unknownPlugIns);
+            this.LoadColumnNameGenerators(definition, unknownPlugIns);
 
             this.Tables.Clear();
-            this.TableChanges = new TableChangeCollection(definition.Tables.Select(t => t.ToTableChange()));
+            this.savedTables = definition.Tables;
 
-            this.LoadOutputWriters(definition, unrecognizedPlugIns);
+            this.LoadOutputWriters(definition, unknownPlugIns);
 
             this.AcceptChanges();
         }
@@ -412,14 +473,6 @@ namespace PocoGen.Common
             }
         }
 
-        private TableCollection GetTablesWithChanges()
-        {
-            TableCollection clonedTables = this.Tables.Clone();
-            this.TableChanges.ApplyChanges(clonedTables);
-
-            return clonedTables;
-        }
-
         private void ApplyColumnNamingGenerators(Table table)
         {
             foreach (Column column in table.Columns)
@@ -439,6 +492,94 @@ namespace PocoGen.Common
             if (handler != null)
             {
                 handler(this, new TableEventArgs(table));
+            }
+        }
+
+        private void ColumnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "EffectivePropertyName" && e.PropertyName != "Ignore")
+                return;
+
+            Column column = (Column)sender;
+            Table table = column.Table;
+            if (FileFormat.Column.AreDefaultValues(column.Ignore, column.UserChangedPropertyName))
+            {
+                // Remove the saved column
+
+                FileFormat.Table savedTable = this.savedTables[table.Name];
+                if (savedTable == null)
+                {
+                    // There is no table containing this column, return
+                    return;
+                }
+
+                FileFormat.Column savedColumn = savedTable.Columns[column.Name];
+                if (savedColumn != null)
+                {
+                    savedTable.Columns.Remove(savedColumn);
+
+                    // Remove the savedTable if it has no changes
+                    if (savedTable.HasDefaultValues)
+                    {
+                        this.savedTables.Remove(savedTable);
+                    }
+                }
+            }
+            else
+            {
+                // Create or update the saved column
+
+                FileFormat.Table savedTable = this.savedTables[table.Name];
+                if (savedTable == null)
+                {
+                    // Saved column does not exist, create it
+                    savedTable = new FileFormat.Table(table.Name, table.UserChangedClassName, table.Ignore);
+                    this.savedTables.Add(savedTable);
+                }
+
+                FileFormat.Column savedColumn = savedTable.Columns[column.Name];
+                if (savedColumn == null)
+                {
+                    // Create and add the saved column
+                    savedColumn = new FileFormat.Column(column.Name, column.UserChangedPropertyName, column.Ignore);
+                    savedTable.Columns.Add(savedColumn);
+                }
+                else
+                {
+                    // Update the saved columnNameGenerators
+                    savedColumn.Ignore = column.Ignore;
+                    savedColumn.PropertyName = column.UserChangedPropertyName;
+                }
+            }
+        }
+
+        private void TablePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "EffectiveClassName" && e.PropertyName != "Ignore")
+                return;
+
+            Table table = (Table)sender;
+            if (FileFormat.Table.AreDefaultValues(table.Ignore, table.UserChangedClassName))
+            {
+                FileFormat.Table savedTable = this.savedTables[table.Name];
+                if (savedTable != null)
+                {
+                    savedTables.Remove(savedTable);
+                }
+            }
+            else
+            {
+                FileFormat.Table savedTable = this.savedTables[table.Name];
+                if (savedTable == null)
+                {
+                    savedTable = new FileFormat.Table(table.Name, table.UserChangedClassName, table.Ignore);
+                    this.savedTables.Add(savedTable);
+                }
+                else
+                {
+                    savedTable.ClassName = table.UserChangedClassName;
+                    savedTable.Ignore = table.Ignore;
+                }
             }
         }
     }
