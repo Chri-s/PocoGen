@@ -109,6 +109,7 @@ namespace PocoGen.Common
                     this.userChangedPropertyName = null;
                 }
                 this.OnPropertyChanged();
+                this.OnPropertyChanged("UserChangedPropertyName");
             }
         }
 
