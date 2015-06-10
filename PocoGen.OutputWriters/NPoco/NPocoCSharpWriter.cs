@@ -38,7 +38,7 @@ namespace PocoGen.OutputWriters.NPoco
         private static void WriteTables(TableCollection tables, IDBEscaper dbEscaper, NPocoWriterSettings settings, CodeIndentationWriter writer)
         {
             bool isFirstTable = true;
-            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.GeneratedClassName))
+            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.EffectiveClassName))
             {
                 if (!isFirstTable)
                 {
@@ -59,7 +59,7 @@ namespace PocoGen.OutputWriters.NPoco
             writer.WriteLine("[ExplicitColumns]");
             writer.Write((settings.ClassModifier == ClassModifier.Public) ? "public" : "internal");
             writer.Write(" partial class ");
-            writer.Write(CSharpTools.SafeClassName(table.GeneratedClassName));
+            writer.Write(CSharpTools.SafeClassName(table.EffectiveClassName));
 
             if (!string.IsNullOrWhiteSpace(settings.BaseClass))
             {

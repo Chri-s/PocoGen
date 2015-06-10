@@ -54,13 +54,13 @@ namespace PocoGen.OutputWriters.DapperExtensions
 
         private static void WriteClass(DapperExtensionsWriterSettings settings, Table table, IDBEscaper dbEscaper, CodeIndentationWriter writer)
         {
-            string className = string.Format(CultureInfo.InvariantCulture, settings.ClassNameFormat, table.GeneratedClassName);
+            string className = string.Format(CultureInfo.InvariantCulture, settings.ClassNameFormat, table.EffectiveClassName);
 
             writer.Write((settings.ClassModifier == ClassModifier.Public) ? "public" : "internal");
             writer.Write(" class ");
             writer.Write(CSharpTools.SafeClassName(className));
             writer.Write(" : ClassMapper<");
-            writer.Write(CSharpTools.SafeClassName(table.GeneratedClassName));
+            writer.Write(CSharpTools.SafeClassName(table.EffectiveClassName));
             writer.WriteLine(">");
 
             writer.WriteLine("{");

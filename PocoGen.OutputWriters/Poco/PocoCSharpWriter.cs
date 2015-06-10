@@ -37,7 +37,7 @@ namespace PocoGen.OutputWriters.Poco
         private static void WriteTables(TableCollection tables, PocoWriterSettings settings, CodeIndentationWriter writer)
         {
             bool isFirstTable = true;
-            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.GeneratedClassName))
+            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.EffectiveClassName))
             {
                 if (!isFirstTable)
                 {
@@ -54,7 +54,7 @@ namespace PocoGen.OutputWriters.Poco
         {
             writer.Write((settings.ClassModifier == ClassModifier.Public) ? "public" : "internal");
             writer.Write(" partial class ");
-            writer.Write(CSharpTools.SafeClassName(table.GeneratedClassName));
+            writer.Write(CSharpTools.SafeClassName(table.EffectiveClassName));
 
             List<string> baseClassAndInterfaces = new List<string>();
             if (!string.IsNullOrWhiteSpace(settings.BaseClass))

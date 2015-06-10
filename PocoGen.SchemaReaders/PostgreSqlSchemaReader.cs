@@ -152,7 +152,7 @@ ORDER BY c.constraint_schema, c.constraint_name, fk.ordinal_position;";
                         string name = reader.GetString(0);
                         string sqlType = reader.GetString(1);
                         bool isNullable = reader.GetString(2) == "YES";
-                        Column column = new Column(name, PostgreSqlSchemaReader.GetPropertyType(sqlType, isNullable), isNullable, PostgreSqlSchemaReader.IsAutoIncrement(reader, 3));
+                        Column column = new Column(table, name, PostgreSqlSchemaReader.GetPropertyType(sqlType, isNullable), isNullable, PostgreSqlSchemaReader.IsAutoIncrement(reader, 3));
 
                         result.Add(column);
                     }

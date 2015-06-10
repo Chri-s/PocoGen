@@ -69,7 +69,7 @@ namespace PocoGen.OutputWriters.NPoco
             writer.Indent();
 
             bool isFirstTable = true;
-            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.GeneratedClassName))
+            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.EffectiveClassName))
             {
                 if (!isFirstTable)
                 {
@@ -87,7 +87,7 @@ namespace PocoGen.OutputWriters.NPoco
         private static void WriteTable(Table table, IDBEscaper dbEscaper, CodeIndentationWriter writer, NPocoFluentMappingWriterSettings settings)
         {
             writer.Write("this.For<");
-            writer.Write(CSharpTools.SafeClassName(table.GeneratedClassName));
+            writer.Write(CSharpTools.SafeClassName(table.EffectiveClassName));
             writer.WriteLine(">()");
             writer.Indent();
 

@@ -35,7 +35,7 @@ namespace PocoGen.OutputWriters.Poco
         private static void WriteTables(TableCollection tables, PocoWriterSettings settings, CodeIndentationWriter writer)
         {
             bool isFirstTable = true;
-            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.GeneratedClassName))
+            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.EffectiveClassName))
             {
                 if (!isFirstTable)
                 {
@@ -53,7 +53,7 @@ namespace PocoGen.OutputWriters.Poco
             writer.Write("Partial ");
             writer.Write((settings.ClassModifier == ClassModifier.Public) ? "Public" : "Friend");
             writer.Write(" Class ");
-            writer.WriteLine(VisualBasicTools.SafeClassName(table.GeneratedClassName));
+            writer.WriteLine(VisualBasicTools.SafeClassName(table.EffectiveClassName));
 
             writer.Indent();
 

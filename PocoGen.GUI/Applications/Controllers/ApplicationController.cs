@@ -8,7 +8,6 @@ using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Microsoft.WindowsAPICodePack.Dialogs.Controls;
 using PocoGen.Common;
-using PocoGen.Common.FileFormat;
 using PocoGen.Gui.Applications.Messages;
 using PocoGen.Gui.Applications.ViewModels;
 using ReactiveUI;
@@ -121,10 +120,8 @@ namespace PocoGen.Gui.Applications.Controllers
                 return false;
             }
 
-            this.engine.GetDefinition().Save(dialog.FileName);
+            this.engine.Save(dialog.FileName);
             this.shellViewModel.DefinitionFilePath = dialog.FileName;
-
-            this.engine.AcceptChanges();
 
             return true;
         }
@@ -148,8 +145,7 @@ namespace PocoGen.Gui.Applications.Controllers
         {
             if (!string.IsNullOrWhiteSpace(this.shellViewModel.DefinitionFilePath))
             {
-                this.engine.GetDefinition().Save(this.shellViewModel.DefinitionFilePath);
-                this.engine.AcceptChanges();
+                this.engine.Save(this.shellViewModel.DefinitionFilePath);
                 return true;
             }
             else
@@ -183,11 +179,11 @@ namespace PocoGen.Gui.Applications.Controllers
 
         private void Open(string path)
         {
-            Definition definition;
+            List<UnknownPlugIn> unrecognizedPlugIns;
 
             try
             {
-                definition = Definition.Load(path);
+                this.engine.Load(path, out unrecognizedPlugIns);
             }
             catch (Exception ex)
             {
@@ -195,9 +191,6 @@ namespace PocoGen.Gui.Applications.Controllers
                 return;
             }
 
-            List<UnknownPlugIn> unrecognizedPlugIns;
-
-            this.engine.SetFromDefinition(definition, out unrecognizedPlugIns);
             this.shellViewModel.DefinitionFilePath = path;
 
             if (unrecognizedPlugIns.Count > 0)
@@ -229,7 +222,7 @@ namespace PocoGen.Gui.Applications.Controllers
                             break;
                     }
 
-                    message.Append(unrecognizedPlugIn.PlugIn.Name);
+                    message.Append(unrecognizedPlugIn.Name);
                 }
 
                 MessageBox.Show(this.shellViewModel.Window, message.ToString(), "Poco Generator");

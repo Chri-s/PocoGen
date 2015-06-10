@@ -39,29 +39,6 @@ namespace PocoGen.Gui.Applications.Controllers
             this.tableListViewModel.SelectAll.Subscribe(_ => this.SelectAll());
             this.tableListViewModel.UnselectAll.Subscribe(_ => this.UnselectAll());
             this.shellViewModel.TableListViewModel = this.tableListViewModel;
-            this.engine.TableRenamed += this.TableRenamed;
-        }
-
-        private void TableRenamed(object sender, TableEventArgs e)
-        {
-            TableViewModel tableVm = this.tableListViewModel.Tables.FirstOrDefault(table => table.TableName == e.Table.Name);
-
-            // This happens when the tables are loaded but not added to the list
-            if (tableVm == null)
-            {
-                return;
-            }
-
-            TableChange tableChange = this.engine.TableChanges[e.Table.Name];
-            tableVm.ClassName = (tableChange == null || string.IsNullOrEmpty(tableChange.ClassName)) ? e.Table.GeneratedClassName : tableChange.ClassName;
-
-            foreach (ColumnViewModel columnVm in tableVm.Columns)
-            {
-                Column column = e.Table.Columns[columnVm.ColumnName];
-                PocoGen.Common.ColumnChange columnChange = tableChange == null ? null : tableChange.Columns[columnVm.ColumnName];
-
-                columnVm.PropertyName = (columnChange == null || string.IsNullOrEmpty(columnChange.PropertyName)) ? column.GeneratedPropertyName : columnChange.PropertyName;
-            }
         }
 
         private void DefinitionLoaded()
@@ -96,29 +73,28 @@ namespace PocoGen.Gui.Applications.Controllers
                         () => new List<TableViewModel>(),
                         (table, loopState, list) =>
                         {
-                            TableChange tableChange = this.engine.TableChanges[table.Name];
                             TableViewModel tableVm = this.container.GetExportedValue<TableViewModel>();
                             tableVm.TableName = table.Name;
-                            tableVm.ClassName = (tableChange == null || string.IsNullOrEmpty(tableChange.ClassName)) ? table.GeneratedClassName : tableChange.ClassName;
-                            tableVm.Include = (tableChange == null) ? true : !tableChange.Ignore;
+                            tableVm.ClassName = table.EffectiveClassName;
+                            tableVm.Include = !table.Ignore;
                             tableVm.IsView = table.IsView;
-                            tableVm.WhenAny(
-                                vm => vm.ClassName,
-                                vm => vm.Include,
-                                vm => vm.TableName,
-                                (className, included, tableName) => new { ClassName = className.GetValue(), Included = included.GetValue(), TableName = tableName.GetValue() })
-                                .Subscribe(data => this.SyncTableChange(data.TableName, data.ClassName, !data.Included));
+                            tableVm.WhenAnyValue(vm => vm.ClassName).Subscribe(cn => table.EffectiveClassName = cn);
+                            tableVm.WhenAnyValue(vm => vm.Include).Subscribe(i => table.Ignore = !i);
+                            table.WhenAnyValue(t => t.EffectiveClassName).Subscribe(ecf => tableVm.ClassName = ecf);
+                            table.WhenAnyValue(t => t.Ignore).Subscribe(i => tableVm.Include = !i);
 
                             foreach (Column column in table.Columns)
                             {
-                                ColumnChange columnChange = (tableChange == null) ? null : tableChange.Columns[column.Name];
                                 ColumnViewModel columnVm = this.container.GetExportedValue<ColumnViewModel>();
                                 columnVm.ColumnName = column.Name;
-                                columnVm.Included = (columnChange == null) ? true : !columnChange.Ignore;
+                                columnVm.Included = !column.Ignore;
                                 columnVm.IsPrimaryKey = column.IsPK;
-                                columnVm.PropertyName = (columnChange == null || string.IsNullOrEmpty(columnChange.PropertyName)) ? column.GeneratedPropertyName : columnChange.PropertyName;
+                                columnVm.PropertyName = column.EffectivePropertyName;
                                 columnVm.TableName = table.Name;
-                                columnVm.WhenAny(vm => vm.TableName, vm => vm.ColumnName, vm => vm.PropertyName, vm => vm.Included, (tableName, columnName, propertyName, included) => new { TableName = tableName.GetValue(), ColumnName = columnName.GetValue(), PropertyName = propertyName.GetValue(), Included = included.GetValue() }).Subscribe(data => this.SyncColumnChange(data.TableName, data.ColumnName, data.PropertyName, !data.Included));
+                                columnVm.WhenAnyValue(vm => vm.PropertyName).Subscribe(pn => column.EffectivePropertyName = pn);
+                                columnVm.WhenAnyValue(vm => vm.Included).Subscribe(i => column.Ignore = !i);
+                                column.WhenAnyValue(c => c.EffectivePropertyName).Subscribe(epn => columnVm.PropertyName = epn);
+                                column.WhenAnyValue(c => c.Ignore).Subscribe(i => columnVm.Included = !i);
                                 tableVm.Columns.Add(columnVm);
                             }
 
@@ -137,70 +113,6 @@ namespace PocoGen.Gui.Applications.Controllers
             }
 
             this.shellViewModel.IsBusy = false;
-        }
-
-        private void SyncTableChange(string tableName, string className, bool ignore)
-        {
-            TableChange tableChange = this.engine.TableChanges[tableName];
-            Table table = this.engine.Tables[tableName];
-
-            if (tableChange == null)
-            {
-                if (TableChange.NeedsTableChange(table, ignore, className))
-                {
-                    tableChange = new TableChange(tableName, className, ignore);
-                    this.engine.TableChanges.Add(tableChange);
-                }
-            }
-            else
-            {
-                tableChange.ClassName = (table.GeneratedClassName == className) ? string.Empty : className;
-                tableChange.Ignore = ignore;
-
-                if (!tableChange.HasChangesTo(table))
-                {
-                    this.engine.TableChanges.Remove(tableChange);
-                }
-            }
-        }
-
-        private void SyncColumnChange(string tableName, string columnName, string propertyName, bool ignore)
-        {
-            Table table = this.engine.Tables[tableName];
-            Column column = table.Columns[columnName];
-
-            TableChange tableChange = this.engine.TableChanges[tableName];
-            PocoGen.Common.ColumnChange columnChange = (tableChange == null) ? null : tableChange.Columns[columnName];
-
-            if (columnChange == null)
-            {
-                if (PocoGen.Common.ColumnChange.NeedsColumnChange(column, ignore, propertyName))
-                {
-                    if (tableChange == null)
-                    {
-                        tableChange = new TableChange(tableName, string.Empty, false);
-                        this.engine.TableChanges.Add(tableChange);
-                    }
-
-                    tableChange.Columns.Add(new PocoGen.Common.ColumnChange(columnName, propertyName, ignore));
-                }
-            }
-            else
-            {
-                columnChange.PropertyName = (column.GeneratedPropertyName == propertyName) ? string.Empty : propertyName;
-                columnChange.Ignore = ignore;
-
-                if (!columnChange.HasChangesTo(column))
-                {
-                    tableChange.Columns.Remove(columnChange);
-
-                    // Remove the table change if it was only needed for the column change
-                    if (!tableChange.HasChangesTo(table))
-                    {
-                        this.engine.TableChanges.Remove(tableChange);
-                    }
-                }
-            }
         }
 
         private void SelectAll()

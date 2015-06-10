@@ -54,7 +54,7 @@ namespace PocoGen.OutputWriters.NPoco
 
             writer.WriteLine();
 
-            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.GeneratedClassName))
+            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.EffectiveClassName))
             {
                 writer.WriteLine();
                 NPocoFluentMappingVisualBasicWriter.WriteColumnMapping(table, writer);
@@ -70,7 +70,7 @@ namespace PocoGen.OutputWriters.NPoco
             writer.Indent();
 
             bool isFirstTable = true;
-            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.GeneratedClassName))
+            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.EffectiveClassName))
             {
                 if (!isFirstTable)
                 {
@@ -88,7 +88,7 @@ namespace PocoGen.OutputWriters.NPoco
         private static void WriteTable(NPocoFluentMappingWriterSettings settings, Table table, IDBEscaper dbEscaper, CodeIndentationWriter writer)
         {
             writer.Write("Me.For(Of ");
-            writer.Write(VisualBasicTools.SafeClassName(table.GeneratedClassName));
+            writer.Write(VisualBasicTools.SafeClassName(table.EffectiveClassName));
             writer.WriteLine(")() _");
             writer.Indent();
 
@@ -119,7 +119,7 @@ namespace PocoGen.OutputWriters.NPoco
             writer.Write(".Columns(AddressOf ");
             writer.Write(settings.ClassName);
             writer.Write(".");
-            writer.Write(VisualBasicTools.SafeClassName(table.GeneratedClassName + "Columns"));
+            writer.Write(VisualBasicTools.SafeClassName(table.EffectiveClassName + "Columns"));
             writer.Write(", True)");
             writer.Outdent();
             writer.WriteLine();
@@ -164,9 +164,9 @@ namespace PocoGen.OutputWriters.NPoco
         private static void WriteColumnMapping(Table table, CodeIndentationWriter writer)
         {
             writer.Write("Private Shared Sub ");
-            writer.Write(VisualBasicTools.SafeClassName(table.GeneratedClassName + "Columns"));
+            writer.Write(VisualBasicTools.SafeClassName(table.EffectiveClassName + "Columns"));
             writer.Write("(t As ColumnConfigurationBuilder(Of ");
-            writer.Write(VisualBasicTools.SafeClassName(table.GeneratedClassName));
+            writer.Write(VisualBasicTools.SafeClassName(table.EffectiveClassName));
             writer.WriteLine("))");
             writer.Indent();
 

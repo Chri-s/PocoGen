@@ -155,6 +155,7 @@ ORDER BY C.CONSTRAINT_NAME, FK.ORDINAL_POSITION";
                             reader.GetString(3).IndexOf("unsigned", StringComparison.OrdinalIgnoreCase) >= 0);
 
                         Column column = new Column(
+                            table,
                             reader.GetString(0),
                             propertyType,
                             isNullable,

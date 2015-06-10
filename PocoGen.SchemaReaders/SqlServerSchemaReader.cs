@@ -174,7 +174,7 @@ ORDER BY C.CONSTRAINT_SCHEMA, C.CONSTRAINT_NAME, FK.ORDINAL_POSITION";
                         bool isNullable = reader.GetString(2) == "YES";
                         bool isAutoIncrement = reader.GetInt32(3) == 1;
 
-                        Column column = new Column(name, SqlServerSchemaReader.GetPropertyType(sqlType, isNullable), isNullable, isAutoIncrement);
+                        Column column = new Column(table, name, SqlServerSchemaReader.GetPropertyType(sqlType, isNullable), isNullable, isAutoIncrement);
                         result.Add(column);
                     }
                 }

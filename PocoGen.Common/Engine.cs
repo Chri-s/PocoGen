@@ -15,8 +15,6 @@ namespace PocoGen.Common
     [Export]
     public class Engine : ChangeTrackingBase
     {
-        public event EventHandler<TableEventArgs> TableRenamed;
-
         private FileFormat.TableCollection savedTables;
 
         public Engine()
@@ -159,6 +157,37 @@ namespace PocoGen.Common
             }
 
             this.Tables = await Task.Run(() => this.SchemaReader.ReadSchema(this.ConnectionString));
+
+            Parallel.ForEach(this.savedTables, savedTable =>
+            {
+                Table table = this.Tables[savedTable.Name];
+                if (table == null)
+                {
+                    return;
+                }
+
+                if (savedTable.ClassName != null)
+                {
+                    table.EffectiveClassName = savedTable.ClassName;
+                }
+                table.Ignore = savedTable.Ignore;
+
+                foreach (FileFormat.Column savedColumn in savedTable.Columns)
+                {
+                    Column column = table.Columns[savedColumn.Name];
+                    if (column == null)
+                    {
+                        continue;
+                    }
+
+                    if (savedColumn.PropertyName != null)
+                    {
+                        column.EffectivePropertyName = savedColumn.PropertyName;
+                    }
+                    column.Ignore = savedColumn.Ignore;
+                }
+            });
+
             this.SubscribePropertyChangedEvents();
 
             this.ApplyNamingGenerators();
@@ -186,8 +215,6 @@ namespace PocoGen.Common
             }
 
             this.ApplyColumnNamingGenerators(table);
-
-            this.OnTableRenamed(table);
         }
 
         public void ApplyNamingGenerators()
@@ -483,15 +510,6 @@ namespace PocoGen.Common
                 {
                     column.GeneratedPropertyName = columnNameGenerator.GetPropertyName(table, column);
                 }
-            }
-        }
-
-        private void OnTableRenamed(Table table)
-        {
-            EventHandler<TableEventArgs> handler = this.TableRenamed;
-            if (handler != null)
-            {
-                handler(this, new TableEventArgs(table));
             }
         }
 

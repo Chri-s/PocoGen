@@ -122,6 +122,7 @@ namespace PocoGen.Common
 
                 this.generatedClassName = value;
                 this.OnPropertyChanged();
+                this.OnPropertyChanged("EffectiveClassName");
             }
         }
 
@@ -151,6 +152,7 @@ namespace PocoGen.Common
                     this.userChangedClassName = null;
                 }
                 this.OnPropertyChanged();
+                this.OnPropertyChanged("UserChangedClassName");
             }
         }
 

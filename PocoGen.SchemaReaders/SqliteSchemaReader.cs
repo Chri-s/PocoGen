@@ -216,7 +216,7 @@ ORDER BY name;";
                 {
                     while (reader.Read())
                     {
-                        Column column = new Column(reader.GetString(1), SqliteSchemaReader.GetPropertyType(reader.GetString(2), !reader.GetBoolean(3)), !reader.GetBoolean(3), false);
+                        Column column = new Column(table, reader.GetString(1), SqliteSchemaReader.GetPropertyType(reader.GetString(2), !reader.GetBoolean(3)), !reader.GetBoolean(3), false);
                         column.IsPK = reader.GetBoolean(5);
 
                         // If the column is part of a primary key and "NOT NULL" is not specified while creating the table,

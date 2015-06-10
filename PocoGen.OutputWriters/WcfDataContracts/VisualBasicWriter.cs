@@ -36,7 +36,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
         private static void WriteTables(TableCollection tables, WriterSettings settings, CodeIndentationWriter writer)
         {
             bool isFirstTable = true;
-            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.GeneratedClassName))
+            foreach (Table table in tables.Where(t => !t.Ignore).OrderBy(t => t.EffectiveClassName))
             {
                 if (!isFirstTable)
                 {
@@ -60,7 +60,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
 
             if (settings.WriteName)
             {
-                dataContractAttribute.NamedProperties.Add("Name", VisualBasicTools.SafeString(table.GeneratedClassName));
+                dataContractAttribute.NamedProperties.Add("Name", VisualBasicTools.SafeString(table.EffectiveClassName));
             }
 
             writer.WriteLine(VisualBasicTools.GetAttributeString(dataContractAttribute));
@@ -71,7 +71,7 @@ namespace PocoGen.OutputWriters.WcfDataContracts
             writer.Write("Partial ");
             writer.Write((settings.ClassModifier == ClassModifier.Public) ? "Public" : "Friend");
             writer.Write(" Class ");
-            writer.WriteLine(VisualBasicTools.SafeClassName(table.GeneratedClassName));
+            writer.WriteLine(VisualBasicTools.SafeClassName(table.EffectiveClassName));
 
             writer.Indent();
 

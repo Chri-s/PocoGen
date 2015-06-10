@@ -42,17 +42,6 @@ namespace PocoGen.Runner
                 Environment.Exit((int)ReturnCodes.FileNotFound);
             }
 
-            Definition definition = null;
-            try
-            {
-                definition = Definition.Load(path);
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine("ERROR: Could not load file: " + ex.Message);
-                Environment.Exit((int)ReturnCodes.InvalidFileFormat);
-            }
-
             using (DirectoryCatalog catalog = new DirectoryCatalog(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
             {
                 var container = new CompositionContainer(catalog, CompositionOptions.DisableSilentRejection | CompositionOptions.IsThreadSafe);
@@ -62,7 +51,7 @@ namespace PocoGen.Runner
 
                 try
                 {
-                    program.Run(definition, path);
+                    program.Run(path);
                     Environment.Exit((int)ReturnCodes.Success);
                 }
                 catch (Exception ex)
@@ -108,17 +97,28 @@ namespace PocoGen.Runner
                             break;
                     }
 
-                    Console.Error.WriteLine(unrecognizedPlugIn.PlugIn.Name);
+                    Console.Error.WriteLine(unrecognizedPlugIn.Name);
                 }
 
                 Environment.Exit((int)ReturnCodes.UnrecognizedPlugIns);
             }
         }
 
-        private void Run(Definition definition, string path)
+        private void Run(string path)
         {
             List<UnknownPlugIn> unrecognizedPlugIns;
-            this.Engine.SetFromDefinition(definition, out unrecognizedPlugIns);
+            try
+            {
+                this.Engine.Load(path, out unrecognizedPlugIns);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine("ERROR: Could not load file: " + ex.Message);
+                Environment.Exit((int)ReturnCodes.InvalidFileFormat);
+
+                // This return will never be reached, but the compiler throws the warning "Use of unassigned local variable 'unrecognizedPlugIns'" if we don't include it.
+                return;
+            }
 
             CheckForUnrecognizedPlugIns(unrecognizedPlugIns);
 
