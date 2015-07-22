@@ -60,6 +60,7 @@
       <SubType>Code</SubType>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="FileFormat\ForeignKey.cs" />
     <Compile Include="FileFormat\OutputWriterPlugIn.cs" />
     <Compile Include="FileFormat\OutputWriterPlugInCollection.cs" />
     <Compile Include="FileFormat\PlugIn.cs" />
