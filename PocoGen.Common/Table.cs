@@ -17,8 +17,11 @@ namespace PocoGen.Common
         /// Creates a new table.
         /// </summary>
         /// <param name="name">The table's name.</param>
-        public Table(string name)
+        /// <param name="schema">The table's schema. Can be String.Empty if the database doesn't support schemas.</param>
+        public Table(string schema, string name)
         {
+            if (schema == null)
+                throw new ArgumentNullException("schema");
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("name is null or empty.", "name");
 
@@ -27,21 +30,21 @@ namespace PocoGen.Common
             this.ChildForeignKeys = new ForeignKeyCollection();
             this.GeneratedClassName = string.Empty;
             this.Ignore = false;
-            this.Name = name;
-            this.SequenceName = string.Empty;
             this.IsView = false;
+            this.Name = name;
+            this.Schema = schema;
+            this.SequenceName = string.Empty;
         }
 
         /// <summary>
         /// Creates a new table.
         /// </summary>
-        /// <param name="schema">The table's schema.</param>
+        /// <param name="schema">The table's schema. Can be String.Empty if the database doesn't support schemas.</param>
         /// <param name="name">The table's name.</param>
         /// <param name="isView">true if this is a view, false if this is a table.</param>
         public Table(string schema, string name, bool isView)
-            : this(name)
+            : this(schema, name)
         {
-            this.Schema = schema;
             this.IsView = isView;
         }
 
@@ -65,25 +68,10 @@ namespace PocoGen.Common
         /// </summary>
         public string Name { get; private set; }
 
-        private string schema;
         /// <summary>
-        /// Gets or sets the table's schema.
+        /// Gets the table's schema. Can be String.Empty if the database doesn't support schemas.
         /// </summary>
-        public string Schema
-        {
-            get
-            {
-                return this.schema;
-            }
-            set
-            {
-                if (this.schema == value)
-                    return;
-
-                this.schema = value;
-                this.OnPropertyChanged();
-            }
-        }
+        public string Schema { get; private set; }
 
         private bool isView;
         /// <summary>
@@ -217,6 +205,29 @@ namespace PocoGen.Common
             primaryKey.AddRange(this.Columns.Where(c => !c.Ignore && c.IsPK));
 
             return primaryKey;
+        }
+
+        /// <summary>
+        /// Returns whether a list of columns is the complete primary key and doesn't contain columns which aren't part of the primary key.
+        /// </summary>
+        /// <param name="columnNames">The list of column names.</param>
+        /// <returns>true if the columns are the primary key, otherwise false.</returns>
+        public bool IsPrimaryKey(IEnumerable<string> columnNames)
+        {
+            if (columnNames == null)
+            {
+                throw new ArgumentNullException("columnNames", "columnNames is null.");
+            }
+
+            List<string> columnNamesList = columnNames.ToList();
+            ColumnCollection primaryKeyColumns = this.GetPrimaryKeyColumns();
+
+            if (columnNamesList.Count != primaryKeyColumns.Count)
+            {
+                return false;
+            }
+
+            return primaryKeyColumns.All(pkc => columnNamesList.Contains(pkc.Name));
         }
 
         private void OnPropertyChanged([CallerMemberName]string propertyName = "")

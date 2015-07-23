@@ -11,59 +11,54 @@ namespace PocoGen.Common
     /// </summary>
     public class ForeignKey
     {
-        public ForeignKey()
+        public ForeignKey(string name, string childTableName, string parentTableName)
         {
             this.Columns = new ForeignKeyColumnCollection();
-        }
-
-        public ForeignKey(string name, string childTableName, string parentTableName)
-            : this()
-        {
+            this.Schema = string.Empty;
             this.Name = name;
+            this.ChildSchema = string.Empty;
             this.ChildTableName = childTableName;
+            this.ParentSchema = string.Empty;
             this.ParentTableName = parentTableName;
         }
 
-        public ForeignKey(string schemaName, string name, string childSchemaName, string childTableName, string parentSchemaName, string parentTableName)
-            : this()
+        public ForeignKey(string schema, string name, string childSchemaName, string childTableName, string parentSchemaName, string parentTableName)
+            : this(name, childTableName, parentTableName)
         {
-            this.SchemaName = schemaName;
-            this.Name = name;
-            this.ChildSchemaName = childSchemaName;
-            this.ChildTableName = childTableName;
-            this.ParentSchemaName = parentSchemaName;
-            this.ParentTableName = parentTableName;
+            this.Schema = schema;
+            this.ChildSchema = childSchemaName;
+            this.ParentSchema = parentSchemaName;
         }
 
         /// <summary>
-        /// Gets or sets the foreign key's schema. Can be null if the database doesn't support schemas for foreign keys.
+        /// Gets or sets the foreign key's schema. Can be String.Empty if the database doesn't support schemas for foreign keys.
         /// </summary>
-        public string SchemaName { get; set; }
+        public string Schema { get; private set; }
 
         /// <summary>
-        /// Gets or sets the foreign key's name. Can be null if the database doesn't support names for foreign keys.
+        /// Gets or sets the foreign key's name. Can be String.Empty if the database doesn't support names for foreign keys.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets or sets the schema name of the child table.
+        /// Gets or sets the schema name of the child table. Can be String.Empty if the database doesn't support schemas.
         /// </summary>
-        public string ChildSchemaName { get; set; }
+        public string ChildSchema { get; private set; }
 
         /// <summary>
         /// Gets or sets the child table's name.
         /// </summary>
-        public string ChildTableName { get; set; }
+        public string ChildTableName { get; private set; }
 
         /// <summary>
-        /// Gets or sets the schema name of the parent table.
+        /// Gets or sets the schema name of the parent table. Can be String.Empty if the database doesn't support schemas.
         /// </summary>
-        public string ParentSchemaName { get; set; }
+        public string ParentSchema { get; private set; }
 
         /// <summary>
         /// Gets or sets the parent table's name.
         /// </summary>
-        public string ParentTableName { get; set; }
+        public string ParentTableName { get; private set; }
 
         /// <summary>
         /// Gets the list of columns.

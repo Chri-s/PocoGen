@@ -524,7 +524,7 @@ namespace PocoGen.Common
             {
                 // Remove the saved column
 
-                FileFormat.Table savedTable = this.savedTables[null, table.Name];
+                FileFormat.Table savedTable = this.savedTables[table.Schema, table.Name];
                 if (savedTable == null)
                 {
                     // There is no table containing this column, return
@@ -546,8 +546,7 @@ namespace PocoGen.Common
             else
             {
                 // Create or update the saved column
-
-                FileFormat.Table savedTable = this.savedTables[null, table.Name];
+                FileFormat.Table savedTable = this.savedTables[table.Schema, table.Name];
                 if (savedTable == null)
                 {
                     // Saved column does not exist, create it
@@ -579,7 +578,7 @@ namespace PocoGen.Common
             Table table = (Table)sender;
             if (FileFormat.Table.AreDefaultValues(table.Ignore, table.UserChangedClassName))
             {
-                FileFormat.Table savedTable = this.savedTables[null, table.Name];
+                FileFormat.Table savedTable = this.savedTables[table.Schema, table.Name];
                 if (savedTable != null)
                 {
                     savedTables.Remove(savedTable);
@@ -587,7 +586,7 @@ namespace PocoGen.Common
             }
             else
             {
-                FileFormat.Table savedTable = this.savedTables[null, table.Name];
+                FileFormat.Table savedTable = this.savedTables[table.Schema, table.Name];
                 if (savedTable == null)
                 {
                     savedTable = new FileFormat.Table(table.Schema, table.Name, table.UserChangedClassName, table.Ignore);
