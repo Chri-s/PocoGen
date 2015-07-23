@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace PocoGen.Common.FileFormat
 {
@@ -10,13 +9,18 @@ namespace PocoGen.Common.FileFormat
             this.Columns = new ColumnCollection();
         }
 
-        public Table(string name, string className, bool ignore)
+        public Table(string schema, string name, string className, bool ignore)
             : this()
         {
+            this.Schema = schema;
             this.Name = name;
             this.className = className;
             this.ignore = ignore;
         }
+
+        // Set modifier is internal so that the DefinitionSerializer can still set this property.
+        [XmlElement("Schema")]
+        public string Schema { get; internal set; }
 
         // Set modifier is internal so that the DefinitionSerializer can still set this property.
         [XmlElement("Name")]

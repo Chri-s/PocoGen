@@ -61,6 +61,9 @@
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="FileFormat\ForeignKey.cs" />
+    <Compile Include="FileFormat\ForeignKeyCollection.cs" />
+    <Compile Include="FileFormat\ForeignKeyColumn.cs" />
+    <Compile Include="FileFormat\ForeignKeyColumnCollection.cs" />
     <Compile Include="FileFormat\OutputWriterPlugIn.cs" />
     <Compile Include="FileFormat\OutputWriterPlugInCollection.cs" />
     <Compile Include="FileFormat\PlugIn.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="ForeignKeyCollection.cs" />
     <Compile Include="ForeignKeyColumn.cs" />
     <Compile Include="ForeignKeyColumnCollection.cs" />
+    <Compile Include="RelationshipType.cs" />
     <Compile Include="IColumnNameGenerator.cs" />
     <Compile Include="IColumnNameGeneratorMetadata.cs" />
     <Compile Include="IDBEscaper.cs" />

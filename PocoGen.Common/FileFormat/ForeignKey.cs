@@ -1,14 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace PocoGen.Common.FileFormat
 {
     internal class ForeignKey : ChangeTrackingBase
     {
+        public ForeignKey()
+        {
+
+        }
+
+        public ForeignKey(string name, string parentTableSchema, string parentTable, string childTableSchema, string childTable)
+            : this()
+        {
+            this.Name = name;
+            this.ParentTableSchema = parentTableSchema;
+            this.ParentTable = parentTable;
+            this.ChildTableSchema = childTableSchema;
+            this.ChildTable = childTable;
+            this.Columns = new ForeignKeyColumnCollection();
+        }
+
         [XmlElement("ParentTableSchema")]
         public string ParentTableSchema { get; set; }
 
@@ -23,6 +34,10 @@ namespace PocoGen.Common.FileFormat
 
         [XmlElement("Name")]
         public string Name { get; set; }
+
+        [XmlArray("Columns")]
+        [XmlArrayItem("Column", typeof(ForeignKeyColumn))]
+        public ForeignKeyColumnCollection Columns { get; private set; }
 
         private bool ignoreChildProperty;
         [XmlElement("IgnoreChildProperty")]

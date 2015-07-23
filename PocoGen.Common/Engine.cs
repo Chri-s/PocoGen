@@ -524,7 +524,7 @@ namespace PocoGen.Common
             {
                 // Remove the saved column
 
-                FileFormat.Table savedTable = this.savedTables[table.Name];
+                FileFormat.Table savedTable = this.savedTables[null, table.Name];
                 if (savedTable == null)
                 {
                     // There is no table containing this column, return
@@ -547,11 +547,11 @@ namespace PocoGen.Common
             {
                 // Create or update the saved column
 
-                FileFormat.Table savedTable = this.savedTables[table.Name];
+                FileFormat.Table savedTable = this.savedTables[null, table.Name];
                 if (savedTable == null)
                 {
                     // Saved column does not exist, create it
-                    savedTable = new FileFormat.Table(table.Name, table.UserChangedClassName, table.Ignore);
+                    savedTable = new FileFormat.Table(table.Schema, table.Name, table.UserChangedClassName, table.Ignore);
                     this.savedTables.Add(savedTable);
                 }
 
@@ -579,7 +579,7 @@ namespace PocoGen.Common
             Table table = (Table)sender;
             if (FileFormat.Table.AreDefaultValues(table.Ignore, table.UserChangedClassName))
             {
-                FileFormat.Table savedTable = this.savedTables[table.Name];
+                FileFormat.Table savedTable = this.savedTables[null, table.Name];
                 if (savedTable != null)
                 {
                     savedTables.Remove(savedTable);
@@ -587,10 +587,10 @@ namespace PocoGen.Common
             }
             else
             {
-                FileFormat.Table savedTable = this.savedTables[table.Name];
+                FileFormat.Table savedTable = this.savedTables[null, table.Name];
                 if (savedTable == null)
                 {
-                    savedTable = new FileFormat.Table(table.Name, table.UserChangedClassName, table.Ignore);
+                    savedTable = new FileFormat.Table(table.Schema, table.Name, table.UserChangedClassName, table.Ignore);
                     this.savedTables.Add(savedTable);
                 }
                 else

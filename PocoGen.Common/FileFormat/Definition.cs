@@ -15,6 +15,7 @@ namespace PocoGen.Common.FileFormat
             this.ColumnNameGenerators = new PlugInCollection();
             this.OutputWriters = new OutputWriterPlugInCollection();
             this.Tables = new TableCollection();
+            this.ForeignKeys = new ForeignKeyCollection();
         }
 
         [XmlElement("SchemaReader")]
@@ -37,6 +38,10 @@ namespace PocoGen.Common.FileFormat
         [XmlArray("Tables")]
         [XmlArrayItem("Table", typeof(Table))]
         public TableCollection Tables { get; private set; }
+
+        [XmlArray("ForeignKeys")]
+        [XmlArrayItem("ForeignKey", typeof(ForeignKey))]
+        public ForeignKeyCollection ForeignKeys { get; private set; }
 
         [XmlArray("OutputWriters")]
         [XmlArrayItem("OutputWriter", typeof(OutputWriterPlugIn))]

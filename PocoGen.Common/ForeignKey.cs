@@ -9,7 +9,7 @@ namespace PocoGen.Common
     /// <summary>
     /// Represents a foreign key between two tables in the database.
     /// </summary>
-    public class ForeignKey : ICloneable
+    public class ForeignKey
     {
         public ForeignKey()
         {
@@ -36,7 +36,7 @@ namespace PocoGen.Common
         }
 
         /// <summary>
-        /// Gets or sets the foreign key's schema.
+        /// Gets or sets the foreign key's schema. Can be null if the database doesn't support schemas for foreign keys.
         /// </summary>
         public string SchemaName { get; set; }
 
@@ -70,29 +70,9 @@ namespace PocoGen.Common
         /// </summary>
         public ForeignKeyColumnCollection Columns { get; private set; }
 
-        public ForeignKey Clone()
-        {
-            ForeignKey clone = new ForeignKey()
-                        {
-                            ChildSchemaName = this.ChildSchemaName,
-                            ChildTableName = this.ChildTableName,
-                            Name = this.Name,
-                            ParentSchemaName = this.ParentSchemaName,
-                            ParentTableName = this.ParentTableName,
-                            SchemaName = this.SchemaName
-                        };
-
-            foreach (ForeignKeyColumn column in this.Columns)
-            {
-                clone.Columns.Add(column.Clone());
-            }
-
-            return clone;
-        }
-
-        object ICloneable.Clone()
-        {
-            return this.Clone();
-        }
+        /// <summary>
+        /// Gets or sets the relationship type.
+        /// </summary>
+        public RelationshipType RelationshipType { get; set; }
     }
 }
