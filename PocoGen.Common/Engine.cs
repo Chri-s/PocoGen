@@ -25,6 +25,7 @@ namespace PocoGen.Common
             this.OutputWriters = new OutputWriterPlugInCollection();
             this.savedTables = new FileFormat.TableCollection();
             this.Tables = new TableCollection();
+            this.ForeignKeys = new ForeignKeyCollection();
             this.ColumnNameGenerators = new ColumnNameGeneratorPlugInCollection();
             this.UnknownPlugIns = new UnknownPlugInCollection(new List<UnknownPlugIn>());
 
@@ -69,6 +70,8 @@ namespace PocoGen.Common
         public ColumnNameGeneratorPlugInCollection ColumnNameGenerators { get; private set; }
 
         public TableCollection Tables { get; private set; }
+
+        public ForeignKeyCollection ForeignKeys { get; private set; }
 
         public OutputWriterPlugInCollection OutputWriters { get; private set; }
 
@@ -241,6 +244,7 @@ namespace PocoGen.Common
             this.TableNameGenerators.Clear();
             this.ColumnNameGenerators.Clear();
             this.Tables.Clear();
+            this.ForeignKeys.Clear();
             this.savedTables.Clear();
             this.OutputWriters.Clear();
 

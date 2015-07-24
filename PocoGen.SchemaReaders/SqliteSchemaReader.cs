@@ -19,6 +19,11 @@ FROM SQLITE_MASTER
 WHERE type IN ('table', 'view') AND NOT name LIKE 'sqlite_%'
 ORDER BY name;";
 
+        private const string GetTableNamesSql = @"SELECT name
+FROM SQLITE_MASTER
+WHERE type = 'table' AND NOT name LIKE 'sqlite_%'
+ORDER BY name;";
+
         private const string GetColumnSql = "PRAGMA table_info({0});";
 
         private const string GetForeignKeysSql = "PRAGMA foreign_key_list({0});";
@@ -65,9 +70,60 @@ ORDER BY name;";
                     table.Columns.AddRange(this.GetColumns(table, connection, hasRowIds[table]));
                 }
 
-                this.LoadForeignKeys(tables, connection);
-
                 return tables;
+            }
+        }
+
+        public ForeignKeyCollection ReadForeignKeys(string connectionString, ISettings settings)
+        {
+            using (DbConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                List<string> tableNames = GetTableNames(connection);
+                ForeignKeyCollection foreignKeys = new ForeignKeyCollection();
+
+                using (DbCommand cmd = connection.CreateCommand())
+                {
+                    foreach (string tableName in tableNames)
+                    {
+                        cmd.CommandText = string.Format(CultureInfo.InvariantCulture, GetForeignKeysSql, this.EscapeTableName(tableName));
+
+                        // SQLite returns the rows for all foreign keys for this table. One row for one column.
+                        // This means that a foreign key using more than one column (because the referenced tables has a primary key consisting
+                        // of more than one column) returns more than one row for one foreign key.
+                        // Because we can't specify an order by-clause and the documentation doesn't specify whether
+                        // the rows for a foreign key are returned successively, we cache them and group them afterwards by id.
+                        List<SqliteForeignKeyRow> foreignKeyRows = new List<SqliteForeignKeyRow>();
+
+                        using (DbDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                foreignKeyRows.Add(new SqliteForeignKeyRow(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4)));
+                            }
+                        }
+
+                        var groupedByTables = from t in foreignKeyRows
+                                              orderby t.Id, t.Sequence
+                                              group t by t.Id into g
+                                              select g;
+
+                        foreach (var group in groupedByTables)
+                        {
+                            ForeignKey foreignKey = new ForeignKey(string.Empty, tableName, group.First().Table);
+
+                            foreach (var column in group)
+                            {
+                                foreignKey.Columns.Add(new ForeignKeyColumn(column.To, column.From));
+                            }
+
+                            foreignKeys.Add(foreignKey);
+                        }
+                    }
+                }
+
+                return foreignKeys;
             }
         }
 
@@ -118,50 +174,6 @@ ORDER BY name;";
             return !Regex.IsMatch(identifier, @"^[\p{L}_][\p{L}_0-9]*$", RegexOptions.CultureInvariant) ||
                 Regex.IsMatch(identifier, "^[0-9]+$", RegexOptions.CultureInvariant) ||
                 SqliteSchemaReader.Keywords.Any(k => k.Equals(identifier, StringComparison.OrdinalIgnoreCase));
-        }
-
-        private void LoadForeignKeys(TableCollection tables, DbConnection connection)
-        {
-            using (DbCommand cmd = connection.CreateCommand())
-            {
-                foreach (Table table in tables)
-                {
-                    cmd.CommandText = string.Format(CultureInfo.InvariantCulture, GetForeignKeysSql, this.EscapeTableName(table.Name));
-
-                    // SQLite returns the rows for all foreign keys for this table. One row for one column.
-                    // This means that a foreign key using more than one column (because the referenced tables has a primary key consisting
-                    // of more than one column) returns more than one row for one foreign key.
-                    // Because we can't specify an order by-clause and the documentation doesn't specify whether
-                    // the rows for a foreign key are returned successively, we cache them and group them afterwards by referenced table.
-                    // Tuple = (referenced table, column, referenced column)
-                    List<Tuple<string, string, string>> foreignKeys = new List<Tuple<string, string, string>>();
-
-                    using (DbDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            foreignKeys.Add(new Tuple<string, string, string>(reader.GetString(2), reader.GetString(3), reader.GetString(4)));
-                        }
-                    }
-
-                    var groupedByTables = from t in foreignKeys
-                                          group t by t.Item1 into g
-                                          select g;
-
-                    foreach (var group in groupedByTables)
-                    {
-                        ForeignKey foreignKey = new ForeignKey(null, table.Name, group.Key);
-
-                        foreach (var column in group)
-                        {
-                            foreignKey.Columns.Add(new ForeignKeyColumn(column.Item3, column.Item2));
-                        }
-
-                        tables[foreignKey.ParentTableName].ParentForeignKeys.Add(foreignKey);
-                        tables[foreignKey.ChildTableName].ChildForeignKeys.Add(foreignKey);
-                    }
-                }
-            }
         }
 
         private static ColumnBaseType GetPropertyType(string columnType, bool isNullable)
@@ -245,6 +257,26 @@ ORDER BY name;";
             }
 
             return columns;
+        }
+
+        private static List<string> GetTableNames(DbConnection connection)
+        {
+            using (DbCommand cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = GetTableNamesSql;
+
+                List<string> tableNames = new List<string>();
+
+                using (DbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        tableNames.Add(reader.GetString(0));
+                    }
+                }
+
+                return tableNames;
+            }
         }
     }
 }

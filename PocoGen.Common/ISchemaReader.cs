@@ -14,6 +14,14 @@
         TableCollection ReadSchema(string connectionString, ISettings settings);
 
         /// <summary>
+        /// Returns the foreign keys of a database.
+        /// </summary>
+        /// <param name="connectionString">The connection string to the database.</param>
+        /// <param name="settings">The settings instance if the module specified a settings type, otherwise null.</param>
+        /// <returns>A <see cref="ForeignKeyCollection"/> of all foreign keys in the database.</returns>
+        ForeignKeyCollection ReadForeignKeys(string connectionString, ISettings settings);
+
+        /// <summary>
         /// Tries to open a connection to the database with the specified connection string. This call either succeeds or throws an exception.
         /// </summary>
         /// <param name="connectionString">The connection string to check.</param>

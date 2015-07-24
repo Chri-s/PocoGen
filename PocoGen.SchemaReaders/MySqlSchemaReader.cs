@@ -70,9 +70,53 @@ ORDER BY C.CONSTRAINT_NAME, FK.ORDINAL_POSITION";
                     table.Columns.AddRange(MySqlSchemaReader.GetColumns(connection, table));
                 }
 
-                MySqlSchemaReader.LoadForeignKeys(tables, connection);
-
                 return tables;
+            }
+        }
+
+        public ForeignKeyCollection ReadForeignKeys(string connectionString, ISettings settings)
+        {
+            using (DbConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+
+                ForeignKeyCollection foreignKeys = new ForeignKeyCollection();
+
+                using (DbCommand cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = GetForeignKeysSql;
+                    DbParameter schemasParameter = cmd.CreateParameter();
+                    schemasParameter.ParameterName = "@schema";
+                    schemasParameter.Value = connection.Database;
+                    cmd.Parameters.Add(schemasParameter);
+
+                    using (DbDataReader reader = cmd.ExecuteReader())
+                    {
+                        ForeignKey foreignKey = null;
+
+                        string lastForeignKeyName = null;
+
+                        while (reader.Read())
+                        {
+                            string constraintName = reader.GetString(0);
+                            string pkTableName = reader.GetString(1);
+                            string pkColumnName = reader.GetString(2);
+                            string fkTableName = reader.GetString(3);
+                            string fkColumnName = reader.GetString(4);
+
+                            if (lastForeignKeyName != constraintName)
+                            {
+                                foreignKey = new ForeignKey(constraintName, fkTableName, pkTableName);
+                                foreignKeys.Add(foreignKey);
+                            }
+
+                            foreignKey.Columns.Add(new ForeignKeyColumn(pkColumnName, fkColumnName));
+                            lastForeignKeyName = constraintName;
+                        }
+                    }
+                }
+
+                return foreignKeys;
             }
         }
 
@@ -164,44 +208,6 @@ ORDER BY C.CONSTRAINT_NAME, FK.ORDINAL_POSITION";
                         column.IsPK = string.Compare(reader.GetString(4), "PRI", StringComparison.OrdinalIgnoreCase) == 0;
 
                         yield return column;
-                    }
-                }
-            }
-        }
-
-        private static void LoadForeignKeys(TableCollection tables, DbConnection connection)
-        {
-            using (DbCommand cmd = connection.CreateCommand())
-            {
-                cmd.CommandText = GetForeignKeysSql;
-                DbParameter schemasParameter = cmd.CreateParameter();
-                schemasParameter.ParameterName = "@schema";
-                schemasParameter.Value = connection.Database;
-                cmd.Parameters.Add(schemasParameter);
-
-                using (DbDataReader reader = cmd.ExecuteReader())
-                {
-                    ForeignKey foreignKey = null;
-
-                    string lastForeignKeyName = null;
-
-                    while (reader.Read())
-                    {
-                        string constraintName = reader.GetString(0);
-                        string pkTableName = reader.GetString(1);
-                        string pkColumnName = reader.GetString(2);
-                        string fkTableName = reader.GetString(3);
-                        string fkColumnName = reader.GetString(4);
-
-                        if (lastForeignKeyName != constraintName)
-                        {
-                            foreignKey = new ForeignKey(constraintName, fkTableName, pkTableName);
-                            tables[pkTableName].ParentForeignKeys.Add(foreignKey);
-                            tables[fkTableName].ChildForeignKeys.Add(foreignKey);
-                        }
-
-                        foreignKey.Columns.Add(new ForeignKeyColumn(pkColumnName, fkColumnName));
-                        lastForeignKeyName = constraintName;
                     }
                 }
             }

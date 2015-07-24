@@ -13,6 +13,13 @@ namespace PocoGen.Common
     {
         public ForeignKey(string name, string childTableName, string parentTableName)
         {
+            if (name == null)
+                throw new ArgumentNullException("name");
+            if (string.IsNullOrEmpty(childTableName))
+                throw new ArgumentException("childTableName is null or empty.", "childTableName");
+            if (string.IsNullOrEmpty(parentTableName))
+                throw new ArgumentException("parentTableName is null or empty.", "parentTableName");
+
             this.Columns = new ForeignKeyColumnCollection();
             this.Schema = string.Empty;
             this.Name = name;
@@ -25,6 +32,13 @@ namespace PocoGen.Common
         public ForeignKey(string schema, string name, string childSchemaName, string childTableName, string parentSchemaName, string parentTableName)
             : this(name, childTableName, parentTableName)
         {
+            if (schema == null)
+                throw new ArgumentNullException("schema");
+            if (childSchemaName == null)
+                throw new ArgumentNullException("childSchemaName");
+            if (parentSchemaName == null)
+                throw new ArgumentNullException("parentSchemaName");
+
             this.Schema = schema;
             this.ChildSchema = childSchemaName;
             this.ParentSchema = parentSchemaName;

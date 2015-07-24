@@ -64,6 +64,7 @@
     <Compile Include="MySqlSchemaReader.cs" />
     <Compile Include="PostgreSqlSchemaReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqliteForeignKeyRow.cs" />
     <Compile Include="SqliteSchemaReader.cs" />
     <Compile Include="SqlServerSchemaReader.cs">
       <SubType>Code</SubType>
