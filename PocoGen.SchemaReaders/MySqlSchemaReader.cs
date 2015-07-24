@@ -38,7 +38,7 @@ ORDER BY C.CONSTRAINT_NAME, FK.ORDINAL_POSITION";
             }
         }
 
-        public TableCollection ReadSchema(string connectionString, ISettings settings)
+        public TableCollection ReadTables(string connectionString, ISettings settings)
         {
             using (DbConnection connection = new MySqlConnection(connectionString))
             {

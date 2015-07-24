@@ -38,7 +38,7 @@ ORDER BY name;";
             }
         }
 
-        public TableCollection ReadSchema(string connectionString, ISettings settings)
+        public TableCollection ReadTables(string connectionString, ISettings settings)
         {
             using (DbConnection connection = new SQLiteConnection(connectionString))
             {

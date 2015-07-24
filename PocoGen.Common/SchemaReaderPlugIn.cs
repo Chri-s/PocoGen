@@ -17,9 +17,9 @@ namespace PocoGen.Common
             }
         }
 
-        public TableCollection ReadSchema(string connectionString)
+        public TableCollection ReadTables(string connectionString)
         {
-            return this.Instance.ReadSchema(connectionString, this.Settings);
+            return this.Instance.ReadTables(connectionString, this.Settings);
         }
 
         public void TestConnectionString(string connectionString)

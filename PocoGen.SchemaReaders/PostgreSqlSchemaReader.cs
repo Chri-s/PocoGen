@@ -43,7 +43,7 @@ ORDER BY c.constraint_schema, c.constraint_name, fk.ordinal_position;";
             }
         }
 
-        public TableCollection ReadSchema(string connectionString, ISettings settings)
+        public TableCollection ReadTables(string connectionString, ISettings settings)
         {
             using (DbConnection connection = PostgreSqlSchemaReader.GetConnection(connectionString))
             {

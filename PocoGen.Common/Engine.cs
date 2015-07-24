@@ -159,7 +159,7 @@ namespace PocoGen.Common
                 throw new InvalidOperationException("ConnectionString is not set.");
             }
 
-            this.Tables = await Task.Run(() => this.SchemaReader.ReadSchema(this.ConnectionString));
+            this.Tables = await Task.Run(() => this.SchemaReader.ReadTables(this.ConnectionString));
 
             Parallel.ForEach(this.savedTables, savedTable =>
             {

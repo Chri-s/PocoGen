@@ -11,7 +11,7 @@
         /// <param name="connectionString">The connection string to the database.</param>
         /// <param name="settings">The settings instance if the module specified a settings type, otherwise null.</param>
         /// <returns>A <see cref="TableCollection"/> of all tables and views in the database.</returns>
-        TableCollection ReadSchema(string connectionString, ISettings settings);
+        TableCollection ReadTables(string connectionString, ISettings settings);
 
         /// <summary>
         /// Returns the foreign keys of a database.
