@@ -1,8 +1,10 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Linq;
+using System.Xml.Serialization;
 
 namespace PocoGen.Common.FileFormat
 {
-    internal class ForeignKey : ChangeTrackingBase
+    internal class ForeignKey : ChangeTrackingBase, IForeignKeySummary
     {
         public ForeignKey()
         {
@@ -93,6 +95,22 @@ namespace PocoGen.Common.FileFormat
             {
                 this.ChangeProperty(ref this.parentPropertyName, value);
             }
+        }
+
+        public string GetDefinitionSummaryString()
+        {
+            return this.ParentTableSchema + "\r" + this.ParentTable + "\r" +
+                   this.ChildTableSchema + "\r" + this.ChildTable + "\r" +
+                   GetColumnDefinitionString();
+        }
+
+        private string GetColumnDefinitionString()
+        {
+            var sortedColumns = from c in this.Columns
+                                orderby c.ParentTablesColumnName
+                                select c.ParentTablesColumnName + "\r" + c.ChildTablesColumnName;
+
+            return string.Join("\r", sortedColumns);
         }
     }
 }

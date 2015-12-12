@@ -1,23 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace PocoGen.Common.FileFormat
 {
-    internal class ForeignKeyCollection : ChangeTrackingCollection<ForeignKey>
+    internal class ForeignKeyCollection : EnhancedKeyedCollection<string, ForeignKey>
     {
-        public ForeignKeyCollection()
+        protected override string GetKeyForItem(ForeignKey item)
         {
+            return item.GetDefinitionSummaryString();
         }
 
-        public ForeignKeyCollection(IList<ForeignKey> list)
-            : base(list)
+        public ForeignKey this[IForeignKeySummary foreignKey]
         {
-        }
-
-        public void AddRange(IEnumerable<ForeignKey> foreignKeys)
-        {
-            foreach (ForeignKey foreignKey in foreignKeys)
+            get
             {
-                this.Add(foreignKey);
+                if (foreignKey == null)
+                {
+                    throw new ArgumentNullException(nameof(foreignKey));
+                }
+
+                return this[foreignKey.GetDefinitionSummaryString()];
             }
         }
     }

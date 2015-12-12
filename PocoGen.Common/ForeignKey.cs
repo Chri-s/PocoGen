@@ -9,7 +9,7 @@ namespace PocoGen.Common
     /// <summary>
     /// Represents a foreign key between two tables in the database.
     /// </summary>
-    public class ForeignKey
+    public class ForeignKey : IForeignKeySummary
     {
         public ForeignKey(string name, string childTableName, string parentTableName)
         {
@@ -83,5 +83,21 @@ namespace PocoGen.Common
         /// Gets or sets the relationship type.
         /// </summary>
         public RelationshipType RelationshipType { get; set; }
+
+        string IForeignKeySummary.GetDefinitionSummaryString()
+        {
+            return this.ParentSchema + "\r" + this.ParentTableName + "\r" +
+                   this.ChildSchema + "\r" + this.ChildTableName + "\r" +
+                   GetColumnDefinitionString();
+        }
+
+        private string GetColumnDefinitionString()
+        {
+            var sortedColumns = from c in this.Columns
+                                orderby c.ParentTablesColumnName
+                                select c.ParentTablesColumnName + "\r" + c.ChildTablesColumnName;
+
+            return string.Join("\r", sortedColumns);
+        }
     }
 }
