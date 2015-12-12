@@ -75,6 +75,7 @@
     <Compile Include="ForeignKeyColumn.cs" />
     <Compile Include="ForeignKeyColumnCollection.cs" />
     <Compile Include="IForeignKeySummary.cs" />
+    <Compile Include="KeyWithSchema.cs" />
     <Compile Include="RelationshipType.cs" />
     <Compile Include="IColumnNameGenerator.cs" />
     <Compile Include="IColumnNameGeneratorMetadata.cs" />

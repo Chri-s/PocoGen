@@ -163,7 +163,7 @@ namespace PocoGen.Common
 
             Parallel.ForEach(this.savedTables, savedTable =>
             {
-                Table table = this.Tables[savedTable.Name];
+                Table table = this.Tables[savedTable.Schema, savedTable.Name];
                 if (table == null)
                 {
                     return;

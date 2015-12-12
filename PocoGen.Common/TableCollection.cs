@@ -4,15 +4,33 @@ using System.Linq;
 
 namespace PocoGen.Common
 {
-    public class TableCollection : EnhancedKeyedCollection<string, Table>
+    public class TableCollection : EnhancedKeyedCollection<KeyWithSchema, Table>
     {
         public TableCollection()
         {
         }
 
-        protected override string GetKeyForItem(Table item)
+        public Table this[string schema, string name]
         {
-            return item.Name;
+            get
+            {
+                return this[new KeyWithSchema(schema, name)];
+            }
+        }
+
+        public bool Contains(string schema, string name)
+        {
+            return this.Contains(new KeyWithSchema(schema, name));
+        }
+
+        public bool Remove(string schema, string name)
+        {
+            return this.Remove(new KeyWithSchema(schema, name));
+        }
+
+        protected override KeyWithSchema GetKeyForItem(Table item)
+        {
+            return new KeyWithSchema(item.Schema, item.Name);
         }
     }
 }

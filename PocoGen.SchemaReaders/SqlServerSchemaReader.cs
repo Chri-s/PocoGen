@@ -29,9 +29,10 @@ namespace PocoGen.SchemaReaders
         private const string GetPrimaryKeySql = @"SELECT c.name AS ColumnName
                 FROM sys.indexes AS i 
                 INNER JOIN sys.index_columns AS ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id 
-                INNER JOIN sys.objects AS o ON i.object_id = o.object_id 
+                INNER JOIN sys.objects AS o ON i.object_id = o.object_id
+                INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
                 LEFT OUTER JOIN sys.columns AS c ON ic.object_id = c.object_id AND c.column_id = ic.column_id
-                WHERE (i.type = 1) AND (o.name = @tableName)";
+                WHERE (i.type = 1) AND (s.name = @tableSchema) AND (o.name = @tableName)";
 
         private const string GetForeignKeysSql = @"SELECT  C.CONSTRAINT_SCHEMA, C.CONSTRAINT_NAME, PK.TABLE_SCHEMA AS PK_TABLE_SCHEMA, PK.TABLE_NAME AS PK_TABLE_NAME, PK.COLUMN_NAME AS PK_COLUMN_NAME, FK.TABLE_SCHEMA AS FK_TABLE_SCHEMA, FK.TABLE_NAME AS FK_TABLE_NAME, FK.COLUMN_NAME AS FK_COLUMN_NAME
 FROM    INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS C
@@ -224,7 +225,7 @@ ORDER BY C.CONSTRAINT_SCHEMA, C.CONSTRAINT_NAME, FK.ORDINAL_POSITION";
                     }
                 }
 
-                foreach (string column in SqlServerSchemaReader.GetPK(table.Name, connection))
+                foreach (string column in SqlServerSchemaReader.GetPK(table.Schema, table.Name, connection))
                 {
                     result.Single(c => string.Compare(c.Name, column, StringComparison.Ordinal) == 0).IsPK = true;
                 }
@@ -233,7 +234,7 @@ ORDER BY C.CONSTRAINT_SCHEMA, C.CONSTRAINT_NAME, FK.ORDINAL_POSITION";
             }
         }
 
-        private static List<string> GetPK(string table, DbConnection connection)
+        private static List<string> GetPK(string schema, string table, DbConnection connection)
         {
             using (DbCommand cmd = connection.CreateCommand())
             {
@@ -242,6 +243,11 @@ ORDER BY C.CONSTRAINT_SCHEMA, C.CONSTRAINT_NAME, FK.ORDINAL_POSITION";
                 DbParameter p = cmd.CreateParameter();
                 p.ParameterName = "@tableName";
                 p.Value = table;
+                cmd.Parameters.Add(p);
+
+                p = cmd.CreateParameter();
+                p.ParameterName = "@tableSchema";
+                p.Value = schema;
                 cmd.Parameters.Add(p);
 
                 List<string> columns = new List<string>();

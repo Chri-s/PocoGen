@@ -20,12 +20,12 @@ namespace PocoGen.SchemaReaders
 
         private const string GetColumnsSql = @"SELECT column_name, udt_name, is_nullable, column_default
             FROM information_schema.columns 
-            WHERE table_name=@tableName;";
+            WHERE table_schema=@tableSchema AND table_name=@tableName;";
 
         private const string GetPrimaryKeySql = @"SELECT kcu.column_name 
             FROM information_schema.key_column_usage kcu
             JOIN information_schema.table_constraints tc ON kcu.constraint_name=tc.constraint_name
-            WHERE lower(tc.constraint_type)='primary key' AND kcu.table_name=@tablename;";
+            WHERE lower(tc.constraint_type)='primary key' AND kcu.table_schema=@tableSchema AND kcu.table_name=@tablename;";
 
         private const string GetForeignKeysSql = @"SELECT  c.constraint_schema, c.constraint_name, pk.table_schema AS pk_table_schema, pk.table_name AS pk_table_name, pk.column_name AS pk_column_name, fk.table_schema AS fk_table_schema, fk.table_name AS fk_table_name, fk.column_name AS fk_column_name
 FROM    information_schema.referential_constraints c
@@ -191,6 +191,11 @@ ORDER BY c.constraint_schema, c.constraint_name, fk.ordinal_position;";
                 p.Value = table.Name;
                 cmd.Parameters.Add(p);
 
+                p = cmd.CreateParameter();
+                p.ParameterName = "@tableSchema";
+                p.Value = table.Schema;
+                cmd.Parameters.Add(p);
+
                 List<Column> result = new List<Column>();
                 using (DbDataReader reader = cmd.ExecuteReader())
                 {
@@ -205,7 +210,7 @@ ORDER BY c.constraint_schema, c.constraint_name, fk.ordinal_position;";
                     }
                 }
 
-                foreach (string column in PostgreSqlSchemaReader.GetPK(table.Name, connection))
+                foreach (string column in PostgreSqlSchemaReader.GetPK(table.Schema, table.Name, connection))
                 {
                     result.Single(c => string.Compare(c.Name, column, StringComparison.Ordinal) == 0).IsPK = true;
                 }
@@ -214,7 +219,7 @@ ORDER BY c.constraint_schema, c.constraint_name, fk.ordinal_position;";
             }
         }
 
-        private static List<string> GetPK(string table, DbConnection connection)
+        private static List<string> GetPK(string schema, string tableName, DbConnection connection)
         {
             using (DbCommand cmd = connection.CreateCommand())
             {
@@ -222,7 +227,12 @@ ORDER BY c.constraint_schema, c.constraint_name, fk.ordinal_position;";
 
                 DbParameter p = cmd.CreateParameter();
                 p.ParameterName = "@tablename";
-                p.Value = table;
+                p.Value = tableName;
+                cmd.Parameters.Add(p);
+
+                p = cmd.CreateParameter();
+                p.ParameterName = "@tableSchema";
+                p.Value = schema;
                 cmd.Parameters.Add(p);
 
                 List<string> columns = new List<string>();
@@ -266,8 +276,8 @@ ORDER BY c.constraint_schema, c.constraint_name, fk.ordinal_position;";
                         if (lastSchema != constraintSchema || lastForeignKeyName != constraintName)
                         {
                             foreignKey = new ForeignKey(constraintSchema, constraintName, fkTableSchema, fkTableName, pkTableSchema, pkTableName);
-                            tables[pkTableName].ParentForeignKeys.Add(foreignKey);
-                            tables[fkTableName].ChildForeignKeys.Add(foreignKey);
+                            tables[pkTableSchema, pkTableName].ParentForeignKeys.Add(foreignKey);
+                            tables[fkTableSchema, fkTableName].ChildForeignKeys.Add(foreignKey);
                         }
 
                         foreignKey.Columns.Add(new ForeignKeyColumn(pkColumnName, fkColumnName));

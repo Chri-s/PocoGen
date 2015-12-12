@@ -74,7 +74,7 @@ namespace PocoGen.Gui.Applications.Controllers
                         (table, loopState, list) =>
                         {
                             TableViewModel tableVm = this.container.GetExportedValue<TableViewModel>();
-                            tableVm.TableName = table.Name;
+                            tableVm.TableName = string.IsNullOrEmpty(table.Schema) ? table.Name : table.Schema + "." + table.Name;
                             tableVm.ClassName = table.EffectiveClassName;
                             tableVm.Include = !table.Ignore;
                             tableVm.IsView = table.IsView;
