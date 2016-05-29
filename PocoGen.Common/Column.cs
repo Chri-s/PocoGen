@@ -79,7 +79,7 @@ namespace PocoGen.Common
 
                 this.generatedPropertyName = value;
                 this.OnPropertyChanged();
-                this.OnPropertyChanged("EffectivePropertyName");
+                this.OnPropertyChanged(nameof(EffectivePropertyName));
             }
         }
 
@@ -109,7 +109,7 @@ namespace PocoGen.Common
                     this.userChangedPropertyName = null;
                 }
                 this.OnPropertyChanged();
-                this.OnPropertyChanged("UserChangedPropertyName");
+                this.OnPropertyChanged(nameof(UserChangedPropertyName));
             }
         }
 

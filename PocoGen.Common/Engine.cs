@@ -519,7 +519,7 @@ namespace PocoGen.Common
 
         private void ColumnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != "EffectivePropertyName" && e.PropertyName != "Ignore")
+            if (e.PropertyName != nameof(Column.EffectivePropertyName) && e.PropertyName != nameof(Column.Ignore))
                 return;
 
             Column column = (Column)sender;
@@ -576,7 +576,7 @@ namespace PocoGen.Common
 
         private void TablePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != "EffectiveClassName" && e.PropertyName != "Ignore")
+            if (e.PropertyName != nameof(Table.EffectiveClassName) && e.PropertyName != nameof(Table.Ignore))
                 return;
 
             Table table = (Table)sender;
