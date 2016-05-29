@@ -192,7 +192,10 @@ namespace PocoGen.OutputWriters
             {
                 return "<>";
             }
-            else return "IsNot";
+            else
+            {
+                return "IsNot";
+            }
         }
 
         private static string GetBaseTypeName(Type type)

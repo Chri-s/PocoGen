@@ -22,7 +22,7 @@ namespace PocoGen.Gui.Presentation.Views
     {
         public NameGeneratorConfigurationsView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

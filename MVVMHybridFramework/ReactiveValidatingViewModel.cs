@@ -175,11 +175,7 @@ namespace MvvmHybridFramework
         /// <param name="e">The <see cref="System.ComponentModel.DataErrorsChangedEventArgs"/> instance containing the event data.</param>
         protected virtual void OnErrorsChanged(DataErrorsChangedEventArgs e)
         {
-            EventHandler<DataErrorsChangedEventArgs> handler = this.ErrorsChanged;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.ErrorsChanged?.Invoke(this, e);
         }
 
         private void ValidateProperty(IReactivePropertyChangedEventArgs<IReactiveObject> e)

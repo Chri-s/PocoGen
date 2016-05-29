@@ -21,9 +21,14 @@ namespace PocoGen.Common
         public Table(string schema, string name)
         {
             if (schema == null)
+            {
                 throw new ArgumentNullException("schema");
+            }
+
             if (string.IsNullOrEmpty(name))
+            {
                 throw new ArgumentException("name is null or empty.", "name");
+            }
 
             this.Columns = new ColumnCollection();
             this.ParentForeignKeys = new ForeignKeyCollection();
@@ -86,7 +91,9 @@ namespace PocoGen.Common
             set
             {
                 if (this.isView == value)
+                {
                     return;
+                }
 
                 this.isView = value;
                 this.OnPropertyChanged();
@@ -106,11 +113,13 @@ namespace PocoGen.Common
             set
             {
                 if (this.generatedClassName == value)
+                {
                     return;
+                }
 
                 this.generatedClassName = value;
                 this.OnPropertyChanged();
-                this.OnPropertyChanged(nameof(EffectiveClassName));
+                this.OnPropertyChanged(nameof(this.EffectiveClassName));
             }
         }
 
@@ -128,7 +137,9 @@ namespace PocoGen.Common
             set
             {
                 if (this.EffectiveClassName == value)
+                {
                     return;
+                }
 
                 // If the user changes the class name, save the override in userChangedClassName.
                 if (this.GeneratedClassName != value)
@@ -140,7 +151,7 @@ namespace PocoGen.Common
                     this.userChangedClassName = null;
                 }
                 this.OnPropertyChanged();
-                this.OnPropertyChanged(nameof(UserChangedClassName));
+                this.OnPropertyChanged(nameof(this.UserChangedClassName));
             }
         }
 
@@ -168,7 +179,9 @@ namespace PocoGen.Common
             set
             {
                 if (this.sequenceName == value)
+                {
                     return;
+                }
 
                 this.sequenceName = value;
                 this.OnPropertyChanged();
@@ -188,7 +201,9 @@ namespace PocoGen.Common
             set
             {
                 if (this.ignore == value)
+                {
                     return;
+                }
 
                 this.ignore = value;
                 this.OnPropertyChanged();
@@ -232,9 +247,7 @@ namespace PocoGen.Common
 
         private void OnPropertyChanged([CallerMemberName]string propertyName = "")
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

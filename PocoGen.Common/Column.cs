@@ -19,9 +19,14 @@ namespace PocoGen.Common
         public Column(Table table, string name)
         {
             if (table == null)
+            {
                 throw new ArgumentNullException("table", "table is null.");
+            }
+
             if (string.IsNullOrEmpty(name))
+            {
                 throw new ArgumentException("name is null or empty.", "name");
+            }
 
             this.Name = name;
             this.Table = table;
@@ -45,7 +50,9 @@ namespace PocoGen.Common
             : this(table, name)
         {
             if (propertyType == null)
+            {
                 throw new ArgumentNullException("propertyType", "propertyType is null.");
+            }
 
             this.PropertyType = propertyType;
             this.IsNullable = isNullable;
@@ -75,11 +82,13 @@ namespace PocoGen.Common
             set
             {
                 if (this.generatedPropertyName == value)
+                {
                     return;
+                }
 
                 this.generatedPropertyName = value;
                 this.OnPropertyChanged();
-                this.OnPropertyChanged(nameof(EffectivePropertyName));
+                this.OnPropertyChanged(nameof(this.EffectivePropertyName));
             }
         }
 
@@ -97,7 +106,9 @@ namespace PocoGen.Common
             set
             {
                 if (this.EffectivePropertyName == value)
+                {
                     return;
+                }
 
                 // If the user changes the property name, save the override in userChangedPropertyName.
                 if (this.GeneratedPropertyName != value)
@@ -108,8 +119,9 @@ namespace PocoGen.Common
                 {
                     this.userChangedPropertyName = null;
                 }
+
                 this.OnPropertyChanged();
-                this.OnPropertyChanged(nameof(UserChangedPropertyName));
+                this.OnPropertyChanged(nameof(this.UserChangedPropertyName));
             }
         }
 
@@ -137,7 +149,9 @@ namespace PocoGen.Common
             set
             {
                 if (this.propertyType == value)
+                {
                     return;
+                }
 
                 this.propertyType = value;
                 this.OnPropertyChanged();
@@ -157,7 +171,9 @@ namespace PocoGen.Common
             set
             {
                 if (this.isPK == value)
+                {
                     return;
+                }
 
                 this.isPK = value;
                 this.OnPropertyChanged();
@@ -177,7 +193,9 @@ namespace PocoGen.Common
             set
             {
                 if (this.isNullable == value)
+                {
                     return;
+                }
 
                 this.isNullable = value;
                 this.OnPropertyChanged();
@@ -197,7 +215,9 @@ namespace PocoGen.Common
             set
             {
                 if (this.isAutoIncrement == value)
+                {
                     return;
+                }
 
                 this.isAutoIncrement = value;
                 this.OnPropertyChanged();
@@ -217,7 +237,9 @@ namespace PocoGen.Common
             set
             {
                 if (this.ignore == value)
+                {
                     return;
+                }
 
                 this.ignore = value;
                 this.OnPropertyChanged();
@@ -226,9 +248,7 @@ namespace PocoGen.Common
 
         private void OnPropertyChanged([CallerMemberName]string propertyName = null)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

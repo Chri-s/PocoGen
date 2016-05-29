@@ -161,35 +161,39 @@ namespace PocoGen.Common
 
             this.Tables = await Task.Run(() => this.SchemaReader.ReadTables(this.ConnectionString));
 
-            Parallel.ForEach(this.savedTables, savedTable =>
-            {
-                Table table = this.Tables[savedTable.Schema, savedTable.Name];
-                if (table == null)
+            Parallel.ForEach(
+                this.savedTables,
+                savedTable =>
                 {
-                    return;
-                }
-
-                if (savedTable.ClassName != null)
-                {
-                    table.EffectiveClassName = savedTable.ClassName;
-                }
-                table.Ignore = savedTable.Ignore;
-
-                foreach (FileFormat.Column savedColumn in savedTable.Columns)
-                {
-                    Column column = table.Columns[savedColumn.Name];
-                    if (column == null)
+                    Table table = this.Tables[savedTable.Schema, savedTable.Name];
+                    if (table == null)
                     {
-                        continue;
+                        return;
                     }
 
-                    if (savedColumn.PropertyName != null)
+                    if (savedTable.ClassName != null)
                     {
-                        column.EffectivePropertyName = savedColumn.PropertyName;
+                        table.EffectiveClassName = savedTable.ClassName;
                     }
-                    column.Ignore = savedColumn.Ignore;
-                }
-            });
+
+                    table.Ignore = savedTable.Ignore;
+
+                    foreach (FileFormat.Column savedColumn in savedTable.Columns)
+                    {
+                        Column column = table.Columns[savedColumn.Name];
+                        if (column == null)
+                        {
+                            continue;
+                        }
+
+                        if (savedColumn.PropertyName != null)
+                        {
+                            column.EffectivePropertyName = savedColumn.PropertyName;
+                        }
+
+                        column.Ignore = savedColumn.Ignore;
+                    }
+                });
 
             this.SubscribePropertyChangedEvents();
 
@@ -200,11 +204,11 @@ namespace PocoGen.Common
         {
             foreach (Table table in this.Tables)
             {
-                table.PropertyChanged += TablePropertyChanged;
+                table.PropertyChanged += this.TablePropertyChanged;
 
                 foreach (Column column in table.Columns)
                 {
-                    column.PropertyChanged += ColumnPropertyChanged;
+                    column.PropertyChanged += this.ColumnPropertyChanged;
                 }
             }
         }
@@ -520,14 +524,15 @@ namespace PocoGen.Common
         private void ColumnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(Column.EffectivePropertyName) && e.PropertyName != nameof(Column.Ignore))
+            {
                 return;
+            }
 
             Column column = (Column)sender;
             Table table = column.Table;
             if (FileFormat.Column.AreDefaultValues(column.Ignore, column.UserChangedPropertyName))
             {
                 // Remove the saved column
-
                 FileFormat.Table savedTable = this.savedTables[table.Schema, table.Name];
                 if (savedTable == null)
                 {
@@ -577,7 +582,9 @@ namespace PocoGen.Common
         private void TablePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(Table.EffectiveClassName) && e.PropertyName != nameof(Table.Ignore))
+            {
                 return;
+            }
 
             Table table = (Table)sender;
             if (FileFormat.Table.AreDefaultValues(table.Ignore, table.UserChangedClassName))
@@ -585,7 +592,7 @@ namespace PocoGen.Common
                 FileFormat.Table savedTable = this.savedTables[table.Schema, table.Name];
                 if (savedTable != null)
                 {
-                    savedTables.Remove(savedTable);
+                    this.savedTables.Remove(savedTable);
                 }
             }
             else

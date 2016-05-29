@@ -8,7 +8,6 @@ namespace PocoGen.Common.FileFormat
     {
         public ForeignKey()
         {
-
         }
 
         public ForeignKey(string name, string parentTableSchema, string parentTable, string childTableSchema, string childTable)
@@ -101,7 +100,7 @@ namespace PocoGen.Common.FileFormat
         {
             return this.ParentTableSchema + "\r" + this.ParentTable + "\r" +
                    this.ChildTableSchema + "\r" + this.ChildTable + "\r" +
-                   GetColumnDefinitionString();
+                   this.GetColumnDefinitionString();
         }
 
         private string GetColumnDefinitionString()

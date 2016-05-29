@@ -144,11 +144,7 @@ namespace PocoGen.Gui.Applications.ViewModels
 
         private void OnClosing(CancelEventArgs e)
         {
-            CancelEventHandler handler = this.Closing;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.Closing?.Invoke(this, e);
         }
     }
 }
