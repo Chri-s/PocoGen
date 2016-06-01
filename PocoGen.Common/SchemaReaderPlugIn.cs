@@ -22,6 +22,11 @@ namespace PocoGen.Common
             return this.Instance.ReadTables(connectionString, this.Settings);
         }
 
+        public ForeignKeyCollection ReadForeignKeys(string connectionString)
+        {
+            return this.Instance.ReadForeignKeys(connectionString, this.Settings);
+        }
+
         public void TestConnectionString(string connectionString)
         {
             this.Instance.TestConnectionString(connectionString, this.Settings);

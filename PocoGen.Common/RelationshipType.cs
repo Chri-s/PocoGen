@@ -2,7 +2,7 @@
 {
     public enum RelationshipType
     {
-        OneToOne,
+        OneToZeroOrOne,
         OneToMany
     }
 }

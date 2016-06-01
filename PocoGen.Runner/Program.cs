@@ -92,6 +92,10 @@ namespace PocoGen.Runner
                             Console.Error.Write("Output Writer: ");
                             break;
 
+                        case PlugInType.ForeignKeyPropertyNameGenerator:
+                            Console.Error.Write("Foreign Key Property Name Generator: ");
+                            break;
+
                         default:
                             Console.Error.Write(Enum.GetName(typeof(PlugInType), unrecognizedPlugIn.PlugInType) + ": ");
                             break;

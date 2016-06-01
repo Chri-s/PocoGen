@@ -15,9 +15,8 @@ namespace PocoGen.Common.FileFormat
             this.Ignore = ignore;
         }
 
-        // Set modifier is internal so that the DefinitionSerializer can still set this property.
         [XmlElement("Name")]
-        public string Name { get; internal set; }
+        public string Name { get; set; }
 
         private bool ignore;
         [XmlElement("Ignore")]

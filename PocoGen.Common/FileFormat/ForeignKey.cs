@@ -10,9 +10,10 @@ namespace PocoGen.Common.FileFormat
         {
         }
 
-        public ForeignKey(string name, string parentTableSchema, string parentTable, string childTableSchema, string childTable)
+        public ForeignKey(string schema, string name, string parentTableSchema, string parentTable, string childTableSchema, string childTable)
             : this()
         {
+            this.Schema = schema;
             this.Name = name;
             this.ParentTableSchema = parentTableSchema;
             this.ParentTable = parentTable;
@@ -32,6 +33,9 @@ namespace PocoGen.Common.FileFormat
 
         [XmlElement("ChildTable")]
         public string ChildTable { get; set; }
+
+        [XmlElement("Schema")]
+        public string Schema { get; set; }
 
         [XmlElement("Name")]
         public string Name { get; set; }
@@ -94,6 +98,23 @@ namespace PocoGen.Common.FileFormat
             {
                 this.ChangeProperty(ref this.parentPropertyName, value);
             }
+        }
+
+        /// <summary>
+        /// Gets whether this foreign key has the default values.
+        /// </summary>
+        [XmlIgnore]
+        public bool HasDefaultValues
+        {
+            get
+            {
+                return ForeignKey.AreDefaultValues(this.IgnoreParentProperty, this.ParentPropertyName, this.IgnoreChildProperty, this.ChildPropertyName);
+            }
+        }
+
+        public static bool AreDefaultValues(bool ignoreParentProperty, string parentPropertyName, bool ignoreChildProperty, string childPropertyName)
+        {
+            return !ignoreParentProperty && string.IsNullOrEmpty(parentPropertyName) && !ignoreParentProperty && string.IsNullOrEmpty(childPropertyName);
         }
 
         public string GetDefinitionSummaryString()

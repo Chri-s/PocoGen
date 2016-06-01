@@ -74,6 +74,11 @@
     <Compile Include="ForeignKeyCollection.cs" />
     <Compile Include="ForeignKeyColumn.cs" />
     <Compile Include="ForeignKeyColumnCollection.cs" />
+    <Compile Include="ForeignKeyPropertyNameGeneratorPlugIn.cs" />
+    <Compile Include="ForeignKeyPropertyNameGeneratorAttribute.cs" />
+    <Compile Include="ForeignKeyPropertyNameGeneratorPlugInCollection.cs" />
+    <Compile Include="IForeignKeyPropertyNameGenerator.cs" />
+    <Compile Include="IForeignKeyPropertyNameGeneratorMetadata.cs" />
     <Compile Include="IForeignKeySummary.cs" />
     <Compile Include="KeyWithSchema.cs" />
     <Compile Include="RelationshipType.cs" />

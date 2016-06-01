@@ -1,17 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace PocoGen.Common
 {
-    public class ForeignKeyCollection : Collection<ForeignKey>
+    public class ForeignKeyCollection : EnhancedKeyedCollection<string, ForeignKey>
     {
-        public ForeignKeyCollection()
+        protected override string GetKeyForItem(ForeignKey item)
         {
+            return ((IForeignKeySummary)item).GetDefinitionSummaryString();
         }
 
-        public ForeignKeyCollection(IList<ForeignKey> list)
-            : base(list)
+        public ForeignKey this[IForeignKeySummary foreignKey]
         {
+            get
+            {
+                if (foreignKey == null)
+                {
+                    throw new ArgumentNullException(nameof(foreignKey));
+                }
+
+                return this[foreignKey.GetDefinitionSummaryString()];
+            }
         }
     }
 }

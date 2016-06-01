@@ -72,6 +72,16 @@ namespace PocoGen.Common
             return new ColumnNameGeneratorPlugIn(generator);
         }
 
+        public static ForeignKeyPropertyNameGeneratorPlugIn GetPlugIn(this Lazy<IForeignKeyPropertyNameGenerator, IForeignKeyPropertyNameGeneratorMetadata> generator)
+        {
+            if (generator == null)
+            {
+                throw new ArgumentNullException("generator", "generator is null.");
+            }
+
+            return new ForeignKeyPropertyNameGeneratorPlugIn(generator);
+        }
+
         public static OutputWriterPlugIn GetPlugIn(this Lazy<IOutputWriter, IOutputWriterMetadata> writer)
         {
             if (writer == null)

@@ -109,13 +109,23 @@ ORDER BY c.constraint_schema, c.constraint_name, fk.ordinal_position;";
 
                             if (lastSchema != constraintSchema || lastForeignKeyName != constraintName)
                             {
+                                // Add the foreign key to the collection after all its columns are added because they are part of the generated key in the collection
+                                if (foreignKey != null)
+                                {
+                                    foreignKeys.Add(foreignKey);
+                                }
+
                                 foreignKey = new ForeignKey(constraintSchema, constraintName, fkTableSchema, fkTableName, pkTableSchema, pkTableName);
-                                foreignKeys.Add(foreignKey);
                             }
 
                             foreignKey.Columns.Add(new ForeignKeyColumn(pkColumnName, fkColumnName));
                             lastSchema = constraintSchema;
                             lastForeignKeyName = constraintName;
+                        }
+
+                        if (foreignKey != null)
+                        {
+                            foreignKeys.Add(foreignKey);
                         }
                     }
                 }

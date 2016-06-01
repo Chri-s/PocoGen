@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PocoGen.Common
 {
-    internal interface IForeignKeySummary
+    public interface IForeignKeySummary
     {
         string GetDefinitionSummaryString();
     }

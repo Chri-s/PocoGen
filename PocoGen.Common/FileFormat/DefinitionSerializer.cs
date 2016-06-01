@@ -77,6 +77,30 @@ namespace PocoGen.Common.FileFormat
                 }
             }
             {
+                global::PocoGen.Common.FileFormat.PlugInCollection a = (global::PocoGen.Common.FileFormat.PlugInCollection)((global::PocoGen.Common.FileFormat.PlugInCollection)o.@ForeignKeyParentPropertyNameGenerators);
+                if (a != null)
+                {
+                    WriteStartElement(@"ForeignKeyParentPropertyNameGenerators", @"", null, false);
+                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++)
+                    {
+                        Write2_PlugIn(@"ForeignKeyPropertyNameGenerator", @"", ((global::PocoGen.Common.FileFormat.PlugIn)a[ia]), true, false);
+                    }
+                    WriteEndElement();
+                }
+            }
+            {
+                global::PocoGen.Common.FileFormat.PlugInCollection a = (global::PocoGen.Common.FileFormat.PlugInCollection)((global::PocoGen.Common.FileFormat.PlugInCollection)o.@ForeignKeyChildPropertyNameGenerators);
+                if (a != null)
+                {
+                    WriteStartElement(@"ForeignKeyChildPropertyNameGenerators", @"", null, false);
+                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++)
+                    {
+                        Write2_PlugIn(@"ForeignKeyPropertyNameGenerator", @"", ((global::PocoGen.Common.FileFormat.PlugIn)a[ia]), true, false);
+                    }
+                    WriteEndElement();
+                }
+            }
+            {
                 global::PocoGen.Common.FileFormat.TableCollection a = (global::PocoGen.Common.FileFormat.TableCollection)((global::PocoGen.Common.FileFormat.TableCollection)o.@Tables);
                 if (a != null)
                 {
@@ -167,6 +191,7 @@ namespace PocoGen.Common.FileFormat
             WriteElementString(@"ParentTable", @"", ((global::System.String)o.@ParentTable));
             WriteElementString(@"ChildTableSchema", @"", ((global::System.String)o.@ChildTableSchema));
             WriteElementString(@"ChildTable", @"", ((global::System.String)o.@ChildTable));
+            WriteElementString(@"Schema", @"", ((global::System.String)o.@Schema));
             WriteElementString(@"Name", @"", ((global::System.String)o.@Name));
             {
                 global::PocoGen.Common.FileFormat.ForeignKeyColumnCollection a = (global::PocoGen.Common.FileFormat.ForeignKeyColumnCollection)((global::PocoGen.Common.FileFormat.ForeignKeyColumnCollection)o.@Columns);
@@ -354,7 +379,14 @@ namespace PocoGen.Common.FileFormat
             if (isNull) return null;
             global::PocoGen.Common.FileFormat.Definition o;
             o = new global::PocoGen.Common.FileFormat.Definition();
-            bool[] paramsRead = new bool[9];
+            global::PocoGen.Common.FileFormat.PlugInCollection a_3 = (global::PocoGen.Common.FileFormat.PlugInCollection)o.@TableNameGenerators;
+            global::PocoGen.Common.FileFormat.PlugInCollection a_4 = (global::PocoGen.Common.FileFormat.PlugInCollection)o.@ColumnNameGenerators;
+            global::PocoGen.Common.FileFormat.PlugInCollection a_5 = (global::PocoGen.Common.FileFormat.PlugInCollection)o.@ForeignKeyParentPropertyNameGenerators;
+            global::PocoGen.Common.FileFormat.PlugInCollection a_6 = (global::PocoGen.Common.FileFormat.PlugInCollection)o.@ForeignKeyChildPropertyNameGenerators;
+            global::PocoGen.Common.FileFormat.TableCollection a_7 = (global::PocoGen.Common.FileFormat.TableCollection)o.@Tables;
+            global::PocoGen.Common.FileFormat.ForeignKeyCollection a_8 = (global::PocoGen.Common.FileFormat.ForeignKeyCollection)o.@ForeignKeys;
+            global::PocoGen.Common.FileFormat.OutputWriterPlugInCollection a_9 = (global::PocoGen.Common.FileFormat.OutputWriterPlugInCollection)o.@OutputWriters;
+            bool[] paramsRead = new bool[11];
             while (Reader.MoveToNextAttribute())
             {
                 if (!IsXmlnsAttribute(Reader.Name))
@@ -473,11 +505,11 @@ namespace PocoGen.Common.FileFormat
                             }
                         }
                     }
-                    else if (((object)Reader.LocalName == (object)id11_Tables && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)id11_Item && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         if (!ReadNull())
                         {
-                            global::PocoGen.Common.FileFormat.TableCollection a_5_0 = (global::PocoGen.Common.FileFormat.TableCollection)o.@Tables;
+                            global::PocoGen.Common.FileFormat.PlugInCollection a_5_0 = (global::PocoGen.Common.FileFormat.PlugInCollection)o.@ForeignKeyParentPropertyNameGenerators;
                             if ((Reader.IsEmptyElement))
                             {
                                 Reader.Skip();
@@ -492,18 +524,18 @@ namespace PocoGen.Common.FileFormat
                                 {
                                     if (Reader.NodeType == System.Xml.XmlNodeType.Element)
                                     {
-                                        if (((object)Reader.LocalName == (object)id12_Table && (object)Reader.NamespaceURI == (object)id2_Item))
+                                        if (((object)Reader.LocalName == (object)id12_Item && (object)Reader.NamespaceURI == (object)id2_Item))
                                         {
-                                            if ((object)(a_5_0) == null) Reader.Skip(); else a_5_0.Add(Read5_Table(true, true));
+                                            if ((object)(a_5_0) == null) Reader.Skip(); else a_5_0.Add(Read2_PlugIn(true, true));
                                         }
                                         else
                                         {
-                                            UnknownNode(null, @":Table");
+                                            UnknownNode(null, @":ForeignKeyPropertyNameGenerator");
                                         }
                                     }
                                     else
                                     {
-                                        UnknownNode(null, @":Table");
+                                        UnknownNode(null, @":ForeignKeyPropertyNameGenerator");
                                     }
                                     Reader.MoveToContent();
                                     CheckReaderCount(ref whileIterations3, ref readerCount3);
@@ -512,11 +544,11 @@ namespace PocoGen.Common.FileFormat
                             }
                         }
                     }
-                    else if (((object)Reader.LocalName == (object)id13_ForeignKeys && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)id13_Item && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         if (!ReadNull())
                         {
-                            global::PocoGen.Common.FileFormat.ForeignKeyCollection a_6_0 = (global::PocoGen.Common.FileFormat.ForeignKeyCollection)o.@ForeignKeys;
+                            global::PocoGen.Common.FileFormat.PlugInCollection a_6_0 = (global::PocoGen.Common.FileFormat.PlugInCollection)o.@ForeignKeyChildPropertyNameGenerators;
                             if ((Reader.IsEmptyElement))
                             {
                                 Reader.Skip();
@@ -531,18 +563,18 @@ namespace PocoGen.Common.FileFormat
                                 {
                                     if (Reader.NodeType == System.Xml.XmlNodeType.Element)
                                     {
-                                        if (((object)Reader.LocalName == (object)id14_ForeignKey && (object)Reader.NamespaceURI == (object)id2_Item))
+                                        if (((object)Reader.LocalName == (object)id12_Item && (object)Reader.NamespaceURI == (object)id2_Item))
                                         {
-                                            if ((object)(a_6_0) == null) Reader.Skip(); else a_6_0.Add(Read7_ForeignKey(true, true));
+                                            if ((object)(a_6_0) == null) Reader.Skip(); else a_6_0.Add(Read2_PlugIn(true, true));
                                         }
                                         else
                                         {
-                                            UnknownNode(null, @":ForeignKey");
+                                            UnknownNode(null, @":ForeignKeyPropertyNameGenerator");
                                         }
                                     }
                                     else
                                     {
-                                        UnknownNode(null, @":ForeignKey");
+                                        UnknownNode(null, @":ForeignKeyPropertyNameGenerator");
                                     }
                                     Reader.MoveToContent();
                                     CheckReaderCount(ref whileIterations4, ref readerCount4);
@@ -551,11 +583,11 @@ namespace PocoGen.Common.FileFormat
                             }
                         }
                     }
-                    else if (((object)Reader.LocalName == (object)id15_OutputWriters && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)id14_Tables && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         if (!ReadNull())
                         {
-                            global::PocoGen.Common.FileFormat.OutputWriterPlugInCollection a_7_0 = (global::PocoGen.Common.FileFormat.OutputWriterPlugInCollection)o.@OutputWriters;
+                            global::PocoGen.Common.FileFormat.TableCollection a_7_0 = (global::PocoGen.Common.FileFormat.TableCollection)o.@Tables;
                             if ((Reader.IsEmptyElement))
                             {
                                 Reader.Skip();
@@ -570,9 +602,87 @@ namespace PocoGen.Common.FileFormat
                                 {
                                     if (Reader.NodeType == System.Xml.XmlNodeType.Element)
                                     {
-                                        if (((object)Reader.LocalName == (object)id16_OutputWriter && (object)Reader.NamespaceURI == (object)id2_Item))
+                                        if (((object)Reader.LocalName == (object)id15_Table && (object)Reader.NamespaceURI == (object)id2_Item))
                                         {
-                                            if ((object)(a_7_0) == null) Reader.Skip(); else a_7_0.Add(Read8_OutputWriterPlugIn(true, true));
+                                            if ((object)(a_7_0) == null) Reader.Skip(); else a_7_0.Add(Read5_Table(true, true));
+                                        }
+                                        else
+                                        {
+                                            UnknownNode(null, @":Table");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        UnknownNode(null, @":Table");
+                                    }
+                                    Reader.MoveToContent();
+                                    CheckReaderCount(ref whileIterations5, ref readerCount5);
+                                }
+                                ReadEndElement();
+                            }
+                        }
+                    }
+                    else if (((object)Reader.LocalName == (object)id16_ForeignKeys && (object)Reader.NamespaceURI == (object)id2_Item))
+                    {
+                        if (!ReadNull())
+                        {
+                            global::PocoGen.Common.FileFormat.ForeignKeyCollection a_8_0 = (global::PocoGen.Common.FileFormat.ForeignKeyCollection)o.@ForeignKeys;
+                            if ((Reader.IsEmptyElement))
+                            {
+                                Reader.Skip();
+                            }
+                            else
+                            {
+                                Reader.ReadStartElement();
+                                Reader.MoveToContent();
+                                int whileIterations6 = 0;
+                                int readerCount6 = ReaderCount;
+                                while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None)
+                                {
+                                    if (Reader.NodeType == System.Xml.XmlNodeType.Element)
+                                    {
+                                        if (((object)Reader.LocalName == (object)id17_ForeignKey && (object)Reader.NamespaceURI == (object)id2_Item))
+                                        {
+                                            if ((object)(a_8_0) == null) Reader.Skip(); else a_8_0.Add(Read7_ForeignKey(true, true));
+                                        }
+                                        else
+                                        {
+                                            UnknownNode(null, @":ForeignKey");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        UnknownNode(null, @":ForeignKey");
+                                    }
+                                    Reader.MoveToContent();
+                                    CheckReaderCount(ref whileIterations6, ref readerCount6);
+                                }
+                                ReadEndElement();
+                            }
+                        }
+                    }
+                    else if (((object)Reader.LocalName == (object)id18_OutputWriters && (object)Reader.NamespaceURI == (object)id2_Item))
+                    {
+                        if (!ReadNull())
+                        {
+                            global::PocoGen.Common.FileFormat.OutputWriterPlugInCollection a_9_0 = (global::PocoGen.Common.FileFormat.OutputWriterPlugInCollection)o.@OutputWriters;
+                            if ((Reader.IsEmptyElement))
+                            {
+                                Reader.Skip();
+                            }
+                            else
+                            {
+                                Reader.ReadStartElement();
+                                Reader.MoveToContent();
+                                int whileIterations7 = 0;
+                                int readerCount7 = ReaderCount;
+                                while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None)
+                                {
+                                    if (Reader.NodeType == System.Xml.XmlNodeType.Element)
+                                    {
+                                        if (((object)Reader.LocalName == (object)id19_OutputWriter && (object)Reader.NamespaceURI == (object)id2_Item))
+                                        {
+                                            if ((object)(a_9_0) == null) Reader.Skip(); else a_9_0.Add(Read8_OutputWriterPlugIn(true, true));
                                         }
                                         else
                                         {
@@ -584,27 +694,27 @@ namespace PocoGen.Common.FileFormat
                                         UnknownNode(null, @":OutputWriter");
                                     }
                                     Reader.MoveToContent();
-                                    CheckReaderCount(ref whileIterations5, ref readerCount5);
+                                    CheckReaderCount(ref whileIterations7, ref readerCount7);
                                 }
                                 ReadEndElement();
                             }
                         }
                     }
-                    else if (!paramsRead[8] && ((object)Reader.LocalName == (object)id17_OutputBasePath && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[10] && ((object)Reader.LocalName == (object)id20_OutputBasePath && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@OutputBasePath = Reader.ReadElementString();
                         }
-                        paramsRead[8] = true;
+                        paramsRead[10] = true;
                     }
                     else
                     {
-                        UnknownNode((object)o, @":SchemaReader, :ConnectionString, :UseAnsiQuoting, :TableNameGenerators, :ColumnNameGenerators, :Tables, :ForeignKeys, :OutputWriters, :OutputBasePath");
+                        UnknownNode((object)o, @":SchemaReader, :ConnectionString, :UseAnsiQuoting, :TableNameGenerators, :ColumnNameGenerators, :ForeignKeyParentPropertyNameGenerators, :ForeignKeyChildPropertyNameGenerators, :Tables, :ForeignKeys, :OutputWriters, :OutputBasePath");
                     }
                 }
                 else
                 {
-                    UnknownNode((object)o, @":SchemaReader, :ConnectionString, :UseAnsiQuoting, :TableNameGenerators, :ColumnNameGenerators, :Tables, :ForeignKeys, :OutputWriters, :OutputBasePath");
+                    UnknownNode((object)o, @":SchemaReader, :ConnectionString, :UseAnsiQuoting, :TableNameGenerators, :ColumnNameGenerators, :ForeignKeyParentPropertyNameGenerators, :ForeignKeyChildPropertyNameGenerators, :Tables, :ForeignKeys, :OutputWriters, :OutputBasePath");
                 }
                 Reader.MoveToContent();
                 CheckReaderCount(ref whileIterations0, ref readerCount0);
@@ -620,7 +730,7 @@ namespace PocoGen.Common.FileFormat
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id18_OutputWriterPlugIn && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id21_OutputWriterPlugIn && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
                 {
                 }
                 else
@@ -645,32 +755,32 @@ namespace PocoGen.Common.FileFormat
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations6 = 0;
-            int readerCount6 = ReaderCount;
+            int whileIterations8 = 0;
+            int readerCount8 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None)
             {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id19_Guid && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_Guid && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@Guid = Reader.ReadElementString();
                         }
                         paramsRead[0] = true;
                     }
-                    else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id20_Name && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id23_Name && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@Name = Reader.ReadElementString();
                         }
                         paramsRead[1] = true;
                     }
-                    else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id21_Configuration && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id24_Configuration && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         o.@Configuration = (global::PocoGen.Common.SettingsRepository)ReadSerializable((System.Xml.Serialization.IXmlSerializable)new global::PocoGen.Common.SettingsRepository());
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id22_FileName && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id25_FileName && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@FileName = Reader.ReadElementString();
@@ -687,7 +797,7 @@ namespace PocoGen.Common.FileFormat
                     UnknownNode((object)o, @":Guid, :Name, :Configuration, :FileName");
                 }
                 Reader.MoveToContent();
-                CheckReaderCount(ref whileIterations6, ref readerCount6);
+                CheckReaderCount(ref whileIterations8, ref readerCount8);
             }
             ReadEndElement();
             return o;
@@ -700,7 +810,7 @@ namespace PocoGen.Common.FileFormat
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id14_ForeignKey && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id17_ForeignKey && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
                 {
                 }
                 else
@@ -709,7 +819,8 @@ namespace PocoGen.Common.FileFormat
             if (isNull) return null;
             global::PocoGen.Common.FileFormat.ForeignKey o;
             o = new global::PocoGen.Common.FileFormat.ForeignKey();
-            bool[] paramsRead = new bool[10];
+            global::PocoGen.Common.FileFormat.ForeignKeyColumnCollection a_6 = (global::PocoGen.Common.FileFormat.ForeignKeyColumnCollection)o.@Columns;
+            bool[] paramsRead = new bool[11];
             while (Reader.MoveToNextAttribute())
             {
                 if (!IsXmlnsAttribute(Reader.Name))
@@ -725,52 +836,59 @@ namespace PocoGen.Common.FileFormat
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations7 = 0;
-            int readerCount7 = ReaderCount;
+            int whileIterations9 = 0;
+            int readerCount9 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None)
             {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id23_ParentTableSchema && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id26_ParentTableSchema && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@ParentTableSchema = Reader.ReadElementString();
                         }
                         paramsRead[0] = true;
                     }
-                    else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id24_ParentTable && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id27_ParentTable && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@ParentTable = Reader.ReadElementString();
                         }
                         paramsRead[1] = true;
                     }
-                    else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id25_ChildTableSchema && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id28_ChildTableSchema && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@ChildTableSchema = Reader.ReadElementString();
                         }
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id26_ChildTable && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id29_ChildTable && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@ChildTable = Reader.ReadElementString();
                         }
                         paramsRead[3] = true;
                     }
-                    else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id20_Name && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[4] && ((object)Reader.LocalName == (object)id30_Schema && (object)Reader.NamespaceURI == (object)id2_Item))
+                    {
+                        {
+                            o.@Schema = Reader.ReadElementString();
+                        }
+                        paramsRead[4] = true;
+                    }
+                    else if (!paramsRead[5] && ((object)Reader.LocalName == (object)id23_Name && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@Name = Reader.ReadElementString();
                         }
-                        paramsRead[4] = true;
+                        paramsRead[5] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id27_Columns && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)id31_Columns && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         if (!ReadNull())
                         {
-                            global::PocoGen.Common.FileFormat.ForeignKeyColumnCollection a_5_0 = (global::PocoGen.Common.FileFormat.ForeignKeyColumnCollection)o.@Columns;
+                            global::PocoGen.Common.FileFormat.ForeignKeyColumnCollection a_6_0 = (global::PocoGen.Common.FileFormat.ForeignKeyColumnCollection)o.@Columns;
                             if ((Reader.IsEmptyElement))
                             {
                                 Reader.Skip();
@@ -779,15 +897,15 @@ namespace PocoGen.Common.FileFormat
                             {
                                 Reader.ReadStartElement();
                                 Reader.MoveToContent();
-                                int whileIterations8 = 0;
-                                int readerCount8 = ReaderCount;
+                                int whileIterations10 = 0;
+                                int readerCount10 = ReaderCount;
                                 while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None)
                                 {
                                     if (Reader.NodeType == System.Xml.XmlNodeType.Element)
                                     {
-                                        if (((object)Reader.LocalName == (object)id28_Column && (object)Reader.NamespaceURI == (object)id2_Item))
+                                        if (((object)Reader.LocalName == (object)id32_Column && (object)Reader.NamespaceURI == (object)id2_Item))
                                         {
-                                            if ((object)(a_5_0) == null) Reader.Skip(); else a_5_0.Add(Read6_ForeignKeyColumn(true, true));
+                                            if ((object)(a_6_0) == null) Reader.Skip(); else a_6_0.Add(Read6_ForeignKeyColumn(true, true));
                                         }
                                         else
                                         {
@@ -799,51 +917,51 @@ namespace PocoGen.Common.FileFormat
                                         UnknownNode(null, @":Column");
                                     }
                                     Reader.MoveToContent();
-                                    CheckReaderCount(ref whileIterations8, ref readerCount8);
+                                    CheckReaderCount(ref whileIterations10, ref readerCount10);
                                 }
                                 ReadEndElement();
                             }
                         }
                     }
-                    else if (!paramsRead[6] && ((object)Reader.LocalName == (object)id29_IgnoreChildProperty && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[7] && ((object)Reader.LocalName == (object)id33_IgnoreChildProperty && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@IgnoreChildProperty = System.Xml.XmlConvert.ToBoolean(Reader.ReadElementString());
                         }
-                        paramsRead[6] = true;
+                        paramsRead[7] = true;
                     }
-                    else if (!paramsRead[7] && ((object)Reader.LocalName == (object)id30_IgnoreParentProperty && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[8] && ((object)Reader.LocalName == (object)id34_IgnoreParentProperty && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@IgnoreParentProperty = System.Xml.XmlConvert.ToBoolean(Reader.ReadElementString());
                         }
-                        paramsRead[7] = true;
+                        paramsRead[8] = true;
                     }
-                    else if (!paramsRead[8] && ((object)Reader.LocalName == (object)id31_ChildPropertyName && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[9] && ((object)Reader.LocalName == (object)id35_ChildPropertyName && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@ChildPropertyName = Reader.ReadElementString();
                         }
-                        paramsRead[8] = true;
+                        paramsRead[9] = true;
                     }
-                    else if (!paramsRead[9] && ((object)Reader.LocalName == (object)id32_ParentPropertyName && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[10] && ((object)Reader.LocalName == (object)id36_ParentPropertyName && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@ParentPropertyName = Reader.ReadElementString();
                         }
-                        paramsRead[9] = true;
+                        paramsRead[10] = true;
                     }
                     else
                     {
-                        UnknownNode((object)o, @":ParentTableSchema, :ParentTable, :ChildTableSchema, :ChildTable, :Name, :Columns, :IgnoreChildProperty, :IgnoreParentProperty, :ChildPropertyName, :ParentPropertyName");
+                        UnknownNode((object)o, @":ParentTableSchema, :ParentTable, :ChildTableSchema, :ChildTable, :Schema, :Name, :Columns, :IgnoreChildProperty, :IgnoreParentProperty, :ChildPropertyName, :ParentPropertyName");
                     }
                 }
                 else
                 {
-                    UnknownNode((object)o, @":ParentTableSchema, :ParentTable, :ChildTableSchema, :ChildTable, :Name, :Columns, :IgnoreChildProperty, :IgnoreParentProperty, :ChildPropertyName, :ParentPropertyName");
+                    UnknownNode((object)o, @":ParentTableSchema, :ParentTable, :ChildTableSchema, :ChildTable, :Schema, :Name, :Columns, :IgnoreChildProperty, :IgnoreParentProperty, :ChildPropertyName, :ParentPropertyName");
                 }
                 Reader.MoveToContent();
-                CheckReaderCount(ref whileIterations7, ref readerCount7);
+                CheckReaderCount(ref whileIterations9, ref readerCount9);
             }
             ReadEndElement();
             return o;
@@ -856,7 +974,7 @@ namespace PocoGen.Common.FileFormat
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id33_ForeignKeyColumn && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id37_ForeignKeyColumn && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
                 {
                 }
                 else
@@ -881,20 +999,20 @@ namespace PocoGen.Common.FileFormat
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations9 = 0;
-            int readerCount9 = ReaderCount;
+            int whileIterations11 = 0;
+            int readerCount11 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None)
             {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id34_ParentTablesColumnName && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id38_ParentTablesColumnName && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@ParentTablesColumnName = Reader.ReadElementString();
                         }
                         paramsRead[0] = true;
                     }
-                    else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id35_ChildTablesColumnName && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id39_ChildTablesColumnName && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@ChildTablesColumnName = Reader.ReadElementString();
@@ -911,7 +1029,7 @@ namespace PocoGen.Common.FileFormat
                     UnknownNode((object)o, @":ParentTablesColumnName, :ChildTablesColumnName");
                 }
                 Reader.MoveToContent();
-                CheckReaderCount(ref whileIterations9, ref readerCount9);
+                CheckReaderCount(ref whileIterations11, ref readerCount11);
             }
             ReadEndElement();
             return o;
@@ -924,7 +1042,7 @@ namespace PocoGen.Common.FileFormat
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id12_Table && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id15_Table && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
                 {
                 }
                 else
@@ -933,6 +1051,7 @@ namespace PocoGen.Common.FileFormat
             if (isNull) return null;
             global::PocoGen.Common.FileFormat.Table o;
             o = new global::PocoGen.Common.FileFormat.Table();
+            global::PocoGen.Common.FileFormat.ColumnCollection a_4 = (global::PocoGen.Common.FileFormat.ColumnCollection)o.@Columns;
             bool[] paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute())
             {
@@ -949,41 +1068,41 @@ namespace PocoGen.Common.FileFormat
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations10 = 0;
-            int readerCount10 = ReaderCount;
+            int whileIterations12 = 0;
+            int readerCount12 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None)
             {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id36_Schema && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id30_Schema && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@Schema = Reader.ReadElementString();
                         }
                         paramsRead[0] = true;
                     }
-                    else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id20_Name && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id23_Name && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@Name = Reader.ReadElementString();
                         }
                         paramsRead[1] = true;
                     }
-                    else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id37_Ignore && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id40_Ignore && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@Ignore = System.Xml.XmlConvert.ToBoolean(Reader.ReadElementString());
                         }
                         paramsRead[2] = true;
                     }
-                    else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id38_PropertyName && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[3] && ((object)Reader.LocalName == (object)id41_PropertyName && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@ClassName = Reader.ReadElementString();
                         }
                         paramsRead[3] = true;
                     }
-                    else if (((object)Reader.LocalName == (object)id27_Columns && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (((object)Reader.LocalName == (object)id31_Columns && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         if (!ReadNull())
                         {
@@ -996,13 +1115,13 @@ namespace PocoGen.Common.FileFormat
                             {
                                 Reader.ReadStartElement();
                                 Reader.MoveToContent();
-                                int whileIterations11 = 0;
-                                int readerCount11 = ReaderCount;
+                                int whileIterations13 = 0;
+                                int readerCount13 = ReaderCount;
                                 while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None)
                                 {
                                     if (Reader.NodeType == System.Xml.XmlNodeType.Element)
                                     {
-                                        if (((object)Reader.LocalName == (object)id28_Column && (object)Reader.NamespaceURI == (object)id2_Item))
+                                        if (((object)Reader.LocalName == (object)id32_Column && (object)Reader.NamespaceURI == (object)id2_Item))
                                         {
                                             if ((object)(a_4_0) == null) Reader.Skip(); else a_4_0.Add(Read4_Column(true, true));
                                         }
@@ -1016,7 +1135,7 @@ namespace PocoGen.Common.FileFormat
                                         UnknownNode(null, @":Column");
                                     }
                                     Reader.MoveToContent();
-                                    CheckReaderCount(ref whileIterations11, ref readerCount11);
+                                    CheckReaderCount(ref whileIterations13, ref readerCount13);
                                 }
                                 ReadEndElement();
                             }
@@ -1032,7 +1151,7 @@ namespace PocoGen.Common.FileFormat
                     UnknownNode((object)o, @":Schema, :Name, :Ignore, :PropertyName, :Columns");
                 }
                 Reader.MoveToContent();
-                CheckReaderCount(ref whileIterations10, ref readerCount10);
+                CheckReaderCount(ref whileIterations12, ref readerCount12);
             }
             ReadEndElement();
             return o;
@@ -1045,7 +1164,7 @@ namespace PocoGen.Common.FileFormat
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id28_Column && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id32_Column && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
                 {
                 }
                 else
@@ -1070,27 +1189,27 @@ namespace PocoGen.Common.FileFormat
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations12 = 0;
-            int readerCount12 = ReaderCount;
+            int whileIterations14 = 0;
+            int readerCount14 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None)
             {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id20_Name && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id23_Name && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@Name = Reader.ReadElementString();
                         }
                         paramsRead[0] = true;
                     }
-                    else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id37_Ignore && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id40_Ignore && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@Ignore = System.Xml.XmlConvert.ToBoolean(Reader.ReadElementString());
                         }
                         paramsRead[1] = true;
                     }
-                    else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id38_PropertyName && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id41_PropertyName && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@PropertyName = Reader.ReadElementString();
@@ -1107,7 +1226,7 @@ namespace PocoGen.Common.FileFormat
                     UnknownNode((object)o, @":Name, :Ignore, :PropertyName");
                 }
                 Reader.MoveToContent();
-                CheckReaderCount(ref whileIterations12, ref readerCount12);
+                CheckReaderCount(ref whileIterations14, ref readerCount14);
             }
             ReadEndElement();
             return o;
@@ -1120,10 +1239,10 @@ namespace PocoGen.Common.FileFormat
             if (isNullable) isNull = ReadNull();
             if (checkType)
             {
-                if (xsiType == null || ((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id39_PlugIn && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                if (xsiType == null || ((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id42_PlugIn && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
                 {
                 }
-                else if (((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id18_OutputWriterPlugIn && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
+                else if (((object)((System.Xml.XmlQualifiedName)xsiType).Name == (object)id21_OutputWriterPlugIn && (object)((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item))
                     return Read8_OutputWriterPlugIn(isNullable, false);
                 else
                     throw CreateUnknownTypeException((System.Xml.XmlQualifiedName)xsiType);
@@ -1147,27 +1266,27 @@ namespace PocoGen.Common.FileFormat
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations13 = 0;
-            int readerCount13 = ReaderCount;
+            int whileIterations15 = 0;
+            int readerCount15 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None)
             {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element)
                 {
-                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id19_Guid && (object)Reader.NamespaceURI == (object)id2_Item))
+                    if (!paramsRead[0] && ((object)Reader.LocalName == (object)id22_Guid && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@Guid = Reader.ReadElementString();
                         }
                         paramsRead[0] = true;
                     }
-                    else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id20_Name && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[1] && ((object)Reader.LocalName == (object)id23_Name && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         {
                             o.@Name = Reader.ReadElementString();
                         }
                         paramsRead[1] = true;
                     }
-                    else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id21_Configuration && (object)Reader.NamespaceURI == (object)id2_Item))
+                    else if (!paramsRead[2] && ((object)Reader.LocalName == (object)id24_Configuration && (object)Reader.NamespaceURI == (object)id2_Item))
                     {
                         o.@Configuration = (global::PocoGen.Common.SettingsRepository)ReadSerializable((System.Xml.Serialization.IXmlSerializable)new global::PocoGen.Common.SettingsRepository());
                         paramsRead[2] = true;
@@ -1182,7 +1301,7 @@ namespace PocoGen.Common.FileFormat
                     UnknownNode((object)o, @":Guid, :Name, :Configuration");
                 }
                 Reader.MoveToContent();
-                CheckReaderCount(ref whileIterations13, ref readerCount13);
+                CheckReaderCount(ref whileIterations15, ref readerCount15);
             }
             ReadEndElement();
             return o;
@@ -1193,41 +1312,44 @@ namespace PocoGen.Common.FileFormat
         }
 
         string id3_Definition;
-        string id29_IgnoreChildProperty;
-        string id32_ParentPropertyName;
-        string id11_Tables;
-        string id22_FileName;
-        string id16_OutputWriter;
-        string id12_Table;
-        string id27_Columns;
-        string id30_IgnoreParentProperty;
-        string id37_Ignore;
-        string id36_Schema;
-        string id14_ForeignKey;
-        string id18_OutputWriterPlugIn;
-        string id28_Column;
-        string id25_ChildTableSchema;
-        string id13_ForeignKeys;
-        string id33_ForeignKeyColumn;
+        string id30_Schema;
+        string id13_Item;
+        string id36_ParentPropertyName;
+        string id11_Item;
+        string id14_Tables;
+        string id25_FileName;
+        string id19_OutputWriter;
+        string id33_IgnoreChildProperty;
+        string id15_Table;
+        string id31_Columns;
+        string id34_IgnoreParentProperty;
+        string id40_Ignore;
+        string id17_ForeignKey;
+        string id21_OutputWriterPlugIn;
+        string id32_Column;
+        string id28_ChildTableSchema;
+        string id16_ForeignKeys;
+        string id37_ForeignKeyColumn;
         string id7_TableNameGenerators;
         string id4_SchemaReader;
-        string id24_ParentTable;
+        string id27_ParentTable;
         string id2_Item;
-        string id17_OutputBasePath;
+        string id20_OutputBasePath;
         string id1_PocoGenDefinition;
         string id10_ColumnNameGenerator;
-        string id21_Configuration;
-        string id20_Name;
+        string id24_Configuration;
+        string id23_Name;
         string id6_UseAnsiQuoting;
-        string id39_PlugIn;
-        string id19_Guid;
-        string id38_PropertyName;
-        string id15_OutputWriters;
-        string id23_ParentTableSchema;
-        string id35_ChildTablesColumnName;
-        string id34_ParentTablesColumnName;
-        string id26_ChildTable;
-        string id31_ChildPropertyName;
+        string id42_PlugIn;
+        string id22_Guid;
+        string id41_PropertyName;
+        string id12_Item;
+        string id18_OutputWriters;
+        string id26_ParentTableSchema;
+        string id39_ChildTablesColumnName;
+        string id38_ParentTablesColumnName;
+        string id29_ChildTable;
+        string id35_ChildPropertyName;
         string id9_ColumnNameGenerators;
         string id5_ConnectionString;
         string id8_TableNameGenerator;
@@ -1235,41 +1357,44 @@ namespace PocoGen.Common.FileFormat
         protected override void InitIDs()
         {
             id3_Definition = Reader.NameTable.Add(@"Definition");
-            id29_IgnoreChildProperty = Reader.NameTable.Add(@"IgnoreChildProperty");
-            id32_ParentPropertyName = Reader.NameTable.Add(@"ParentPropertyName");
-            id11_Tables = Reader.NameTable.Add(@"Tables");
-            id22_FileName = Reader.NameTable.Add(@"FileName");
-            id16_OutputWriter = Reader.NameTable.Add(@"OutputWriter");
-            id12_Table = Reader.NameTable.Add(@"Table");
-            id27_Columns = Reader.NameTable.Add(@"Columns");
-            id30_IgnoreParentProperty = Reader.NameTable.Add(@"IgnoreParentProperty");
-            id37_Ignore = Reader.NameTable.Add(@"Ignore");
-            id36_Schema = Reader.NameTable.Add(@"Schema");
-            id14_ForeignKey = Reader.NameTable.Add(@"ForeignKey");
-            id18_OutputWriterPlugIn = Reader.NameTable.Add(@"OutputWriterPlugIn");
-            id28_Column = Reader.NameTable.Add(@"Column");
-            id25_ChildTableSchema = Reader.NameTable.Add(@"ChildTableSchema");
-            id13_ForeignKeys = Reader.NameTable.Add(@"ForeignKeys");
-            id33_ForeignKeyColumn = Reader.NameTable.Add(@"ForeignKeyColumn");
+            id30_Schema = Reader.NameTable.Add(@"Schema");
+            id13_Item = Reader.NameTable.Add(@"ForeignKeyChildPropertyNameGenerators");
+            id36_ParentPropertyName = Reader.NameTable.Add(@"ParentPropertyName");
+            id11_Item = Reader.NameTable.Add(@"ForeignKeyParentPropertyNameGenerators");
+            id14_Tables = Reader.NameTable.Add(@"Tables");
+            id25_FileName = Reader.NameTable.Add(@"FileName");
+            id19_OutputWriter = Reader.NameTable.Add(@"OutputWriter");
+            id33_IgnoreChildProperty = Reader.NameTable.Add(@"IgnoreChildProperty");
+            id15_Table = Reader.NameTable.Add(@"Table");
+            id31_Columns = Reader.NameTable.Add(@"Columns");
+            id34_IgnoreParentProperty = Reader.NameTable.Add(@"IgnoreParentProperty");
+            id40_Ignore = Reader.NameTable.Add(@"Ignore");
+            id17_ForeignKey = Reader.NameTable.Add(@"ForeignKey");
+            id21_OutputWriterPlugIn = Reader.NameTable.Add(@"OutputWriterPlugIn");
+            id32_Column = Reader.NameTable.Add(@"Column");
+            id28_ChildTableSchema = Reader.NameTable.Add(@"ChildTableSchema");
+            id16_ForeignKeys = Reader.NameTable.Add(@"ForeignKeys");
+            id37_ForeignKeyColumn = Reader.NameTable.Add(@"ForeignKeyColumn");
             id7_TableNameGenerators = Reader.NameTable.Add(@"TableNameGenerators");
             id4_SchemaReader = Reader.NameTable.Add(@"SchemaReader");
-            id24_ParentTable = Reader.NameTable.Add(@"ParentTable");
+            id27_ParentTable = Reader.NameTable.Add(@"ParentTable");
             id2_Item = Reader.NameTable.Add(@"");
-            id17_OutputBasePath = Reader.NameTable.Add(@"OutputBasePath");
+            id20_OutputBasePath = Reader.NameTable.Add(@"OutputBasePath");
             id1_PocoGenDefinition = Reader.NameTable.Add(@"PocoGenDefinition");
             id10_ColumnNameGenerator = Reader.NameTable.Add(@"ColumnNameGenerator");
-            id21_Configuration = Reader.NameTable.Add(@"Configuration");
-            id20_Name = Reader.NameTable.Add(@"Name");
+            id24_Configuration = Reader.NameTable.Add(@"Configuration");
+            id23_Name = Reader.NameTable.Add(@"Name");
             id6_UseAnsiQuoting = Reader.NameTable.Add(@"UseAnsiQuoting");
-            id39_PlugIn = Reader.NameTable.Add(@"PlugIn");
-            id19_Guid = Reader.NameTable.Add(@"Guid");
-            id38_PropertyName = Reader.NameTable.Add(@"PropertyName");
-            id15_OutputWriters = Reader.NameTable.Add(@"OutputWriters");
-            id23_ParentTableSchema = Reader.NameTable.Add(@"ParentTableSchema");
-            id35_ChildTablesColumnName = Reader.NameTable.Add(@"ChildTablesColumnName");
-            id34_ParentTablesColumnName = Reader.NameTable.Add(@"ParentTablesColumnName");
-            id26_ChildTable = Reader.NameTable.Add(@"ChildTable");
-            id31_ChildPropertyName = Reader.NameTable.Add(@"ChildPropertyName");
+            id42_PlugIn = Reader.NameTable.Add(@"PlugIn");
+            id22_Guid = Reader.NameTable.Add(@"Guid");
+            id41_PropertyName = Reader.NameTable.Add(@"PropertyName");
+            id12_Item = Reader.NameTable.Add(@"ForeignKeyPropertyNameGenerator");
+            id18_OutputWriters = Reader.NameTable.Add(@"OutputWriters");
+            id26_ParentTableSchema = Reader.NameTable.Add(@"ParentTableSchema");
+            id39_ChildTablesColumnName = Reader.NameTable.Add(@"ChildTablesColumnName");
+            id38_ParentTablesColumnName = Reader.NameTable.Add(@"ParentTablesColumnName");
+            id29_ChildTable = Reader.NameTable.Add(@"ChildTable");
+            id35_ChildPropertyName = Reader.NameTable.Add(@"ChildPropertyName");
             id9_ColumnNameGenerators = Reader.NameTable.Add(@"ColumnNameGenerators");
             id5_ConnectionString = Reader.NameTable.Add(@"ConnectionString");
             id8_TableNameGenerator = Reader.NameTable.Add(@"TableNameGenerator");

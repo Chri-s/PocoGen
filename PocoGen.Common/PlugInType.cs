@@ -5,6 +5,7 @@
         SchemaReader,
         TableNameGenerator,
         ColumnNameGenerator,
-        OutputWriter
+        OutputWriter,
+        ForeignKeyPropertyNameGenerator
     }
 }

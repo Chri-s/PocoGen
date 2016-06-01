@@ -217,6 +217,10 @@ namespace PocoGen.Gui.Applications.Controllers
                             message.Append("Output Writer: ");
                             break;
 
+                        case PlugInType.ForeignKeyPropertyNameGenerator:
+                            message.Append("Foreign Key Property Name Generator: ");
+                            break;
+
                         default:
                             message.Append(Enum.GetName(typeof(PlugInType), unrecognizedPlugIn.PlugInType) + ": ");
                             break;

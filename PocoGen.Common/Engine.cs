@@ -16,6 +16,7 @@ namespace PocoGen.Common
     public class Engine : ChangeTrackingBase
     {
         private FileFormat.TableCollection savedTables;
+        private FileFormat.ForeignKeyCollection savedForeignKeys;
 
         public Engine()
         {
@@ -24,9 +25,12 @@ namespace PocoGen.Common
             this.TableNameGenerators = new TableNameGeneratorPlugInCollection();
             this.OutputWriters = new OutputWriterPlugInCollection();
             this.savedTables = new FileFormat.TableCollection();
+            this.savedForeignKeys = new FileFormat.ForeignKeyCollection();
             this.Tables = new TableCollection();
             this.ForeignKeys = new ForeignKeyCollection();
             this.ColumnNameGenerators = new ColumnNameGeneratorPlugInCollection();
+            this.ForeignKeyParentPropertyNameGenerators = new ForeignKeyPropertyNameGeneratorPlugInCollection();
+            this.ForeignKeyChildPropertyNameGenerators = new ForeignKeyPropertyNameGeneratorPlugInCollection();
             this.UnknownPlugIns = new UnknownPlugInCollection(new List<UnknownPlugIn>());
 
             this.AcceptChanges();
@@ -40,6 +44,9 @@ namespace PocoGen.Common
 
         [ImportMany(typeof(IColumnNameGenerator))]
         public IEnumerable<Lazy<IColumnNameGenerator, IColumnNameGeneratorMetadata>> AvailableColumnNameGenerators { get; set; }
+
+        [ImportMany(typeof(IForeignKeyPropertyNameGenerator))]
+        public IEnumerable<Lazy<IForeignKeyPropertyNameGenerator, IForeignKeyPropertyNameGeneratorMetadata>> AvailableForeignKeyPropertyNameGenerators { get; set; }
 
         [ImportMany(typeof(IOutputWriter))]
         public IEnumerable<Lazy<IOutputWriter, IOutputWriterMetadata>> AvailableOutputWriters { get; set; }
@@ -69,6 +76,10 @@ namespace PocoGen.Common
 
         public ColumnNameGeneratorPlugInCollection ColumnNameGenerators { get; private set; }
 
+        public ForeignKeyPropertyNameGeneratorPlugInCollection ForeignKeyParentPropertyNameGenerators { get; private set; }
+
+        public ForeignKeyPropertyNameGeneratorPlugInCollection ForeignKeyChildPropertyNameGenerators { get; private set; }
+
         public TableCollection Tables { get; private set; }
 
         public ForeignKeyCollection ForeignKeys { get; private set; }
@@ -85,6 +96,8 @@ namespace PocoGen.Common
 
                 return base.IsChanged ||
                     this.ColumnNameGenerators.IsChanged ||
+                    this.ForeignKeyParentPropertyNameGenerators.IsChanged ||
+                    this.ForeignKeyChildPropertyNameGenerators.IsChanged ||
                     this.OutputWriters.IsChanged ||
                     this.savedTables.IsChanged ||
                     this.TableNameGenerators.IsChanged ||
@@ -97,6 +110,8 @@ namespace PocoGen.Common
             base.AcceptChanges();
 
             this.ColumnNameGenerators.AcceptChanges();
+            this.ForeignKeyParentPropertyNameGenerators.AcceptChanges();
+            this.ForeignKeyChildPropertyNameGenerators.AcceptChanges();
             this.OutputWriters.AcceptChanges();
             this.savedTables.AcceptChanges();
             this.TableNameGenerators.AcceptChanges();
@@ -160,6 +175,7 @@ namespace PocoGen.Common
             }
 
             this.Tables = await Task.Run(() => this.SchemaReader.ReadTables(this.ConnectionString));
+            this.ForeignKeys = await Task.Run(() => this.SchemaReader.ReadForeignKeys(this.ConnectionString));
 
             Parallel.ForEach(
                 this.savedTables,
@@ -195,9 +211,60 @@ namespace PocoGen.Common
                     }
                 });
 
+            Parallel.ForEach(
+                this.savedForeignKeys,
+                savedForeignKey =>
+                {
+                    ForeignKey foreignKey = this.ForeignKeys[savedForeignKey];
+                    if (foreignKey == null)
+                    {
+                        return;
+                    }
+
+                    if (savedForeignKey.ParentPropertyName != null)
+                    {
+                        foreignKey.EffectiveParentPropertyName = savedForeignKey.ParentPropertyName;
+                    }
+
+                    if (savedForeignKey.ChildPropertyName != null)
+                    {
+                        foreignKey.EffectiveChildPropertyName = savedForeignKey.ChildPropertyName;
+                    }
+
+                    foreignKey.IgnoreParentProperty = savedForeignKey.IgnoreParentProperty;
+                    foreignKey.IgnoreChildProperty = savedForeignKey.IgnoreChildProperty;
+                });
+
+            this.BindTablesAndForeignKeys();
+
             this.SubscribePropertyChangedEvents();
 
             this.ApplyNamingGenerators();
+        }
+
+        private void BindTablesAndForeignKeys()
+        {
+            foreach (ForeignKey foreignKey in this.ForeignKeys)
+            {
+                Table parentTable = this.Tables[foreignKey.ParentSchema, foreignKey.ParentTableName];
+                Table childTable = this.Tables[foreignKey.ChildSchema, foreignKey.ChildTableName];
+
+                foreignKey.ParentTable = parentTable;
+                foreignKey.ChildTable = childTable;
+
+                parentTable.ChildForeignKeys.Add(foreignKey);
+                childTable.ParentForeignKeys.Add(foreignKey);
+
+                ColumnCollection childPrimaryKey = childTable.GetPrimaryKeyColumns();
+                if (childPrimaryKey.Select(cpk => cpk.Name).SequenceEqual(foreignKey.Columns.Select(c => c.ChildTablesColumnName)))
+                {
+                    foreignKey.RelationshipType = RelationshipType.OneToZeroOrOne;
+                }
+                else
+                {
+                    foreignKey.RelationshipType = RelationshipType.OneToMany;
+                }
+            }
         }
 
         private void SubscribePropertyChangedEvents()
@@ -210,6 +277,11 @@ namespace PocoGen.Common
                 {
                     column.PropertyChanged += this.ColumnPropertyChanged;
                 }
+            }
+
+            foreach (ForeignKey foreignKey in this.ForeignKeys)
+            {
+                foreignKey.PropertyChanged += this.ForeignKeyPropertyChanged;
             }
         }
 
@@ -247,6 +319,8 @@ namespace PocoGen.Common
             this.SchemaReader = null;
             this.TableNameGenerators.Clear();
             this.ColumnNameGenerators.Clear();
+            this.ForeignKeyParentPropertyNameGenerators.Clear();
+            this.ForeignKeyChildPropertyNameGenerators.Clear();
             this.Tables.Clear();
             this.ForeignKeys.Clear();
             this.savedTables.Clear();
@@ -356,6 +430,18 @@ namespace PocoGen.Common
                 document.ColumnNameGenerators.Add(new PlugIn(columnNameGenerator.Guid, columnNameGenerator.Name, settings));
             }
 
+            foreach (ForeignKeyPropertyNameGeneratorPlugIn foreignKeyParentPropertyNameGenerator in this.ForeignKeyParentPropertyNameGenerators)
+            {
+                SettingsRepository settings = (foreignKeyParentPropertyNameGenerator.Settings != null) ? foreignKeyParentPropertyNameGenerator.Settings.Serialize() : null;
+                document.ForeignKeyParentPropertyNameGenerators.Add(new PlugIn(foreignKeyParentPropertyNameGenerator.Guid, foreignKeyParentPropertyNameGenerator.Name, settings));
+            }
+
+            foreach (ForeignKeyPropertyNameGeneratorPlugIn foreignKeyChildPropertyNameGenerator in this.ForeignKeyChildPropertyNameGenerators)
+            {
+                SettingsRepository settings = (foreignKeyChildPropertyNameGenerator.Settings != null) ? foreignKeyChildPropertyNameGenerator.Settings.Serialize() : null;
+                document.ForeignKeyChildPropertyNameGenerators.Add(new PlugIn(foreignKeyChildPropertyNameGenerator.Guid, foreignKeyChildPropertyNameGenerator.Name, settings));
+            }
+
             document.Tables.AddRange(this.savedTables);
 
             foreach (OutputWriterPlugIn outputWriter in this.OutputWriters)
@@ -380,6 +466,8 @@ namespace PocoGen.Common
             this.LoadSchemaReader(definition, unknownPlugIns);
             this.LoadTableNameGenerators(definition, unknownPlugIns);
             this.LoadColumnNameGenerators(definition, unknownPlugIns);
+            this.LoadForeignKeyParentPropertyNameGenerators(definition, unknownPlugIns);
+            this.LoadForeignKeyChildPropertyNameGenerators(definition, unknownPlugIns);
 
             this.Tables.Clear();
             this.savedTables = definition.Tables;
@@ -456,6 +544,52 @@ namespace PocoGen.Common
                 }
 
                 this.ColumnNameGenerators.Add(columnNameGenerator);
+            }
+        }
+
+        private void LoadForeignKeyParentPropertyNameGenerators(Definition definition, List<UnknownPlugIn> unrecognizedPlugIns)
+        {
+            this.ForeignKeyParentPropertyNameGenerators.Clear();
+            foreach (var definitionForeignKeyParentPropertyNameGenerator in definition.ForeignKeyParentPropertyNameGenerators)
+            {
+                ForeignKeyPropertyNameGeneratorPlugIn foreignKeyParentPropertyNameGenerator = (from generator in this.AvailableForeignKeyPropertyNameGenerators
+                                                                                               where generator.Metadata.Guid == definitionForeignKeyParentPropertyNameGenerator.Guid
+                                                                                               select generator.GetPlugIn()).FirstOrDefault();
+
+                if (foreignKeyParentPropertyNameGenerator == null)
+                {
+                    unrecognizedPlugIns.Add(new UnknownPlugIn(PlugInType.ForeignKeyPropertyNameGenerator, definitionForeignKeyParentPropertyNameGenerator));
+                }
+
+                if (foreignKeyParentPropertyNameGenerator != null && foreignKeyParentPropertyNameGenerator.Settings != null && definitionForeignKeyParentPropertyNameGenerator.Configuration != null)
+                {
+                    foreignKeyParentPropertyNameGenerator.Settings.Deserialize(definitionForeignKeyParentPropertyNameGenerator.Configuration);
+                }
+
+                this.ForeignKeyParentPropertyNameGenerators.Add(foreignKeyParentPropertyNameGenerator);
+            }
+        }
+
+        private void LoadForeignKeyChildPropertyNameGenerators(Definition definition, List<UnknownPlugIn> unrecognizedPlugIns)
+        {
+            this.ForeignKeyChildPropertyNameGenerators.Clear();
+            foreach (var definitionForeignKeyChildPropertyNameGenerator in definition.ForeignKeyChildPropertyNameGenerators)
+            {
+                var foreignKeyChildPropertyNameGenerator = (from generator in this.AvailableForeignKeyPropertyNameGenerators
+                                                            where generator.Metadata.Guid == definitionForeignKeyChildPropertyNameGenerator.Guid
+                                                            select generator.GetPlugIn()).FirstOrDefault();
+
+                if (foreignKeyChildPropertyNameGenerator == null)
+                {
+                    unrecognizedPlugIns.Add(new UnknownPlugIn(PlugInType.ForeignKeyPropertyNameGenerator, definitionForeignKeyChildPropertyNameGenerator));
+                }
+
+                if (foreignKeyChildPropertyNameGenerator != null && foreignKeyChildPropertyNameGenerator.Settings != null && definitionForeignKeyChildPropertyNameGenerator.Configuration != null)
+                {
+                    foreignKeyChildPropertyNameGenerator.Settings.Deserialize(definitionForeignKeyChildPropertyNameGenerator.Configuration);
+                }
+
+                this.ForeignKeyChildPropertyNameGenerators.Add(foreignKeyChildPropertyNameGenerator);
             }
         }
 
@@ -607,6 +741,43 @@ namespace PocoGen.Common
                 {
                     savedTable.ClassName = table.UserChangedClassName;
                     savedTable.Ignore = table.Ignore;
+                }
+            }
+        }
+
+        private void ForeignKeyPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(ForeignKey.EffectiveParentPropertyName) &&
+                e.PropertyName != nameof(ForeignKey.IgnoreParentProperty) &&
+                e.PropertyName != nameof(ForeignKey.EffectiveChildPropertyName) &&
+                e.PropertyName != nameof(ForeignKey.IgnoreChildProperty))
+            {
+                return;
+            }
+
+            ForeignKey foreignKey = (ForeignKey)sender;
+            if (FileFormat.ForeignKey.AreDefaultValues(foreignKey.IgnoreParentProperty, foreignKey.UserChangedParentPropertyName, foreignKey.IgnoreChildProperty, foreignKey.UserChangedChildPropertyName))
+            {
+                FileFormat.ForeignKey savedForeignKey = this.savedForeignKeys[foreignKey];
+                if (savedForeignKey != null)
+                {
+                    this.savedForeignKeys.Remove(savedForeignKey);
+                }
+            }
+            else
+            {
+                FileFormat.ForeignKey savedForeignKey = this.savedForeignKeys[foreignKey];
+                if (savedForeignKey == null)
+                {
+                    savedForeignKey = new FileFormat.ForeignKey(foreignKey.Schema, foreignKey.Name, foreignKey.ParentSchema, foreignKey.ParentTableName, foreignKey.ChildSchema, foreignKey.ChildTableName);
+                    this.savedForeignKeys.Add(savedForeignKey);
+                }
+                else
+                {
+                    savedForeignKey.ParentPropertyName = foreignKey.UserChangedParentPropertyName;
+                    savedForeignKey.IgnoreParentProperty = foreignKey.IgnoreParentProperty;
+                    savedForeignKey.ChildPropertyName = foreignKey.UserChangedChildPropertyName;
+                    savedForeignKey.IgnoreChildProperty = foreignKey.IgnoreChildProperty;
                 }
             }
         }

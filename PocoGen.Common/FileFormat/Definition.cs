@@ -13,6 +13,8 @@ namespace PocoGen.Common.FileFormat
         {
             this.TableNameGenerators = new PlugInCollection();
             this.ColumnNameGenerators = new PlugInCollection();
+            this.ForeignKeyParentPropertyNameGenerators = new PlugInCollection();
+            this.ForeignKeyChildPropertyNameGenerators = new PlugInCollection();
             this.OutputWriters = new OutputWriterPlugInCollection();
             this.Tables = new TableCollection();
             this.ForeignKeys = new ForeignKeyCollection();
@@ -34,6 +36,14 @@ namespace PocoGen.Common.FileFormat
         [XmlArray("ColumnNameGenerators")]
         [XmlArrayItem("ColumnNameGenerator", typeof(PlugIn))]
         public PlugInCollection ColumnNameGenerators { get; private set; }
+
+        [XmlArray("ForeignKeyParentPropertyNameGenerators")]
+        [XmlArrayItem("ForeignKeyPropertyNameGenerator", typeof(PlugIn))]
+        public PlugInCollection ForeignKeyParentPropertyNameGenerators { get; private set; }
+
+        [XmlArray("ForeignKeyChildPropertyNameGenerators")]
+        [XmlArrayItem("ForeignKeyPropertyNameGenerator", typeof(PlugIn))]
+        public PlugInCollection ForeignKeyChildPropertyNameGenerators { get; private set; }
 
         [XmlArray("Tables")]
         [XmlArrayItem("Table", typeof(Table))]
