@@ -1,0 +1,8 @@
+<div class="wikidoc">
+<p>You can integrate PocoGen into Visual Studio like a T4 template so that the database will be queried and the output files recreated every time you build your project. Because PocoGen runs as a pre-build task, it can be used in every Visual Studio Version
+ and will also run when you invoke MSBuild.</p>
+<p>Therefore you have to open the project properties, select the tab “Build Events” and enter this line into the upper text box (“Pre-build event command line:”):</p>
+<pre>Start /B PocoGen.Runner.exe &quot;$(ProjectDir)YourPocoFile.poco&quot;</pre>
+<p>This assumes that you installed PocoGen with the Setup and included the Command Line Generator. Otherwise you have to specify the complete path to PocoGen.Runner.exe. If your .poco file is not in the same directory as the project file (.csproj/.vbproj) you
+ have to change the path in quotes to the relative path.</p>
+</div><div class="ClearBoth"></div>

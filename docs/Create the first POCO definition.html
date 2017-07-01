@@ -1,0 +1,18 @@
+<div class="wikidoc">
+<p>For the examples I use the Microsoft sample database Adventure Works.</p>
+<p>Start PocoGen from the start menu (or start PocoGen.GUI.exe). You will see the main screen:</p>
+<p><img title="image" border="0" alt="image" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=pocogen&DownloadId=1016844" width="604" height="404" style="border-left-width:0px; border-right-width:0px; border-bottom-width:0px; padding-top:0px; padding-left:0px; margin:0px; display:inline; padding-right:0px; border-top-width:0px"></p>
+<p>Select “Microsoft SQL Server” as database type and enter the connection string to your database. Notice that the “Connection string documentation” link is enabled once you select a database type. It will bring you to a description of the connection string
+ options.<br>
+For my local Adventure Works database, the connection string is: Data Source=(local);Initial Catalog=AdventureWorks2012;Integrated Security=SSPI</p>
+<p>Click on the “Test connection” button. A message box should appear which shows “Connection succeeded.”. Otherwise you have an error in your connection string, the database server is unavailable, your credentials are wrong or you don’t have access.</p>
+<p>Now click on “Load Tables” and select the tab Output configuration. Select “POCOs” in the list of available writers and add it with the
+<img title="Add" border="0" alt="Add" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=pocogen&DownloadId=1016845" width="16" height="16" style="border-left-width:0px; border-right-width:0px; border-bottom-width:0px; padding-top:0px; padding-left:0px; display:inline; padding-right:0px; border-top-width:0px">
+ button. It should look like this:</p>
+<p><img title="image" border="0" alt="image" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=pocogen&DownloadId=1016846" width="604" height="404" style="border-top:0px; border-right:0px; border-bottom:0px; padding-top:0px; padding-left:0px; margin:0px; border-left:0px; display:inline; padding-right:0px"></p>
+<p>By clicking on “Preview” in the blue box you can preview the result of the generated code:</p>
+<p><img title="image" border="0" alt="image" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=pocogen&DownloadId=1016847" width="502" height="357" style="border-top:0px; border-right:0px; border-bottom:0px; padding-top:0px; padding-left:0px; margin:0px; border-left:0px; display:inline; padding-right:0px"></p>
+<p>That’s it, you created your first POCO definition with PocoGen! You can save your Poco-project in the main menu:
+<strong>Project &gt; Save definition as…</strong> Please note that the connection string will be saved in the file in clear text. That means that anyone who can access the file with a text editor can see the credentials for the database if you needed to specify
+ them in the connection string.</p>
+</div><div class="ClearBoth"></div>
